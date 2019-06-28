@@ -1,0 +1,12 @@
+---
+- name: restart sshd
+  service:
+    name: sshd
+    state: restarted
+    enabled: True
+
+- name: restart crond
+  service:
+    name: crond
+    state: restarted
+    enabled: True

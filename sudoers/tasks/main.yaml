@@ -1,0 +1,16 @@
+---
+- name: set sudoers for redhat os family
+  lineinfile:
+    path: /etc/sudoers
+    regexp: "^%wheel"
+    line: "%wheel   ALL=(ALL)   NOPASSWD: ALL"
+  when:
+    - ansible_os_family | lower == 'redhat'
+
+- name: set sudoers for debian os family
+  lineinfile:
+    path: /etc/sudoers
+    regexp: "^%sudo"
+    line: "%sudo   ALL=(ALL:ALL)   NOPASSWD: ALL"
+  when:
+    - ansible_os_family | lower == 'debian'

@@ -1,0 +1,31 @@
+---
+disable_password_authentication: no
+
+packages:
+  - vim
+  - gcc
+  - gcc-c++
+  - net-tools
+  - htop
+  - iftop
+  - ack
+
+limits:
+  - "*  soft  nofile  819200"
+  - "*  hard  nofile  819200"
+  - "*  soft  nproc   819200"
+  - "*  hard  nproc   819200"
+
+tzname: Asia/Shanghai
+
+disable_services:
+  - postfix
+  - kdump
+  - NetworkManager
+
+disable_services_rhel6:
+  - iptables
+
+disable_services_rhel7:
+  - firewalld
+  - chronyd

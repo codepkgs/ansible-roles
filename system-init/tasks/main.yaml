@@ -1,0 +1,107 @@
+---
+- name: disable ssh password authentication
+  tags: ssh
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication"
+    line: PasswordAuthentication no
+    state: present
+  when:
+    - disable_password_authentication | bool
+  notify:
+    - restart sshd
+
+- name: enable ssh password authentication
+  tags: ssh
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication"
+    line: PasswordAuthentication yes
+    state: present
+  when:
+    - not disable_password_authentication | bool
+  notify:
+    - restart sshd
+
+- name: close dns resolve for sshd
+  tags: ssh
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^UseDNS"
+    line: "UseDNS no"
+    insertafter: "^#UseDNS"
+    state: present
+  notify:
+    - restart sshd
+
+- name: config limits
+  tags: limits
+  lineinfile:
+    path: /etc/security/limits.conf
+    line: "{{ item }}"
+    state: present
+  with_items: "{{ limits }}"
+
+- name: set timezone
+  tags: timezone
+  timezone:
+    name: "{{ tzname }}"
+  notify:
+    - restart crond
+
+- name: disable services for redhat family
+  service: 
+    name: "{{ item }}" 
+    state: stopped
+    enabled: False
+  with_items: "{{ disable_services }}"
+  when:
+    - ansible_os_family | lower == 'redhat'
+
+- name: disable services for redhat family 6
+  service: 
+    name: "{{ item }}" 
+    state: stopped
+    enabled: False
+  with_items: "{{ disable_services_rhel6 }}"
+  when:
+    - ansible_os_family | lower == 'redhat'
+    - ansible_distribution_major_version == '6'
+
+- name: disable services for redhat family 7
+  tags: services
+  service: 
+    name: "{{ item }}" 
+    state: stopped
+    enabled: false
+  with_items: "{{ disable_services_rhel7 }}"
+  when:
+    - ansible_os_family | lower == 'redhat'
+    - ansible_distribution_major_version == '7'
+
+- name: disable selinux
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: "^SELINUX="
+    line: SELINUX=disabled
+
+- name: install epel-release
+  package:
+    name:
+      - epel-release
+    state: present
+  when:
+    - ansible_os_family | lower == 'redhat'
+
+- name: install packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ packages }}"
+  when:
+    - ansible_os_family | lower == 'redhat'
+
+- name: set vim
+  copy:
+    src: vimrc
+    dest: ~/.vimrc
