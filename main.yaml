@@ -1,0 +1,9 @@
+---
+- hosts: all
+  roles:
+    - role: authorized_key
+      vars:
+        users:
+        - name: zhanghe
+          state: present
+          key: zhanghe.pub

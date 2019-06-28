@@ -1,0 +1,5 @@
+---
+# users:
+#   - name: username
+#     state: present
+#     key: username.pub
