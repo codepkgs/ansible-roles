@@ -2,6 +2,7 @@
 - hosts: all
   roles:
     - role: sudoers
+    - role: system-init
     #- role: authorized_key
     #  vars:
     #    users:
