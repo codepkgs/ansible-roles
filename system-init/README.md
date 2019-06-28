@@ -6,6 +6,8 @@
 
 * 变量
     ```text
+    disable_password_authentication: 是否关闭ssh密码认证。yes或no。除非你知道会发生什么，否则将该选项设置为no。
+
     packages: 列表。指定需要安装的软件包。
 
     limits: 列表。设置limit。
