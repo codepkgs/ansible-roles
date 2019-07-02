@@ -19,7 +19,7 @@
     line: PasswordAuthentication yes
     state: present
   when:
-    - not disable_password_authentication | bool
+    - not (disable_password_authentication | bool)
   notify:
     - restart sshd
 
