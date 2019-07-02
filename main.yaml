@@ -9,3 +9,27 @@
         - name: root
           state: present
           key: root.pub
+
+# - hosts: 10.0.100.1
+#   roles:
+#     - role: hostname
+#       vars:
+#         hostname: "vm01.felix.com"
+
+# - hosts: 10.0.100.2
+#   roles:
+#     - role: hostname
+#       vars:
+#         hostname: "vm02.felix.com"
+
+# - hosts: 10.0.100.3
+#   roles:
+#     - role: hostname
+#       vars:
+#         hostname: "vm03.felix.com"
+
+# - hosts: 10.0.100.4
+#   roles:
+#     - role: hostname
+#       vars:
+#         hostname: "vm04.felix.com"
