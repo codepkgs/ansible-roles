@@ -1,1 +1,2 @@
 ./main.yaml
+./authorized_key/files/*.pub

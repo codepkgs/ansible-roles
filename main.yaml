@@ -3,9 +3,9 @@
   roles:
     - role: sudoers
     - role: system-init
-    #- role: authorized_key
-    #  vars:
-    #    users:
-    #    - name: zhanghe
-    #      state: present
-    #      key: zhanghe.pub
+    - role: authorized_key
+      vars:
+        users:
+        - name: root
+          state: present
+          key: root.pub
