@@ -1,6 +1,5 @@
 ---
 - name: disable ssh password authentication
-  tags: ssh
   lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^PasswordAuthentication"
@@ -12,7 +11,6 @@
     - restart sshd
 
 - name: enable ssh password authentication
-  tags: ssh
   lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^PasswordAuthentication"
@@ -24,7 +22,6 @@
     - restart sshd
 
 - name: close dns resolve for sshd
-  tags: ssh
   lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^UseDNS"
@@ -35,7 +32,6 @@
     - restart sshd
 
 - name: config limits
-  tags: limits
   lineinfile:
     path: /etc/security/limits.conf
     line: "{{ item }}"
@@ -43,7 +39,6 @@
   with_items: "{{ limits }}"
 
 - name: set timezone
-  tags: timezone
   timezone:
     name: "{{ tzname }}"
   notify:
@@ -69,7 +64,6 @@
     - ansible_distribution_major_version == '6'
 
 - name: disable services for redhat family 7
-  tags: services
   service: 
     name: "{{ item }}" 
     state: stopped
