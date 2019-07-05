@@ -1,0 +1,7 @@
+domain_name: "fdisk.cc"
+domain_name_servers: "10.0.100.1"
+dhcp_range: "10.0.100.98 10.0.100.99"
+dhcp_network: "10.0.100.0"
+dhcp_netmask: "255.255.255.0"
+dhcp_gateway: "10.100.0.254"
+default_password: "$1$ta0cyI2Z$CHpEuSN.Nm60y2eXMrAaj."  # openssl passwd -1 'your-password'
