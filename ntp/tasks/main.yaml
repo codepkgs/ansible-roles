@@ -1,0 +1,25 @@
+---
+- name: install ntp
+  package:
+    name: ntp
+    state: present
+
+- name: config ntp.conf
+  template: 
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - stopped chronyd
+    - restarted ntpd
+
+- name: flush handlers
+  meta: flush_handlers
+
+- name: ensure ntpd is running
+  service: 
+    name: ntpd
+    state: started
+    enabled: yes
