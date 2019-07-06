@@ -1,0 +1,15 @@
+# ansible config
+{% if resolv_search | length > 0 %}
+search {{ resolv_search | join(' ')}}
+{% endif %}
+{% if resolv_domain != '' %}
+domain {{ resolv_domain }}
+{% endif %}
+{% for ns in resolv_nameservers %}
+nameserver {{ ns }}
+{% endfor %}
+{% if resolv_options | length > 0 %}
+options {{ resolv_options | join(' ') }}
+{% else %}
+options rotate timeout:2 attempts:3
+{% endif %}
