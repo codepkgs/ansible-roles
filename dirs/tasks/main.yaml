@@ -1,0 +1,10 @@
+---
+- name: create directory
+  file:
+    state: "{{ item.state | default('directory', boolean=true) }}"
+    path: "{{ item.path }}"
+    owner: "{{ item.owner | default('root', boolean=true) }}"
+    group: "{{ item.group | default('root', boolean=true) }}"
+    mode: "{{ item.mode | default('755', boolean=true) }}"
+  with_items: "{{ dirs }}"
+  
