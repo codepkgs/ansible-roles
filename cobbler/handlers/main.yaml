@@ -11,9 +11,9 @@
     enabled: yes
     state: restarted
 
-- name: restart tftp
+- name: restart xinetd
   service:
-    name: tftp
+    name: xinetd
     enabled: yes
     state: restarted
 

@@ -13,13 +13,14 @@
     - syslinux
     - dhcp
     - tftp-server
+    - xinetd
     - pykickstart
     - cobbler
     - cobbler-web
   notify:
     - restart httpd
     - restart cobblerd
-    - restart tftp
+    - restart xinetd
     - restart rsyncd
 
 - name: flush handlers
@@ -116,5 +117,5 @@
   with_items:
     - httpd
     - cobblerd
-    - tftp
+    - xinetd
     - rsyncd
