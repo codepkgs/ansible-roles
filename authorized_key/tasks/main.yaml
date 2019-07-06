@@ -1,18 +1,7 @@
 ---
-- name: add authorized key
+- name: manage authorized key
   authorized_key:
     user: "{{ item.name }}"
-    state: present
+    state: "{{ item.state | default('present', boolean=true) }}"
     key: "{{ lookup('file', item.key) }}"
   with_items: "{{ users }}"
-  when:
-    - item.state == "present"
-
-- name: delete authorized key
-  authorized_key:
-    user: "{{ item.name }}"
-    state: absent
-    key: "{{ lookup('file', item.key) }}"
-  with_items: "{{ users }}"
-  when:
-    - item.state == "absent"

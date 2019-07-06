@@ -9,7 +9,7 @@
         格式如下: users中可以指定多个用户。
         users:
           - name: username1             # 要添加或删除的用户名
-            state: present | absent     # 期望的状态。absent或present。
+            state: present | absent     # 期望的状态。absent或present。默认值是present
             key: username1.pub          # public key文件的名称,该文件需要位于files中。
           - name: username2
             state: absent
