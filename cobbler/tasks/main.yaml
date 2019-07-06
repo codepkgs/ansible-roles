@@ -91,7 +91,7 @@
   lineinfile:
     path: /etc/cobbler/settings
     regexp: "^default_password_crypted"
-    line: "default_password_crypted: {{ default_password }}"
+    line: "default_password_crypted: {{ cobbler_default_password }}"
   notify:
     - restart cobblerd
     - cobbler sync
