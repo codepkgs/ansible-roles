@@ -1,0 +1,38 @@
+---
+- name: check ruby is installed or not
+  shell:
+    which ruby
+  ignore_errors: true
+  register: ruby_state
+
+- name: check ruby version
+  shell: ruby -v
+  ignore_errors: true
+  register: ruby_version
+  when:
+    - ansible_os_family | lower == 'redhat'
+    - ruby_state is successed
+
+- name: wget ruby
+  get_url:
+    url: "{{ ruby_download_url }}"
+    dest: /tmp/
+  when:
+    - ansible_os_family | lower == 'redhat'
+    - ruby_state is failed or ruby_version.split()[1] <= '2.2'
+
+- name: unarchive ruby to destination
+  unarchive:
+    remote_src: true
+    src: /tmp/ruby-2.6.3.tar.gz
+    dest: /tmp
+  when:
+    - ansible_os_family | lower == 'redhat'
+    - ruby_state is failed or ruby_version.split()[1] <= '2.2'
+
+- name: install ruby
+  shell:
+    cd /tmp/ruby-2.6.3 && ./configure && make && make install
+  when:
+    - ansible_os_family | lower == 'redhat'
+    - ruby_state is failed or ruby_version.split()[1] <= '2.2'
