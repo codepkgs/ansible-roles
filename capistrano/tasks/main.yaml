@@ -1,0 +1,11 @@
+---
+- name: install capistrao packages
+  gem:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - capistrano
+    - capistrano-scm-copy
+    - net-ssh
+    - bcrypt_pbkdf
+    - ed25519
