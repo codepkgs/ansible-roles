@@ -2,10 +2,88 @@
 - hosts: all
   roles:
     - role: sudoers
+      tags: sudoers
     - role: system-init
+      tags: system-init
     - role: authorized_key
+      tags: authorized_key
       vars:
         users:
         - name: root
           state: present
           key: root.pub
+    - role: resolv
+      tags: rosolv
+      vars:
+        resolv_search:
+          - "fdisk.cc"
+        resolv_domain: "fdisk.cc"
+        resolv_nameservers:
+          - "223.5.5.5"
+          - "223.6.6.6"
+    - role: ntp
+      tags: ntp
+      vars:
+        ntp_servers:
+          - ntp.aliyun.com
+        ntp_restricts:
+          - network: 10.0.100.0
+            netmask: 255.255.0.0
+    - role: dirs
+      tags: dirs
+      vars:
+        dirs:
+          - path: /data/html
+          - path: /data/cap
+          - path: /data/logs
+        
+
+- hosts: 10.0.100.1
+  roles:
+    - role: hostname
+      tags: hostname
+      vars:
+        hostname: vm01.fdisk.cc
+    - role: cobbler
+      tags: cobbler
+      vars:
+        cobbler_domain_name: "fdisk.cc"
+        cobbler_domain_name_servers: "10.0.100.1"
+        cobbler_dhcp_range: "10.0.100.98 10.0.100.99"
+        dobbler_dhcp_network: "10.0.100.0"
+        cobbler_dhcp_netmask: "255.255.255.0"
+        cobbler_dhcp_gateway: "10.100.0.254"
+        cobbler_default_password: "$1$ta0cyI2Z$CHpEuSN.Nm60y2eXMrAaj."
+    - role: ruby
+      tags: ruby
+
+- hosts: 10.0.100.2
+  roles:
+    - role: hostname
+      tags: hostname
+      vars:
+        hostname: vm02.fdisk.cc
+    - role: ruby
+      tags: ruby
+      
+
+- hosts: 10.0.100.3
+  roles:
+    - role: hostname
+      tags: hostname
+      vars:
+        hostname: vm03.fdisk.cc
+
+- hosts: 10.0.100.4
+  roles:
+    - role: hostname
+      tags: hostname
+      vars:
+        hostname: vm04.fdisk.cc
+
+- hosts: 10.0.100.5
+  roles:
+    - role: hostname
+      tags: hostname
+      vars:
+        hostname: vm05.fdisk.cc

@@ -1,0 +1,7 @@
+---
+- hosts: 10.0.100.1
+  gather_facts: true
+  tasks:
+  - name: get value
+    debug: 
+      msg: "{{ lookup('redis', 'hosts', host='10.0.100.1') }}"

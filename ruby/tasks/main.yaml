@@ -23,7 +23,7 @@
   register: ruby_version
   when:
     - ansible_os_family | lower == 'redhat'
-    - ruby_state is successed
+    - ruby_state is success
 
 - name: download ruby
   get_url:
@@ -32,7 +32,7 @@
   ignore_errors: true
   when:
     - ansible_os_family | lower == 'redhat'
-    - ruby_state is failed or ruby_version.split()[1] <= '2.2'
+    - ruby_state is failed or ruby_version.stdout.split()[1] <= '2.2'
 
 - name: unarchive ruby to destination
   unarchive:
@@ -42,7 +42,7 @@
   ignore_errors: true
   when:
     - ansible_os_family | lower == 'redhat'
-    - ruby_state is failed or ruby_version.split()[1] <= '2.2'
+    - ruby_state is failed or ruby_version.stdout.split()[1] <= '2.2'
 
 - name: install ruby
   shell:
@@ -50,4 +50,4 @@
   ignore_errors: true
   when:
     - ansible_os_family | lower == 'redhat'
-    - ruby_state is failed or ruby_version.split()[1] <= '2.2'
+    - ruby_state is failed or ruby_version.stdout.split()[1] <= '2.2'
