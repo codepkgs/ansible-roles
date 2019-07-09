@@ -1,0 +1,13 @@
+---
+- name: copy jenkins repo to destination
+  copy:
+    src: jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install jenkins
+  package:
+    name: jenkins
+    state: present

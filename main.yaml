@@ -36,7 +36,6 @@
           - path: /data/html
           - path: /data/cap
           - path: /data/logs
-        
 
 - hosts: 10.0.100.1
   roles:
@@ -54,8 +53,10 @@
         cobbler_dhcp_netmask: "255.255.255.0"
         cobbler_dhcp_gateway: "10.100.0.254"
         cobbler_default_password: "$1$ta0cyI2Z$CHpEuSN.Nm60y2eXMrAaj."
-    - role: ruby
-      tags: ruby
+    - role: capistrano
+      tags: capistrano
+    - role: jenkins
+      tags: jenkins
 
 - hosts: 10.0.100.2
   roles:

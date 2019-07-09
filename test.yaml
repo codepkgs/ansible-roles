@@ -2,6 +2,19 @@
 - hosts: 10.0.100.1
   gather_facts: true
   tasks:
-  - name: get value
-    debug: 
-      msg: "{{ lookup('redis', 'hosts', host='10.0.100.1') }}"
+  - name: set fact
+    set_fact: 
+      username: "felix.zhang"
+
+  - name: get fact
+    debug:
+      msg: "{{ username }}" 
+
+  - name: get stat
+    stat:
+      path: /etc/hosts
+    register: st
+
+  - name: get st
+    debug:
+      msg: "{{ st }}"
