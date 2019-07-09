@@ -1,4 +1,16 @@
 ---
+- name: install dependence packages
+  package: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - gcc
+    - gcc-c++
+    - zlib
+    - zlib-devel
+    - openssl
+    - openssl-devel
+
 - name: check ruby is installed or not
   shell:
     which ruby
@@ -13,10 +25,11 @@
     - ansible_os_family | lower == 'redhat'
     - ruby_state is successed
 
-- name: wget ruby
+- name: download ruby
   get_url:
     url: "{{ ruby_download_url }}"
     dest: /tmp/
+  ignore_errors: true
   when:
     - ansible_os_family | lower == 'redhat'
     - ruby_state is failed or ruby_version.split()[1] <= '2.2'
@@ -26,6 +39,7 @@
     remote_src: true
     src: /tmp/ruby-2.6.3.tar.gz
     dest: /tmp
+  ignore_errors: true
   when:
     - ansible_os_family | lower == 'redhat'
     - ruby_state is failed or ruby_version.split()[1] <= '2.2'
@@ -33,6 +47,7 @@
 - name: install ruby
   shell:
     cd /tmp/ruby-2.6.3 && ./configure && make && make install
+  ignore_errors: true
   when:
     - ansible_os_family | lower == 'redhat'
     - ruby_state is failed or ruby_version.split()[1] <= '2.2'
