@@ -1,0 +1,19 @@
+---
+- name: install epel-release
+  package:
+    name: epel-release
+    state: present
+
+- name: install java 8
+  package:
+    name: java-1.8.0-openjdk
+    state: present
+  when:
+    - java_version | string == '8'
+
+- name: install java 11
+  package:
+    name: java-11-openjdk
+    state: present
+  when:
+    - java_version | string == '11'
