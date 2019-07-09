@@ -1,8 +1,9 @@
 ---
-- name: install capistrao packages
+- name: install capistrano packages
   gem:
     name: "{{ item }}"
     state: present
+    user_install: no
   with_items:
     - capistrano
     - capistrano-scm-copy
