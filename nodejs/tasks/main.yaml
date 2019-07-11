@@ -1,0 +1,19 @@
+---
+- name: copy nodejs repo
+  copy:
+    src: nodejs.repo
+    dest: /etc/yum.repos.d/nodejs.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install nodejs
+  package:
+    name: nodejs
+    state: present
+
+- name: install pm2
+  npm:
+    name: pm2
+    state: present
+    global: yes
