@@ -86,7 +86,7 @@ http {
             deny        all;
         }
 
-        location /nginx_status {
+        location /status {
             stub_status;
             access_log  off;
             allow       127.0.0.1;
