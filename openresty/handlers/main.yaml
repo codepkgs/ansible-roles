@@ -1,0 +1,6 @@
+---
+- name: reload openresty
+  service:
+    name: openresty
+    enabled: yes
+    state: reloaded

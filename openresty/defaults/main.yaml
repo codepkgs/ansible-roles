@@ -1,0 +1,7 @@
+---
+openresty_user: nginx
+openresty_group: nginx
+openresty_log_dir: /usr/local/openresty/nginx/logs
+openresty_pid_dir: /run
+openresty_certs_dir: /usr/local/openresty/nginx/conf/certs
+openresty_extra_config_dir: /usr/local/openresty/nginx/conf/conf.d
