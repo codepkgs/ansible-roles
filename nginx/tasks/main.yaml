@@ -1,0 +1,99 @@
+---
+- name: install dependency packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - epel-release
+    - pcre
+    - pcre-devel
+    - openssl
+    - openssl-devel
+    - zlib
+    - zlib-devel
+    - rsync
+
+- name: copy nginx repository
+  copy:
+    src: nginx.repo
+    dest: /etc/yum.repos.d/nginx.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install nginx
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nginx
+    - nginx-mod-stream
+
+- name: delete nginx default config
+  file:
+    path: /etc/nginx/conf.d/default.conf
+    state: absent
+  when:
+    - nginx_delete_config | bool
+
+- name: copy nginx config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload nginx
+
+- name: create nginx extra directory
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  with_items:
+    - /data/logs/nginx
+    - /opt/scripts
+
+- name: sync certs to destination
+  synchronize:
+    src: certs
+    dest: /etc/nginx
+    owner: no
+    group: no
+  notify:
+    - reload nginx
+
+- name: sync nginx extra config to destination
+  synchronize:
+    src: conf.d
+    dest: /etc/nginx
+    owner: no
+    group: no
+  notify:
+    - reload nginx
+
+- name: ensure nginx is running
+  service:
+    name: nginx
+    enabled: yes
+    state: started
+
+- name: copy nginx logrotate script
+  copy:
+    src: logrotate_nginx
+    dest: /opt/scripts/logrotate_nginx
+    owner: root
+    group: root
+    mode: 0644
+
+- name: nginx logrotate cron
+  cron:
+    name: nginx logrotate
+    job: "/usr/sbin/logrotate -f /opt/scripts/logrotate_nginx"
+    state: present
+    user: root
+    hour: "23"
+    minute: "59"
