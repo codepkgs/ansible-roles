@@ -10,3 +10,7 @@
     name: crond
     state: restarted
     enabled: True
+
+- name: execute sysctl
+  shell:
+    sysctl -p

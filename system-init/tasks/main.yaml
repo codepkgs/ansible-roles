@@ -99,3 +99,13 @@
   copy:
     src: vimrc
     dest: ~/.vimrc
+
+- name: set sysctl
+  copy:
+    src: sysctl.conf
+    dest: /etc/sysctl.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - execute sysctl
