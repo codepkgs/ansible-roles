@@ -1,0 +1,29 @@
+{% if nodejs_user == 'root' %}
+/root/.pm2/pm2.log /root/.pm2/logs/*.log {
+     rotate {{ nodejs_logs | default('5') }}
+     daily
+     su root root
+     dateext
+     dateformat -%Y-%m-%d
+     missingok
+     notifempty
+     compress
+     delaycompress
+     copytruncate
+     create 0640 root root
+}
+{% else %}
+/home/{{ nodejs_user | default('www') }}/.pm2/pm2.log /home/{{ nodejs_user | default('www') }}/.pm2/logs/*.log {
+     rotate {{ nodejs_logs | default('5') }}
+     daily
+     su {{ nodejs_user }} {{ nodejs_user }}
+     dateext
+     dateformat -%Y-%m-%d
+     missingok
+     notifempty
+     compress
+     delaycompress
+     copytruncate
+     create 0640 {{ nodejs_user }} {{ nodejs_user }}
+}
+{% endif %}
