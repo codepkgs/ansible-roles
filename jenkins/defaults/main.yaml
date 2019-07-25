@@ -1,0 +1,12 @@
+---
+jenkins_shell: /bin/bash
+jenkins_ssh_key: yes
+jenkins_http_port: 8080
+jenkins_http_listen_address: ''
+jenkins_https_port: ''
+jenkins_https_listen_address: ''
+jenkins_https_keystore: ''
+jenkins_https_keystore_password: ''
+jenkins_handler_max: '100'
+jenkins_handler_idle: '20'
+jenkins_args: ''
