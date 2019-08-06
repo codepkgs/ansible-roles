@@ -36,6 +36,16 @@
     - net.bridge.bridge-nf-call-ip6tables
     - net.bridge.bridge-nf-call-iptables
 
+- name: create docker directory
+  file:
+    path: /etc/docker
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  when:
+    - docker_daemon_config | bool
+
 - name: config docker accelerator
   copy:
     src: daemon.json
