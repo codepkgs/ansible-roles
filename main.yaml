@@ -53,38 +53,92 @@
         cobbler_dhcp_netmask: "255.255.255.0"
         cobbler_dhcp_gateway: "10.100.0.254"
         cobbler_default_password: "$1$ta0cyI2Z$CHpEuSN.Nm60y2eXMrAaj."
-    - role: capistrano
-      tags: capistrano
+    #- role: capistrano
+    #  tags: capistrano
     - role: jenkins
       tags: jenkins
-
-- hosts: 10.0.100.2
-  roles:
-    - role: hostname
-      tags: hostname
-      vars:
-        hostname: vm02.fdisk.cc
-    - role: ruby
-      tags: ruby
-      
+    - role: nodejs
+      tags: nodejs
+    - role: rabbitmq
+      tags: rabbitmq
 
 - hosts: 10.0.100.3
   roles:
-    - role: hostname
-      tags: hostname
+    - role: etcd
+      tags: etcd
       vars:
-        hostname: vm03.fdisk.cc
+        etcd_name: "infra01"
+        etcd_enable_v2: yes
+        etcd_data_dir: "/data/etcd"
+        etcd_listen_client_urls: "https://10.0.100.3:2379"
+        etcd_listen_peer_urls: "https://10.0.100.3:2380"
+        etcd_advertise_client_urls: "https://10.0.100.3:2379"
+        etcd_initial_advertise_peer_urls: "https://10.0.100.3:2380"
+        etcd_initial_cluster_token: "infra-cluster"
+        etcd_initial_cluster: "infra01=https://10.0.100.3:2380,infra02=https://10.0.100.4:2380,infra03=https://10.0.100.5:2380"
+        etcd_tls: yes
+        etcd_cert_file: "etcd.pem"
+        etcd_key_file: "etcd-key.pem"
+        etcd_client_cert_auth: yes
+        etcd_trusted_ca_file: "ca.pem"
+        etcd_auto_tls: no
+        etcd_peer_cert_file: "etcd.pem"
+        etcd_peer_key_file: "etcd-key.pem"
+        etcd_peer_client_cert_auth: yes
+        etcd_peer_trusted_ca_file: "ca.pem"
+        etcd_peer_auto_tls: no
+        etcd_listen_metrics_urls: "http://10.0.100.3:2381"
 
 - hosts: 10.0.100.4
   roles:
-    - role: hostname
-      tags: hostname
+    - role: etcd
+      tags: etcd
       vars:
-        hostname: vm04.fdisk.cc
+        etcd_name: "infra02"
+        etcd_enable_v2: yes
+        etcd_data_dir: "/data/etcd"
+        etcd_listen_client_urls: "https://10.0.100.4:2379"
+        etcd_listen_peer_urls: "https://10.0.100.4:2380"
+        etcd_advertise_client_urls: "https://10.0.100.4:2379"
+        etcd_initial_advertise_peer_urls: "https://10.0.100.4:2380"
+        etcd_initial_cluster_token: "infra-cluster"
+        etcd_initial_cluster: "infra01=https://10.0.100.3:2380,infra02=https://10.0.100.4:2380,infra03=https://10.0.100.5:2380"
+        etcd_tls: yes
+        etcd_cert_file: "etcd.pem"
+        etcd_key_file: "etcd-key.pem"
+        etcd_client_cert_auth: yes
+        etcd_trusted_ca_file: "ca.pem"
+        etcd_auto_tls: no
+        etcd_peer_cert_file: "etcd.pem"
+        etcd_peer_key_file: "etcd-key.pem"
+        etcd_peer_client_cert_auth: yes
+        etcd_peer_trusted_ca_file: "ca.pem"
+        etcd_peer_auto_tls: no
+        etcd_listen_metrics_urls: "http://10.0.100.4:2381"
 
 - hosts: 10.0.100.5
   roles:
-    - role: hostname
-      tags: hostname
+    - role: etcd
+      tags: etcd
       vars:
-        hostname: vm05.fdisk.cc
+        etcd_name: "infra03"
+        etcd_enable_v2: yes
+        etcd_data_dir: "/data/etcd"
+        etcd_listen_client_urls: "https://10.0.100.5:2379"
+        etcd_listen_peer_urls: "https://10.0.100.5:2380"
+        etcd_advertise_client_urls: "https://10.0.100.5:2379"
+        etcd_initial_advertise_peer_urls: "https://10.0.100.5:2380"
+        etcd_initial_cluster_token: "infra-cluster"
+        etcd_initial_cluster: "infra01=https://10.0.100.3:2380,infra02=https://10.0.100.4:2380,infra03=https://10.0.100.5:2380"
+        etcd_tls: yes
+        etcd_cert_file: "etcd.pem"
+        etcd_key_file: "etcd-key.pem"
+        etcd_client_cert_auth: yes
+        etcd_trusted_ca_file: "ca.pem"
+        etcd_auto_tls: no
+        etcd_peer_cert_file: "etcd.pem"
+        etcd_peer_key_file: "etcd-key.pem"
+        etcd_peer_client_cert_auth: yes
+        etcd_peer_trusted_ca_file: "ca.pem"
+        etcd_peer_auto_tls: no
+        etcd_listen_metrics_urls: "http://10.0.100.5:2381"

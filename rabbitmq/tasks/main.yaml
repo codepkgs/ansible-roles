@@ -1,0 +1,13 @@
+---
+- name: copy rabbitmq yum repo
+  copy:
+    src: rabbitmq.repo
+    dest: /etc/yum.repos.d/rabbitmq.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install rabbitmq-server
+  package:
+    name: rabbitmq-server
+    state: present

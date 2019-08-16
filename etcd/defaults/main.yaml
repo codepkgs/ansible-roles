@@ -1,0 +1,9 @@
+etcd_data_dir: "/var/lib/etcd/default.etcd"
+etcd_wal_dir: ""
+etcd_listen_client_urls: "http://0.0.0.0:2379"
+etcd_listen_peer_urls: "http://0.0.0.0:2380"
+etcd_cluster: yes
+etcd_enable_v2: yes
+etcd_tls: no
+etcd_tls_dir: "/etc/etcd/certs"
+etcd_listen_metrics_urls: ""

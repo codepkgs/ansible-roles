@@ -1,0 +1,78 @@
+---
+- name: install epel-release
+  package:
+    name: epel-release
+    state: present
+
+- name: install etcd
+  package:
+    name: etcd
+    state: present
+
+- name: create etcd config directory
+  file:
+    path: "/etc/etcd"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: create etcd data directory
+  file:
+    path: "{{ etcd_data_dir }}"
+    state: directory
+    owner: etcd
+    group: etcd
+    mode: 0755
+  when:
+    - etcd_data_dir is defined
+    - etcd_data_dir | mandatory
+
+- name: create etcd wal directory
+  file:
+    path: "{{ etcd_wal_dir }}"
+    state: directory
+    owner: etcd
+    group: etcd
+    mode: 0755
+  when:
+    - etcd_wal_dir is defined
+    - etcd_wal_dir != ""
+
+- name: create etcd tls directory
+  file:
+    path: "{{ etcd_tls_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  when:
+    - etcd_tls | bool
+
+- name: copy etcd tls certs
+  copy:
+    src: certs/
+    dest: "{{ etcd_tls_dir }}"
+    owner: root
+    group: root
+    mode: 0644
+  when:
+    - etcd_tls | bool
+
+- name: copy etcd.service to destination
+  copy:
+    src: etcd.service
+    dest: /usr/lib/systemd/system/etcd.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - daemon-reload
+
+- name: render etcd.conf file
+  template:
+    src: etcd.conf.j2
+    dest: /etc/etcd/etcd.conf
+    owner: root
+    group: root
+    mode: 0644

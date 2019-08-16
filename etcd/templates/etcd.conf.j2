@@ -1,0 +1,107 @@
+#[Member]
+#ETCD_CORS=""
+ETCD_DATA_DIR="{{ etcd_data_dir }}"
+{% if etcd_wal_dir is defined and etcd_wal_dir != "" %}
+ETCD_WAL_DIR="{{ etcd_wal_dir }}"
+{% else %}
+#ETCD_WAL_DIR=""
+{% endif %}
+ETCD_LISTEN_PEER_URLS="{{ etcd_listen_peer_urls | default('http://localhost:2380') }}"
+ETCD_LISTEN_CLIENT_URLS="{{ etcd_listen_client_urls | default('http://localhost:2379') }}"
+ETCD_MAX_SNAPSHOTS="{{ etcd_max_snapshots | default('5') }}"
+ETCD_MAX_WALS="{{ etcd_max_wals | default('5') }}"
+ETCD_NAME="{{ etcd_name | default('default') }}"
+ETCD_SNAPSHOT_COUNT="{{ etcd_snapshot_count | default('100000') }}"
+ETCD_HEARTBEAT_INTERVAL="{{ etcd_heartbeat_interval | default('100') }}"
+ETCD_ELECTION_TIMEOUT="{{ etcd_election_timeout | default('1000') }}"
+#ETCD_QUOTA_BACKEND_BYTES="0"
+#ETCD_MAX_REQUEST_BYTES="1572864"
+#ETCD_GRPC_KEEPALIVE_MIN_TIME="5s"
+#ETCD_GRPC_KEEPALIVE_INTERVAL="2h0m0s"
+#ETCD_GRPC_KEEPALIVE_TIMEOUT="20s"
+#
+{% if etcd_cluster %}
+#[Clustering]
+ETCD_INITIAL_ADVERTISE_PEER_URLS="{{ etcd_initial_advertise_peer_urls | mandatory }}"
+ETCD_ADVERTISE_CLIENT_URLS="{{ etcd_advertise_client_urls | mandatory }}"
+#ETCD_DISCOVERY=""
+#ETCD_DISCOVERY_FALLBACK="proxy"
+#ETCD_DISCOVERY_PROXY=""
+#ETCD_DISCOVERY_SRV=""
+ETCD_INITIAL_CLUSTER="{{ etcd_initial_cluster | mandatory }}"
+ETCD_INITIAL_CLUSTER_TOKEN="{{ etcd_initial_cluster_token | default('etcd-cluster') }}"
+ETCD_INITIAL_CLUSTER_STATE="{{ etcd_initial_cluster_state | default('new') }}"
+#ETCD_STRICT_RECONFIG_CHECK="true"
+ETCD_ENABLE_V2="{{ etcd_enable_v2 | default('false') | bool | lower }}"
+#
+{% else %}
+#[Clustering]
+#ETCD_INITIAL_ADVERTISE_PEER_URLS="http://localhost:2380"
+ETCD_ADVERTISE_CLIENT_URLS="http://localhost:2379"
+#ETCD_DISCOVERY=""
+#ETCD_DISCOVERY_FALLBACK="proxy"
+#ETCD_DISCOVERY_PROXY=""
+#ETCD_DISCOVERY_SRV=""
+#ETCD_INITIAL_CLUSTER="default=http://localhost:2380"
+#ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
+#ETCD_INITIAL_CLUSTER_STATE="new"
+#ETCD_STRICT_RECONFIG_CHECK="true"
+#ETCD_ENABLE_V2="true"
+#
+{% endif %}
+#[Proxy]
+#ETCD_PROXY="off"
+#ETCD_PROXY_FAILURE_WAIT="5000"
+#ETCD_PROXY_REFRESH_INTERVAL="30000"
+#ETCD_PROXY_DIAL_TIMEOUT="1000"
+#ETCD_PROXY_WRITE_TIMEOUT="5000"
+#ETCD_PROXY_READ_TIMEOUT="0"
+#
+{% if etcd_tls %}
+#[Security]
+ETCD_CERT_FILE="{{ etcd_tls_dir }}/{{ etcd_cert_file }}"
+ETCD_KEY_FILE="{{ etcd_tls_dir }}/{{ etcd_key_file }}"
+ETCD_CLIENT_CERT_AUTH="{{ etcd_client_cert_auth | default('false') | bool | lower }}"
+ETCD_TRUSTED_CA_FILE="{{ etcd_tls_dir }}/{{ etcd_trusted_ca_file }}"
+ETCD_AUTO_TLS="{{ etcd_auto_tls | default('false') | bool | lower }}"
+ETCD_PEER_CERT_FILE="{{ etcd_tls_dir }}/{{ etcd_peer_cert_file }}"
+ETCD_PEER_KEY_FILE="{{ etcd_tls_dir }}/{{ etcd_peer_key_file }}"
+ETCD_PEER_CLIENT_CERT_AUTH="{{ etcd_peer_client_cert_auth | default('false') | bool | lower }}"
+ETCD_PEER_TRUSTED_CA_FILE="{{ etcd_tls_dir }}/{{ etcd_peer_trusted_ca_file }}"
+ETCD_PEER_AUTO_TLS="{{ etcd_peer_auto_tls | default('false') | bool | lower }}"
+#
+{% else %}
+#[Security]
+#ETCD_CERT_FILE=""
+#ETCD_KEY_FILE=""
+#ETCD_CLIENT_CERT_AUTH="false"
+#ETCD_TRUSTED_CA_FILE=""
+#ETCD_AUTO_TLS="false"
+#ETCD_PEER_CERT_FILE=""
+#ETCD_PEER_KEY_FILE=""
+#ETCD_PEER_CLIENT_CERT_AUTH="false"
+#ETCD_PEER_TRUSTED_CA_FILE=""
+#ETCD_PEER_AUTO_TLS="false"
+#
+{% endif %}
+#[Logging]
+#ETCD_DEBUG="false"
+#ETCD_LOG_PACKAGE_LEVELS=""
+#ETCD_LOG_OUTPUT="default"
+#
+#[Unsafe]
+#ETCD_FORCE_NEW_CLUSTER="false"
+#
+#[Version]
+#ETCD_VERSION="false"
+#ETCD_AUTO_COMPACTION_RETENTION="0"
+#
+#[Profiling]
+#ETCD_ENABLE_PPROF="false"
+#ETCD_METRICS="basic"
+{% if etcd_listen_metrics_urls %}
+ETCD_LISTEN_METRICS_URLS="{{ etcd_listen_metrics_urls }}"
+{% endif %}
+#
+#[Auth]
+#ETCD_AUTH_TOKEN="simple"
