@@ -64,6 +64,10 @@
 
 - hosts: 10.0.100.3
   roles:
+    - role: hostname
+      tags: hostname
+      vars:
+        hostname: master01.fdisk.cc
     - role: etcd
       tags: etcd
       vars:
@@ -91,6 +95,10 @@
 
 - hosts: 10.0.100.4
   roles:
+    - role: hostname
+      tags: hostname
+      vars:
+        hostname: master02.fdisk.cc
     - role: etcd
       tags: etcd
       vars:
@@ -118,6 +126,10 @@
 
 - hosts: 10.0.100.5
   roles:
+    - role: hostname
+      tags: hostname
+      vars:
+        hostname: master03.fdisk.cc
     - role: etcd
       tags: etcd
       vars:
