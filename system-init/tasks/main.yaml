@@ -79,10 +79,18 @@
     regexp: "^SELINUX="
     line: SELINUX=disabled
 
+- name: disable swap
+  lineinfile:
+    path: /etc/fstab
+    regexp: '^([^#]*swap.*)'
+    line: '#\1'
+    backrefs: yes
+  when:
+    - disable_swap | bool
+
 - name: install epel-release
   package:
-    name:
-      - epel-release
+    name: epel-release
     state: present
   when:
     - ansible_os_family | lower == 'redhat'
@@ -100,12 +108,9 @@
     src: vimrc
     dest: ~/.vimrc
 
-- name: set sysctl
-  copy:
-    src: sysctl.conf
-    dest: /etc/sysctl.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - execute sysctl
+- name: configure kernel parameters at runtime(sysctl)
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+  with_items:
+    - "{{ sysctl_config }}"

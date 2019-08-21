@@ -19,4 +19,8 @@
     disable_services_rhel6: rhel6系列会关闭的服务。
 
     disable_services_rhel7: rhel7系列会关闭的服务。
+
+    disable_swap: 是否关闭swap。默认是yes
+
+    sysctl_config: 设置sysctl内核参数
     ```
