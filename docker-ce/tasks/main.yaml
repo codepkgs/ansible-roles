@@ -36,6 +36,15 @@
     - net.bridge.bridge-nf-call-ip6tables
     - net.bridge.bridge-nf-call-iptables
 
+- name: set docker iptables rule
+  lineinfile:
+    path: /usr/lib/systemd/system/docker.service
+    regexp: '^ExecStartPost'
+    insertafter: '^ExecStart'
+    line: 'ExecStartPost=/sbin/iptables -P FORWARD ACCEPT'
+  notify:
+    - restart docker
+
 - name: create docker directory
   file:
     path: /etc/docker
