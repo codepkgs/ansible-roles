@@ -26,6 +26,11 @@
     - docker-ce-cli
     - containerd.io
 
+- name: load br_netfilter module
+  modprobe:
+    name: br_netfilter
+    state: present
+
 - name: set sysctl for docker
   sysctl:
     name: "{{ item }}"

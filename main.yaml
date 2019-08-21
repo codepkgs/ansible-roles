@@ -170,6 +170,8 @@
       tags: hostname
       vars:
         hostname: node02.fdisk.cc
+    - role: docker-ce
+      tags: docker
 
 - hosts: 10.0.100.8
   roles:
@@ -177,3 +179,5 @@
       tags: hostname
       vars:
         hostname: node03.fdisk.cc
+    - role: docker-ce
+      tags: docker
