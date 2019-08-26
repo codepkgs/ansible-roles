@@ -1,0 +1,49 @@
+- name: check flanneld is exist or not
+  stat:
+    path: /usr/local/bin/flanneld
+  register: flanneld_stat
+
+- name: check mk-docker-opts.sh is exist or not
+  stat:
+    path: /usr/local/bin/mk-docker-opts.sh
+  register: mk_docker_opts_stat
+
+- name: download flannel
+  get_url:
+    url: "https://github.com/coreos/flannel/releases/download/v{{ flannel_version }}/flannel-v{{ flannel_version }}-linux-amd64.tar.gz"
+    dest: /tmp
+    validate_certs: no
+  when:
+    - (not flanneld_stat.stat.exists) or (not mk_docker_opts_stat.stat.exists)
+
+- name: unarchive flannel
+  unarchive:
+    src: "/tmp/flannel-v{{ flannel_version }}-linux-amd64.tar.gz"
+    dest: /tmp
+    remote_src: yes
+  when:
+    - (not flanneld_stat.stat.exists) or (not mk_docker_opts_stat.stat.exists)
+
+- name: copy flannel execute file to /usr/local/bin/
+  copy:
+    src: "{{ item }}"
+    dest: "/usr/local/bin"
+    owner: root
+    group: root
+    mode: 0755
+    remote_src: yes
+  when:
+    - (not flanneld_stat.stat.exists) or (not mk_docker_opts_stat.stat.exists)
+  with_items:
+    - "/tmp/flanneld"
+    - "/tmp/mk-docker-opts.sh"
+
+- name: set flannel file permissions
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - "/usr/local/bin/flanneld"
+    - "/usr/local/bin/mk-docker-opts.sh"

@@ -1,0 +1,8 @@
+---
+flannel_version: '0.11.0'
+etcd_tls: yes
+flannel_tls_dir: '/etc/flannel/certs'
+flannel_etcd_cafile: 'ca.pem'
+flannel_etcd_certfile: 'etcd.pem'
+flannel_etcd_keyfile: 'etcd-key.pem'
+flannel_etcd_endpoints: 'https://10.0.100.3:2379,https://10.0.100.4:2379,https://10.0.100.5:2379'
