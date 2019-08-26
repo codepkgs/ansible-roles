@@ -68,6 +68,10 @@
       tags: hostname
       vars:
         hostname: master01.fdisk.cc
+    - role: docker-ce
+      tags: docker
+      vars:
+        - docker_flannel: yes
     - role: etcd
       tags: etcd
       vars:
@@ -92,6 +96,8 @@
         etcd_peer_trusted_ca_file: "ca.pem"
         etcd_peer_auto_tls: no
         etcd_listen_metrics_urls: "http://10.0.100.3:2381"
+    - role: flannel
+      tags: flannel
 
 - hosts: 10.0.100.4
   roles:
@@ -99,6 +105,10 @@
       tags: hostname
       vars:
         hostname: master02.fdisk.cc
+    - role: docker-ce
+      tags: docker
+      vars:
+        - docker_flannel: yes
     - role: etcd
       tags: etcd
       vars:
@@ -123,6 +133,8 @@
         etcd_peer_trusted_ca_file: "ca.pem"
         etcd_peer_auto_tls: no
         etcd_listen_metrics_urls: "http://10.0.100.4:2381"
+    - role: flannel
+      tags: flannel
 
 - hosts: 10.0.100.5
   roles:
@@ -130,6 +142,10 @@
       tags: hostname
       vars:
         hostname: master03.fdisk.cc
+    - role: docker-ce
+      tags: docker
+      vars:
+        - docker_flannel: yes
     - role: etcd
       tags: etcd
       vars:
@@ -154,6 +170,8 @@
         etcd_peer_trusted_ca_file: "ca.pem"
         etcd_peer_auto_tls: no
         etcd_listen_metrics_urls: "http://10.0.100.5:2381"
+    - role: flannel
+      tags: flannel
 
 - hosts: 10.0.100.6
   roles:
@@ -163,6 +181,10 @@
         hostname: node01.fdisk.cc
     - role: docker-ce
       tags: docker
+      vars:
+        - docker_flannel: yes
+    - role: flannel
+      tags: flannel
 
 - hosts: 10.0.100.7
   roles:
@@ -172,6 +194,10 @@
         hostname: node02.fdisk.cc
     - role: docker-ce
       tags: docker
+      vars:
+        - docker_flannel: yes
+    - role: flannel
+      tags: flannel
 
 - hosts: 10.0.100.8
   roles:
@@ -181,3 +207,7 @@
         hostname: node03.fdisk.cc
     - role: docker-ce
       tags: docker
+      vars:
+        - docker_flannel: yes
+    - role: flannel
+      tags: flannel
