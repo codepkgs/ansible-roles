@@ -50,6 +50,10 @@
   notify:
     - restart docker
 
+- import_tasks: docker_flannel.yaml
+  when:
+    - docker_flannel | bool
+
 - name: create docker directory
   file:
     path: /etc/docker

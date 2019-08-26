@@ -1,0 +1,22 @@
+- name: set docker environment file with flannel
+  lineinfile:
+    path: /usr/lib/systemd/system/docker.service
+    regexp: '^EnvironmentFile=/run/flannel/docker'
+    insertbefore: '^ExecStart='
+    line: 'EnvironmentFile=/run/flannel/docker'
+  notify:
+    - restart docker
+
+- name: check DOCKER_OPTS in docker.service
+  shell:
+    grep 'DOCKER_OPTS' /usr/lib/systemd/system/docker.service
+  ignore_errors: yes
+  register: docker_opts
+
+- name: replace docker execstart
+  replace:
+    path: /usr/lib/systemd/system/docker.service
+    regexp: '^ExecStart=(.*)'
+    replace: 'ExecStart=\1 $DOCKER_OPTS'
+  when:
+    - docker_opts is failed
