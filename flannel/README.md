@@ -66,3 +66,15 @@
             - flannel_etcd_keyfile: 'etcd-key.pem'
             - flannel_etcd_endpoints: 'https://10.0.100.3:2379,https://10.0.100.4:2379,https://10.0.100.5:2379'
     ```
+
+* docker和flannel集成
+
+  如果docker 和 flannel 集成，需要在docker-ce roles中设置 `docker_flannel: yes`
+
+  示例:
+  ```
+  - roles: docker-ce
+    role: docker
+    vars:
+      - docker_flannel: yes
+  ```
