@@ -1,0 +1,8 @@
+- name: check php log directory
+  file:
+    path: "{{ php_log_dir }}"
+    state: directory
+    owner: www
+    group: www
+    mode: 0755
+

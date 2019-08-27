@@ -1,0 +1,45 @@
+- name: copy php.ini to destination
+  copy:
+    src: php.ini
+    dest: /etc/opt/remi/php72/php.ini
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart php-fpm
+
+- name: render php-fpm.conf
+  template:
+    src: php-fpm.conf.j2
+    dest: /etc/opt/remi/php72/php-fpm.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart php-fpm
+
+- name: copy www.conf to destination
+  copy:
+    src: www.conf
+    dest: /etc/opt/remi/php72/php-fpm.d/www.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart php-fpm
+    
+- name: render seaslog.conf
+  template:
+    src: 40-seaslog.ini.j2
+    dest: /etc/opt/remi/php72/php.d/40-seaslog.ini
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart php-fpm
+
+- name: ensure php-fpm is running
+  service:
+    name: php72-php-fpm
+    state: started
+    enabled: yes

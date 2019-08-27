@@ -1,0 +1,8 @@
+---
+- import_tasks: php_user.yaml
+
+- import_tasks: php_logs.yaml
+
+- import_tasks: php_install.yaml
+
+- import_tasks: php_config.yaml
