@@ -1,12 +1,1 @@
 php_log_dir: /data/logs/php-fpm
-fpm_user: www
-fpm_group: www
-fpm_listen: 127.0.0.1:9000
-fpm_listen_backlog: 32768
-fpm_allowed_clients:
-  - 127.0.0.1
-fpm_pm_type: static
-fpm_pm_max_children: 100
-fpm_pm_start_servers: 20
-fpm_pm_min_spare_servers: 10
-fpm_pm_max_spare_servers: 50

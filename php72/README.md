@@ -20,4 +20,3 @@
     ```text
     php_log_dir         指定php日志目录。
     ```
-
