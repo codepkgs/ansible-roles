@@ -23,6 +23,12 @@
     nginx_config_dir        # nginx 配置文件的目录位置，不要以/结尾。
     ```
 
+* 注意
+    ```text
+    nginx_config_dir和nginx_certs_dir会删除目标机器目录上的文件，这些文件没有出现在源目录中。
+    如果想关闭这种行为，需要在tasks/main.yaml中，将delete设置为no
+    ```
+
 * 使用
     ```json
     - hosts: 192.168.1.1
