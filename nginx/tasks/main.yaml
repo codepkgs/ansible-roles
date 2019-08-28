@@ -57,21 +57,25 @@
     - /data/logs/nginx
     - /opt/scripts
 
-- name: sync certs to destination
+- name: sync nginx certs
   synchronize:
-    src: certs
-    dest: /etc/nginx
+    src: "{{ nginx_certs_dir }}"
+    dest: /etc/nginx/certs
     owner: no
     group: no
+    delete: yes
+    recursive: yes
   notify:
     - reload nginx
 
-- name: sync nginx extra config to destination
+- name: sync nginx extra config
   synchronize:
-    src: conf.d
-    dest: /etc/nginx
+    src: "{{ nginx_config_dir }}/"
+    dest: /etc/nginx/conf.d
     owner: no
     group: no
+    delete: yes
+    recursive: yes
   notify:
     - reload nginx
 
