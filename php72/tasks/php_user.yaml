@@ -7,8 +7,6 @@
 - name: check the user www running php-fpm
   user:
     name: www
-    create_home: no
     group: www
     state: present
-    shell: /sbin/nologin
-    system: yes
+    shell: /bin/bash
