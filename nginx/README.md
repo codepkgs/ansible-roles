@@ -18,9 +18,9 @@
 
 * 变量
     ```text
-    nginx_delete_config     # 是否删除nginx的默认配置。默认配置位于/etc/nginx/conf.d/default.conf。yes或no
-    nginx_certs_dir         # nginx certs目录的位置，不要以/结尾。
-    nginx_config_dir        # nginx 配置文件的目录位置，不要以/结尾。
+    nginx_delete_config     # 是否删除nginx的默认配置。默认配置位于/etc/nginx/conf.d/default.conf。yes或no。默认为yes
+    nginx_certs_dir         # nginx certs目录的位置，不要以/结尾。默认为空
+    nginx_config_dir        # nginx 配置文件的目录位置，不要以/结尾。默认为空
     ```
 
 * 注意
