@@ -67,6 +67,8 @@
     recursive: yes
   notify:
     - reload nginx
+  when:
+    - nginx_certs_dir | bool
 
 - name: sync nginx extra config
   synchronize:
@@ -78,6 +80,8 @@
     recursive: yes
   notify:
     - reload nginx
+  when:
+    - nginx_certs_dir | bool
 
 - name: ensure nginx is running
   service:
