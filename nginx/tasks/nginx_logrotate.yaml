@@ -1,0 +1,16 @@
+- name: copy nginx logrotate script
+  copy:
+    src: logrotate_nginx
+    dest: /opt/scripts/logrotate_nginx
+    owner: root
+    group: root
+    mode: 0644
+
+- name: nginx logrotate cron
+  cron:
+    name: nginx logrotate
+    job: "/usr/sbin/logrotate -f /opt/scripts/logrotate_nginx"
+    state: present
+    user: root
+    hour: "23"
+    minute: "59"

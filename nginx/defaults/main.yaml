@@ -1,4 +1,4 @@
 ---
 nginx_delete_config: yes
-nginx_config_dir: ""
-nginx_certs_dir: ""
+nginx_certs_dirs: []
+nginx_config_dirs: []

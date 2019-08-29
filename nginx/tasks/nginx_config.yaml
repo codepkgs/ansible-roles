@@ -1,0 +1,62 @@
+
+- name: delete nginx default config
+  file:
+    path: /etc/nginx/conf.d/default.conf
+    state: absent
+  when:
+    - nginx_delete_config | bool
+
+- name: copy nginx config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload nginx
+
+- name: create nginx extra directory
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  with_items:
+    - /data/logs/nginx
+    - /opt/scripts
+
+- name: sync nginx certs
+  synchronize:
+    src: "{{ item }}/"
+    dest: /etc/nginx/certs
+    owner: no
+    group: no
+    delete: yes
+    recursive: yes
+  with_items: "{{ nginx_certs_dirs }}"
+  notify:
+    - reload nginx
+  when:
+    - nginx_certs_dirs is not none
+
+- name: sync nginx extra config
+  synchronize:
+    src: "{{ item }}/"
+    dest: /etc/nginx/conf.d
+    owner: no
+    group: no
+    delete: yes
+    recursive: yes
+  with_items: "{{ nginx_config_dirs }}"
+  notify:
+    - reload nginx
+  when:
+    - nginx_config_dirs is not none
+
+- name: ensure nginx is running
+  service:
+    name: nginx
+    enabled: yes
+    state: started

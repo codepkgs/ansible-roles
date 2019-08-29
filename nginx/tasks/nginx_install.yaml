@@ -1,0 +1,29 @@
+- name: install dependency packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - epel-release
+    - pcre
+    - pcre-devel
+    - openssl
+    - openssl-devel
+    - zlib
+    - zlib-devel
+    - rsync
+
+- name: copy nginx repository
+  copy:
+    src: nginx.repo
+    dest: /etc/yum.repos.d/nginx.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install nginx
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nginx
+    - nginx-mod-stream
