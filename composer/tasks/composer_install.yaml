@@ -1,0 +1,42 @@
+- name: install curl
+  package:
+    name: curl
+    state: present
+
+- name: check composer
+  shell: |
+    which composer
+  ignore_errors: yes
+  register: composer_state
+
+- name: check php
+  shell: |
+    which php
+  ignore_errors: yes
+  register: php_state
+
+- name: download composer
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: /tmp
+  when:
+    - composer_state is failed
+    - php_state is success
+
+- name: install composer
+  shell: "{{ item }}"
+  with_items:
+    - "php /tmp/installer"
+    - "mv composer.phar /usr/local/bin/composer"
+  when:
+    - composer_state is failed
+
+- name: get composer version
+  shell: composer --version
+  register: composer_version
+
+- name: show composer version
+  debug:
+    msg: "{{ composer_version.stdout_lines }}"
+  
+  
