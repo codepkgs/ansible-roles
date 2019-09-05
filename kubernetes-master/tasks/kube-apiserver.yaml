@@ -1,0 +1,10 @@
+- name: copy kube-apiserver binary file
+  copy:
+    src: "{{ kube_apiserver_binary }}"
+    dest: "/usr/local/bin"
+    owner: root
+    group: root
+    mode: 0755
+  when:
+    - kube_apiserver_binary | mandatory
+    - kube_apiserver_binary != ""

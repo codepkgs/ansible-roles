@@ -1,0 +1,21 @@
+---
+- name: restart kube-apiserver
+  listen: restart master
+  service:
+    name: kube-apiserver
+    state: restarted
+    enabled: yes
+
+- name: restart kube-controller-manager
+  listen: restart master
+  service:
+    name: kube-controller-manager
+    state: restarted
+    enabled: yes
+
+- name: restart kube-scheduler
+  listen: restart master
+  service:
+    name: kube-scheduler
+    state: restarted
+    enabled: yes

@@ -9,9 +9,9 @@
       tags: authorized_key
       vars:
         users:
-        - name: root
-          state: present
-          key: root.pub
+          - name: root
+            state: present
+            key: root.pub
     - role: resolv
       tags: rosolv
       vars:
@@ -98,6 +98,17 @@
         etcd_listen_metrics_urls: "http://10.0.100.3:2381"
     - role: flannel
       tags: flannel
+    - role: kubernetes-master
+      tags: k8s-master
+      vars:
+        kube_apiserver_binary: "/Users/hezhang/v1.15.3/kubernetes-v1.15.3/server/bin/kube-apiserver"
+        kubernetes_master_certs:
+          - /Users/hezhang/v1.15.3/pki/ca/ca.pem
+          - /Users/hezhang/v1.15.3/pki/ca/ca-key.pem
+          - /Users/hezhang/v1.15.3/pki/etcd/etcd.pem
+          - /Users/hezhang/v1.15.3/pki/etcd/etcd-key.pem
+          - /Users/hezhang/v1.15.3/pki/kube-apiserver/kube-apiserver.pem
+          - /Users/hezhang/v1.15.3/pki/kube-apiserver/kube-apiserver-key.pem
 
 - hosts: 10.0.100.4
   roles:

@@ -1,0 +1,25 @@
+- name: create the necessary directory for kubernetes
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - "/etc/kubernetes"
+    - "/etc/kubernetes/pki"
+    - "/etc/kubernetes/kube-apiserver"
+    - "/etc/kubernetes/kube-controller-manager"
+    - "/etc/kubernetes/kube-scheduler"
+
+- name: copy the necessary certs for kubernetes master
+  copy:
+    src: "{{ item }}"
+    dest: /etc/kubernetes/pki
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ kubernetes_master_certs }}"
+  when:
+    - kubernetes_master_certs | mandatory
+    - kubernetes_master_certs | length != 0
