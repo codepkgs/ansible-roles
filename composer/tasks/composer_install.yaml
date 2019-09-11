@@ -27,7 +27,7 @@
   shell: "{{ item }}"
   with_items:
     - "php /tmp/installer"
-    - "mv composer.phar /usr/local/bin/composer"
+    - "mv composer.phar /usr/bin/composer"
   when:
     - composer_state is failed
 
