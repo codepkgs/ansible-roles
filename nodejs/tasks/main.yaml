@@ -23,11 +23,15 @@
     name: nodejs
     state: present
 
-- name: install pm2
+- name: install pm2 and egg-scripts and nodeinstall
   npm:
-    name: pm2
+    name: "{{ item }}"
     state: present
     global: yes
+  with_items:
+    - pm2
+    - egg-scripts
+    - nodeinstall
 
 - name: create nodejs runtime user
   user:
