@@ -4,8 +4,7 @@
     enabled: yes
     state: restarted
 
-- name: restart ipvsadm
+- name: enable ipvsadm
   service:
     name: ipvsadm
     enabled: yes
-    state: restarted
