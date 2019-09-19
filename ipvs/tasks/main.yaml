@@ -1,0 +1,31 @@
+---
+- name: install packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - ipvsadm
+    - ipset
+    - sysstat
+    - conntrack
+    - libseccomp
+
+- name: load ipvs modules
+  copy:
+    src: ipvs-modules.conf
+    dest: /etc/modules-load.d/ipvs.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart systemd-modules-load
+
+- name: set ipvs hash table size
+  copy:
+    src: ipvs-hashtable.conf
+    dest: /etc/modprobe.d/ipvs.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart ipvsadm
