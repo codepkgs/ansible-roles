@@ -1,0 +1,7 @@
+---
+- name: restart prometheus
+  systemd:
+    name: prometheus
+    daemon_reload: yes
+    enabled: yes
+    state: restarted

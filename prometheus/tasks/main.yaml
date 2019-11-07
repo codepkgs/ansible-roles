@@ -1,0 +1,96 @@
+---
+- name: check prometheus stat
+  stat:
+    path: /usr/local/bin/prometheus
+  register: prometheus_stat
+
+- name: create prometheus user and group
+  user:
+    name: prometheus
+    system: yes
+    state: present
+    shell: /bin/false
+    create_home: no
+    comment: "prometheus server"
+  when:
+    - not prometheus_stat.stat.exists
+
+- name: create prometheus directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: prometheus
+    group: prometheus
+    mode: 0755
+  with_items:
+    - "/etc/prometheus"
+    - "{{ data_dir }}"
+  when:
+    - not prometheus_stat.stat.exists
+
+#- name: download prometheus server
+#  get_url:
+#    url: https://github.com/prometheus/prometheus/releases/download/v{{ version }}/prometheus-{{ version }}.linux-amd64.tar.gz
+#    dest: /tmp
+#  when:
+#    - not prometheus_stat.stat.exists
+
+- name: unarchive prometheus server
+  unarchive:
+    src: /tmp/prometheus-{{ version }}.linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+  when:
+    - not prometheus_stat.stat.exists
+
+- name: copy prometheus binary files
+  copy:
+    src: /tmp/prometheus-{{ version }}.linux-amd64/{{ item }}
+    dest: /usr/local/bin/{{ item }}
+    remote_src: yes
+    owner: prometheus
+    group: prometheus
+    mode: 0755
+  with_items:
+    - prometheus
+    - promtool
+  when:
+    - not prometheus_stat.stat.exists
+
+- name: copy prometheus console directory
+  copy:
+    src: /tmp/prometheus-{{ version }}.linux-amd64/{{ item }}
+    dest: /etc/prometheus/{{ item }}
+    remote_src: yes
+    owner: prometheus
+    group: prometheus
+    mode: 0755
+  with_items:
+    - "console_libraries"
+    - "consoles"
+  when:
+    - not prometheus_stat.stat.exists
+
+- name: copy prometheus config file
+  copy:
+    src: prometheus.yml
+    dest: /etc/prometheus
+    owner: prometheus
+    group: prometheus
+    mode: 0644
+  when:
+    - not prometheus_stat.stat.exists
+  notify:
+    - restart prometheus
+
+- name: copy prometheus systemd service
+  template:
+    src: prometheus.service.j2
+    dest: /usr/lib/systemd/system/prometheus.service
+    owner: root
+    group: root
+    mode: 0644
+  when:
+    - not prometheus_stat.stat.exists
+  notify:
+    - restart prometheus
