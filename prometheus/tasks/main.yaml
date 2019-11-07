@@ -78,8 +78,6 @@
     owner: prometheus
     group: prometheus
     mode: 0644
-  when:
-    - not prometheus_stat.stat.exists
   notify:
     - restart prometheus
 
@@ -90,7 +88,5 @@
     owner: root
     group: root
     mode: 0644
-  when:
-    - not prometheus_stat.stat.exists
   notify:
     - restart prometheus
