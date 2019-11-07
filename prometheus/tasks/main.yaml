@@ -28,12 +28,12 @@
   when:
     - not prometheus_stat.stat.exists
 
-#- name: download prometheus server
-#  get_url:
-#    url: https://github.com/prometheus/prometheus/releases/download/v{{ version }}/prometheus-{{ version }}.linux-amd64.tar.gz
-#    dest: /tmp
-#  when:
-#    - not prometheus_stat.stat.exists
+- name: download prometheus server
+  get_url:
+    url: https://github.com/prometheus/prometheus/releases/download/v{{ version }}/prometheus-{{ version }}.linux-amd64.tar.gz
+    dest: /tmp
+  when:
+    - not prometheus_stat.stat.exists
 
 - name: unarchive prometheus server
   unarchive:
