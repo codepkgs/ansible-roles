@@ -1,4 +1,0 @@
-kube_apiserver_binary: ""
-kube_controller_manager_binary: ""
-kube_scheduler_binary: ""
-kubernetes_master_certs: []

@@ -1,7 +1,0 @@
----
-- import_tasks: require.yaml
-
-- import_tasks: kube-apiserver.yaml
-# - import_tasks: kube-controller-manager.yaml
-
-# - import_tasks: kube-scheduler.yaml
