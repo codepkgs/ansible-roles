@@ -8,6 +8,7 @@
     ```text
     ntp_servers: 定义ntp服务器的地址。列表。默认为空，则使用ntp.aliyun.com
     ntp_restrict: 定义允许哪些客户端进行时间同步。列表。需要有network和netmask字段。默认为空。
+    ntp_aliyun: ntp 是否运行在阿里云上。默认 False
     ```
 
 * 使用角色
