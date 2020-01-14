@@ -20,6 +20,12 @@
 - name: flush handlers
   meta: flush_handlers
 
+- name: ensure chronyd is stopped
+  service:
+    name: chronyd
+    state: stopped
+    enabled: no
+
 - name: ensure ntpd is running
   service:
     name: ntpd

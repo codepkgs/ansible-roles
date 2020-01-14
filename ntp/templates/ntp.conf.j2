@@ -14,7 +14,7 @@ restrict {{ restrict.network }} mask {{ restrict.netmask }} nomodify notrap noqu
 {% endif %}
 
 {% if ntp_servers | length == 0 %}
-set ntp_servers=['ntp.aliyun.com'] %}
+{% set ntp_servers=['ntp.aliyun.com'] %}
 {% endif %}
 
 {% for server in ntp_servers %}
