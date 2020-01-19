@@ -1,0 +1,41 @@
+---
+- name: check pyenv is installed or not
+  stat:
+    path: ~/.pyenv
+  register: pyenv_stat
+
+- name: pyenv install script
+  copy:
+    src: pyenv-installer.sh
+    dest: /opt/pyenv-installer.sh
+    owner: root
+    group: root
+    mode: 0755
+  when:
+    - not pyenv_stat.stat.isdir
+    - ansible_os_family | lower == 'redhat'
+
+- name: exec pyenv-installer
+  shell: |
+    /bin/bash /opt/pyenv-installer.sh
+  when:
+    - not pyenv_stat.stat.isdir
+    - ansible_os_family | lower == 'redhat'
+
+- name: copy pyenv bashrc
+  copy:
+    src: pyenvrc
+    dest: ~/.pyenv/.pyenvrc
+    owner: root
+    group: root
+    mode: 0644
+  when:
+    - ansible_os_family | lower == 'redhat'
+
+- name: set pyenv PATH
+  blockinfile:
+    path: ~/.bashrc
+    block: |
+      . ~/.pyenv/.pyenvrc
+  when:
+    - ansible_os_family | lower == 'redhat'
