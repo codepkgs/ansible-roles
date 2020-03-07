@@ -22,9 +22,3 @@
     #       - "10.0.100.11"
     - role: ntpd
       tags: ntpd
-      # vars:
-      #  ntp_servers:
-      #    - ntp.aliyun.com
-      #  ntp_restricts:
-      #    - network: 10.0.100.0
-      #      netmask: 255.255.0.0
