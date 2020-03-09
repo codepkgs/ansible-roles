@@ -3,8 +3,8 @@
   roles:
     # - role: sudoers
     #   tags: sudoers
-    # - role: system-init
-    #   tags: system-init
+    - role: system-init
+      tags: system-init
     # - role: authorized_key
     #   tags: authorized_key
     #   vars:
