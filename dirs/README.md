@@ -4,7 +4,11 @@
 
 * 变量
     ```text
-    dirs: 列表。定义要创建的目录。每一个目录可以单独指定owner、group以及mode。path为必选。state可以是absent或directory。
+    dirs: 列表。定义要创建或删除的目录列表。每一个目录可以单独指定owner、group以及mode。
+      path：必选项目，指定要创建的目录的路径。
+      state：指定是创建目录还是删除目录，默认是 directory。absent 表示删除目录。directory 表示创建目录。
+      owner 和 group：指定要创建的目录的 owner 和 group。默认是 root
+      mode：目录的权限。默认是755
 
     示例：
     dirs:
@@ -13,6 +17,4 @@
       owner: root
       group: root
       mode: 755
-
-    如果没有指定owner、group，则默认为root，如果没有指定mode，默认为755。默认的state为directory
     ```
