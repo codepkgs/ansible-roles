@@ -1,11 +1,23 @@
 # 作用和变量
 * 作用
 ```text
-用于安装和配置 dhcp 服务器端。
+用于安装和配置 dhcp 服务器端以及 DHCP RELAY。
 ```
 
-* 变量
+* DHCP Relay 相关的变量
 ```text
+enable_role: dhcrelay # 启动 dhcp relay 功能。 如果要同时启动 dhcp server 和 dhcp relay 功能，指定为 all。
+
+dhcrelay:     # dhcp relay 相关的参数
+  dhcp_servers: ['10.0.100.1', '10.0.100.2']  # dhcp 服务器的地址，可以指定多个。
+  listen_interfaces: ['eth0']   # dhcp relay 监听的接口，可以指定多个。
+```
+
+* DHCP 服务器端相关的变量
+```text
+启动 dhcp 功能。
+enable_role: dhcp
+
 1. global段，用于指定全局配置
 listen_address：指定 dhcp 服务器监听的地址，如果没有定义，则监听在所有地址。必须是一个有效的 IP 地址。
 ddns_update_style：ddns 更新类型，有效的值有 none、interim、ad-hoc

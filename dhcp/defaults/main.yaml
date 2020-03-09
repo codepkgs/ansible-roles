@@ -1,4 +1,10 @@
 ---
+enable_role: dhcp
+
+dhcrelay:
+  dhcp_servers: ['10.0.100.1']
+  listen_interfaces: ['eth0']
+
 global:
   ddns_update_style: "none"
   allow_bootp: True
@@ -14,5 +20,5 @@ subnets:
     start_ip: 10.0.100.101
     end_ip: 10.0.100.109
     gateway: 10.0.100.254
-    extra_options:
-      "option ntp-servers": "ntp.fdisk.cc"
+    # extra_options:
+    #   "option ntp-servers": "ntp.fdisk.cc"

@@ -1,0 +1,20 @@
+[Unit]
+Description=DHCP Relay Agent Daemon
+Documentation=man:dhcrelay(8)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=notify
+{% if dhcrelay.listen_interfaces is defined and dhcrelay.listen_interfaces | length != 0 %}
+{% if dhcrelay.listen_interfaces | length == 1 %}
+ExecStart=/usr/sbin/dhcrelay -d --no-pid -i {{ dhcrelay.listen_interfaces | join(' ') }} {{ dhcrelay.dhcp_servers | join(' ') }}
+{% else %}
+ExecStart=/usr/sbin/dhcrelay -d --no-pid -i {{ dhcrelay.listen_interfaces | join(' -i ') }} {{ dhcrelay.dhcp_servers | join(' ') }}
+{% endif %}
+{% else %}
+ExecStart=/usr/sbin/dhcrelay -d --no-pid {{ dhcrelay.dhcp_servers | join(' ') }}
+{% endif %}
+
+[Install]
+WantedBy=multi-user.target

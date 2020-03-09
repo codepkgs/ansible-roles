@@ -4,7 +4,7 @@
     name: dhcp
     state: present
 
-- name: copy dhcpd config file to dhcpd.conf
+- name: copy dhcpd config file
   template:
     src: dhcpd.conf.j2
     dest: /etc/dhcp/dhcpd.conf
@@ -13,4 +13,19 @@
     mode: "0644"
   notify:
     - restart dhcpd
+  when:
+    - enable_role.lower() == 'dhcp' or enable_role.lower() == 'all'
+
+- name: copy dhcp relay service config
+  template:
+    src: dhcrelay.service.j2
+    dest: /usr/lib/systemd/system/dhcrelay.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - restart dhcrelay
+  when:
+    - enable_role.lower() == 'dhcrelay' or enable_role.lower() == 'all'
+    - ansible_facts.distribution_major_version == '7'
 

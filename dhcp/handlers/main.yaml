@@ -4,3 +4,10 @@
     name: dhcpd
     state: restarted
     enabled: yes
+
+- name: restart dhcrelay
+  systemd:
+    name: dhcrelay
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
