@@ -5,7 +5,7 @@
     regexp: "^%wheel"
     line: "%wheel   ALL=(ALL)   NOPASSWD: ALL"
   when:
-    - ansible_os_family | lower == 'redhat'
+    - ansible_facts.os_family.lower() == 'redhat'
 
 - name: set sudoers for debian os family
   lineinfile:
@@ -13,4 +13,4 @@
     regexp: "^%sudo"
     line: "%sudo   ALL=(ALL:ALL)   NOPASSWD: ALL"
   when:
-    - ansible_os_family | lower == 'debian'
+    - ansible_facts.os_family.lower() == 'debian'

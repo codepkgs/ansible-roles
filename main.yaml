@@ -5,8 +5,8 @@
       tags: system-init
     - role: ntpd
       tags: ntpd
-    # - role: sudoers
-    #   tags: sudoers
+    - role: sudoers
+      tags: sudo,sudoers
     # - role: authorized_key
     #   tags: authorized_key
     #   vars:
