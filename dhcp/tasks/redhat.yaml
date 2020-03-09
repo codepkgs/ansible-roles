@@ -34,8 +34,6 @@
       sysctl:
         name: net.ipv4.ip_forward
         value: "1"
-
   when:
     - enable_role.lower() == 'dhcrelay' or enable_role.lower() == 'all'
     - ansible_facts.distribution_major_version == '7'
-
