@@ -3,3 +3,4 @@
 #   - name: username
 #     state: present
 #     key: username.pub
+#     key_options: "ssh key options, if not definded, omit"

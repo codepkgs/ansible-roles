@@ -3,17 +3,21 @@
   roles:
     - role: system-init
       tags: system-init
+
     - role: ntpd
       tags: ntpd
+
     - role: sudoers
-      tags: sudo,sudoers
-    # - role: authorized_key
-    #   tags: authorized_key
-    #   vars:
-    #     users:
-    #       - name: root
-    #         state: present
-    #         key: root.pub
+      tags: sudo, sudoers
+
+    - role: authorized_key
+      tags: nopass, authorized_key
+      vars:
+        users:
+          - name: root
+            state: present
+            key: root.pub
+
     - role: resolv
       tags: resolv
       vars:

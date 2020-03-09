@@ -4,4 +4,5 @@
     user: "{{ item.name }}"
     state: "{{ item.state | default('present', boolean=true) }}"
     key: "{{ lookup('file', item.key) }}"
+    key_options: "{{ item.key_options | default(omit)}}"
   with_items: "{{ users }}"

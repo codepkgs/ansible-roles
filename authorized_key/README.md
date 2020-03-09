@@ -11,6 +11,7 @@
           - name: username1             # 要添加或删除的用户名
             state: present | absent     # 期望的状态。absent或present。默认值是present
             key: username1.pub          # public key文件的名称,该文件需要位于files中。
+            key_options: "ssh key options, if not definded, omit"
           - name: username2
             state: absent
             key: username2.pub
