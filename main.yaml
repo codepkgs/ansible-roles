@@ -1,10 +1,12 @@
 ---
 - hosts: all
   roles:
-    # - role: sudoers
-    #   tags: sudoers
     - role: system-init
       tags: system-init
+    - role: ntpd
+      tags: ntpd
+    # - role: sudoers
+    #   tags: sudoers
     # - role: authorized_key
     #   tags: authorized_key
     #   vars:
@@ -12,13 +14,21 @@
     #       - name: root
     #         state: present
     #         key: root.pub
-    # - role: resolv
-    #   tags: rosolv
-    #   vars:
-    #     resolv_search:
-    #       - "fdisk.cc"
-    #     resolv_domain: "fdisk.cc"
-    #     resolv_nameservers:
-    #       - "10.0.100.11"
-    - role: ntpd
-      tags: ntpd
+    - role: resolv
+      tags: resolv
+      vars:
+        resolv_search:
+          - "fdisk.cc"
+        resolv_domain: "fdisk.cc"
+        resolv_nameservers:
+          - "10.0.0.254"
+          - "223.5.5.5"
+          - "223.6.6.6"
+          - "223.7.7.7"
+
+- hosts: 10.0.100.1
+  roles:
+    - role: hostname
+      tags: hostname
+      vars:
+        hostname: "vm01.fdisk.cc"

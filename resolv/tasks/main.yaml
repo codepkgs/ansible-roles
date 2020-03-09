@@ -1,8 +1,4 @@
 ---
-- name: "config resolv.conf"
-  template:
-    src: resolv.conf.j2
-    dest: /etc/resolv.conf
-    owner: root
-    group: root
-    mode: 0644
+- import_tasks: redhat.yaml
+  when:
+    - ansible_facts.os_family.lower() == 'redhat'
