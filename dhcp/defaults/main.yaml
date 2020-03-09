@@ -1,0 +1,18 @@
+---
+global:
+  ddns_update_style: "none"
+  allow_bootp: True
+  unknown_clients: True
+  default_lease_time: 14400
+  max_lease_time: 28800
+  domain_name: "fdisk.cc"
+  domain_name_servers: ['10.0.100.254']
+
+subnets:
+  - network: 10.0.100.0
+    netmask: 255.255.255.0
+    start_ip: 10.0.100.101
+    end_ip: 10.0.100.109
+    gateway: 10.0.100.254
+    extra_options:
+      "option ntp-servers": "ntp.fdisk.cc"

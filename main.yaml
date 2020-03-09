@@ -26,9 +26,6 @@
         resolv_domain: "fdisk.cc"
         resolv_nameservers:
           - "10.0.0.254"
-          - "223.5.5.5"
-          - "223.6.6.6"
-          - "223.7.7.7"
 
 - hosts: 10.0.100.1
   roles:
@@ -36,3 +33,7 @@
       tags: hostname
       vars:
         hostname: "vm01.fdisk.cc"
+    
+    - role: dhcp
+      tags: dhcp
+      

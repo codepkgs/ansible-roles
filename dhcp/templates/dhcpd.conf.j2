@@ -1,0 +1,85 @@
+#jinja2: lstrip_blocks: True
+{% if global.listen_address is defined and global.listen_address | ipaddr %}
+local-address {{ global.listen_address }};
+{% endif %}
+
+{% if global.ddns_update_style is defined and global.ddns_update_style in ['none', 'interim', 'ad-hoc'] %}
+ddns-update-style {{ global.ddns_update_style }};
+{% else %}
+ddns-update-style {{ global.ddns_update_style | default("none", boolean=True) }};
+{% endif %}
+log-facility local7;
+ignore client-updates;
+
+{% if global.allow_bootp | bool %}
+allow bootp;
+allow booting;
+{% endif %}
+
+{% if global.unknown_clients | bool %}
+allow unknown-clients;
+{% else %}
+deny unknown-clients;
+{% endif %}
+
+{% if global.default_lease_time is defined | int %}
+default-lease-time {{ global.default_lease_time }};
+{% else %}
+default-lease-time 14400;
+{% endif %}
+{% if global.max_lease_time is defined | int %}
+max-lease-time {{ global.max_lease_time }};
+{% else %}
+max-lease-time 28800;
+{% endif %}
+
+{% if global.domain_name is defined and global.domain_name | length > 0 %}
+option domain-name "{{ global.domain_name }}";
+{% endif %}
+{% if global.domain_name_servers is defined and global.domain_name_servers | length > 0 %}
+option domain-name-servers {{ global.domain_name_servers | join(', ')}};
+{% endif %}
+
+{# 配置超级作用域 #}
+{% if subnets is defined and subnets | length != 0 %}
+shared-network "shared" {
+{% for subnet in subnets %}
+    subnet {{ subnet.network }} netmask {{ subnet.netmask }} {
+        range {{ subnet.start_ip }} {{ subnet.end_ip }};
+        option routers {{ subnet.gateway }};
+        {% if subnet.domain_name is defined and subnet.domain_name | length != 0 %}
+        option domain-name "{{ subnet.domain_name }}";
+        {% endif %}
+        {% if subnet.domain_name_servers is defined and subnet.domain_name_servers | length != 0 %}
+        option domain-name-servers {{ subnet.domain_name_servers | join(', ') }};
+        {% endif %}
+        {# 定义 subnet 级别的自定义选项 #}
+        {% if subnet.extra_options is defined and subnet.extra_options | length != 0 %}
+        {% for key, value in subnet.extra_options.items() %}
+        {{ key }} {{ value }};
+        {% endfor %}
+        {% endif %}
+
+        {# 配置静态地址绑定 #}
+        {% if subnet.fixed_addresses is defined and subnet.fixed_addresses | length != 0 %}
+        group {
+            use-host-decl-names on;
+            {% for static in subnet.fixed_addresses %}
+            host {{ static.hostname }} {
+                fixed-address {{ static.ip_address }};
+                hardware ethernet {{ static.mac_address }};
+                {# 定义 host 级别的自定义选项 #}
+                {% if static.extra_options is defined and static.extra_options | length != 0 %}
+                {% for key, value in static.extra_options.items() %}
+                {{ key }} {{ value }};
+                {% endfor %}
+                {% endif %}
+            }
+            {% endfor %}
+        }
+        {% endif %}
+    }
+
+{% endfor %}
+}
+{% endif %}

@@ -1,0 +1,4 @@
+---
+- import_tasks: redhat.yaml
+  when:
+    - ansible_facts.os_family.lower() == 'redhat'

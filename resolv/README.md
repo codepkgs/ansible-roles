@@ -7,7 +7,7 @@
     resolv_search       # 定义搜索域。列表。默认为空
     resolv_domain       # 定义所在域。字符串。默认为空
     resolv_options      # 定义域名解析时的选项。默认值: options rotate timeout:2 attempts:3
-    resolv_nameservers  # 定义nameserver。列表。默认为空。
+    resolv_nameservers  # 定义nameserver。列表。默认为空。如果多余3个，则取前三个。
     ```
 
 * 使用
