@@ -53,6 +53,14 @@
       notify:
         - cobbler sync
 
+    - name: change the cobbler pxe_just_once to 1
+      lineinfile:
+        path: /etc/cobbler/settings
+        regexp: "^pxe_just_once:"
+        line: "pxe_just_once: 1"
+      notify:
+        - cobbler sync
+
     - name: change the cobbler manage services
       lineinfile:
         path: /etc/cobbler/settings
