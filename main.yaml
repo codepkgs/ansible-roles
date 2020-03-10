@@ -33,7 +33,6 @@
       tags: hostname
       vars:
         hostname: "vm01.fdisk.cc"
-    
+
     - role: dhcp
       tags: dhcp
-      

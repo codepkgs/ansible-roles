@@ -20,5 +20,3 @@ subnets:
     start_ip: 10.0.100.101
     end_ip: 10.0.100.109
     gateway: 10.0.100.254
-    # extra_options:
-    #   "option ntp-servers": "ntp.fdisk.cc"
