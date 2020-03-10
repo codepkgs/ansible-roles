@@ -34,5 +34,5 @@
       vars:
         hostname: "vm01.fdisk.cc"
 
-    - role: dhcp
-      tags: dhcp
+    - role: cobbler
+      tags: cobbler

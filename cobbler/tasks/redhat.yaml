@@ -1,0 +1,114 @@
+---
+- name: install epel-release
+  package:
+    name: epel-release
+    state: present
+
+- name: install related pakcages for cobbler
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - httpd
+    - syslinux
+    - dhcp
+    - tftp-server
+    - xinetd
+    - pykickstart
+    - cobbler
+    - cobbler-web
+    - fence-agents
+
+- name: cobbler config
+  block:
+    - name: change the cobbler proxy address
+      lineinfile:
+        path: /etc/cobbler/settings
+        regexp: "^proxy_url_ext:"
+        line: 'proxy_url_ext: "{{ cobbler_proxy_address }}"'
+
+    - name: render template for /etc/cobbler/dhcp.template
+      template:
+        src: dhcp.template.j2
+        dest: /etc/cobbler/dhcp.template
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - cobbler sync
+
+    - name: change the cobbler server address
+      lineinfile:
+        path: /etc/cobbler/settings
+        regexp: "^server:"
+        line: "server: {{ ansible_facts.default_ipv4.address }}"
+      notify:
+        - cobbler sync
+
+    - name: change the cobbler next_server address
+      lineinfile:
+        path: /etc/cobbler/settings
+        regexp: "^next_server:"
+        line: "next_server: {{ ansible_facts.default_ipv4.address }}"
+      notify:
+        - cobbler sync
+
+    - name: change the cobbler manage services
+      lineinfile:
+        path: /etc/cobbler/settings
+        regexp: "^manage_{{ item }}:"
+        line: "manage_{{ item }}: 1"
+      with_items:
+        - rsync
+        - dhcp
+        - tftpd
+      notify:
+        - cobbler sync
+
+    - name: start required service for cobbler
+      service:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      with_items:
+        - cobblerd
+        - httpd
+        - rsyncd
+
+    - name: cobbler get-loaders
+      shell: cobbler get-loaders
+      args:
+        creates: /var/lib/cobbler/loaders/pxelinux.0
+
+    - name: set default password
+      lineinfile:
+        path: /etc/cobbler/settings
+        regexp: "^default_password_crypted"
+        line: "default_password_crypted: {{ cobbler_default_password | password_hash('md5') }}"
+      notify:
+        - cobbler sync
+
+    - name: copy kickstarts to destination
+      copy:
+        src: "{{ item }}"
+        dest: /var/lib/cobbler/kickstarts
+        owner: root
+        group: root
+        mode: "0644"
+      with_items:
+        - CentOS7.ks
+      notify:
+        - cobbler sync
+
+- name: ensure all service is running
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - httpd
+    - cobblerd
+    - xinetd
+    - rsyncd
+    - dhcpd
+    - tftp

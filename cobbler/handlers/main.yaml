@@ -5,23 +5,23 @@
     enabled: yes
     state: restarted
 
-- name: restart httpd
-  service:
-    name: httpd
-    enabled: yes
-    state: restarted
+# - name: restart httpd
+#   service:
+#     name: httpd
+#     enabled: yes
+#     state: restarted
 
-- name: restart xinetd
-  service:
-    name: xinetd
-    enabled: yes
-    state: restarted
+# - name: restart xinetd
+#   service:
+#     name: xinetd
+#     enabled: yes
+#     state: restarted
 
-- name: restart rsyncd
-  service:
-    name: rsyncd
-    enabled: yes
-    state: restarted
+# - name: restart rsyncd
+#   service:
+#     name: rsyncd
+#     enabled: yes
+#     state: restarted
 
 - name: cobbler sync
   shell:
