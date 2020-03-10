@@ -84,7 +84,7 @@
       lineinfile:
         path: /etc/cobbler/settings
         regexp: "^default_password_crypted"
-        line: "default_password_crypted: \"{{ cobbler_default_password | password_hash('md5') }}\""
+        line: "default_password_crypted: \"{{ cobbler_default_password | password_hash('md5', '60e2dRn0') }}\""
       notify:
         - cobbler sync
 
