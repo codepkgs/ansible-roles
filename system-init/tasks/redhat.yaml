@@ -1,5 +1,6 @@
 ---
 - name: disable ssh password authentication
+  tags: system-init-sshd
   lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^PasswordAuthentication"
@@ -11,6 +12,7 @@
     - restart sshd
 
 - name: enable ssh password authentication
+  tags: system-init-sshd
   lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^PasswordAuthentication"
@@ -22,6 +24,7 @@
     - restart sshd
 
 - name: close dns resolve for sshd
+  tags: system-init-sshd
   lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^UseDNS"
@@ -32,6 +35,7 @@
     - restart sshd
 
 - name: config limits
+  tags: system-init-limits
   lineinfile:
     path: /etc/security/limits.conf
     line: "{{ item }}"
@@ -39,12 +43,14 @@
   with_items: "{{ limits }}"
 
 - name: set timezone
+  tags: system-init-timezone
   timezone:
     name: "{{ tzname }}"
   notify:
     - restart crond
 
 - name: disable services for redhat family
+  tags: system-init-service
   service: 
     name: "{{ item }}" 
     state: stopped
@@ -52,6 +58,7 @@
   with_items: "{{ disable_services }}"
 
 - name: disable services for redhat family 6
+  tags: system-init-service
   service: 
     name: "{{ item }}" 
     state: stopped
@@ -61,6 +68,7 @@
     - ansible_facts.distribution_major_version == '6'
 
 - name: disable services for redhat family 7
+  tags: system-init-service
   service: 
     name: "{{ item }}" 
     state: stopped
@@ -70,12 +78,14 @@
     - ansible_facts.distribution_major_version == '7'
 
 - name: disable selinux
+  tags: system-init-selinux
   lineinfile:
     path: /etc/selinux/config
     regexp: "^SELINUX="
     line: SELINUX=disabled
 
 - name: disable swap
+  tags: system-init-swap
   lineinfile:
     path: /etc/fstab
     regexp: '^([^#]*swap.*)'
@@ -90,19 +100,40 @@
     state: present
 
 - name: install packages
+  tags: system-init-package
   package:
     name: "{{ item }}"
     state: present
   with_items: "{{ packages }}"
 
 - name: set vim
+  tags: system-init-vim
   copy:
     src: vimrc
     dest: ~/.vimrc
 
 - name: configure kernel parameters at runtime(sysctl)
+  tags: system-init-sysctl
   sysctl:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
   with_items:
     - "{{ sysctl_config }}"
+
+- name: config pip
+  tags: system-init-pip
+  block:
+    - name: check pip is set or not
+      stat:
+        path: /etc/pip.conf
+      register: pip_stat
+
+    - name: copy pip config to /etc/pip.conf
+      copy:
+        src: pip.conf
+        dest: /etc/pip.conf
+        owner: root
+        group: root
+        mode: "0644"
+      when:
+        - not pip_stat.stat.exists
