@@ -5,6 +5,7 @@ logfile    /var/log/ntp.log
 # Access Control Support
 restrict    default kod nomodify notrap nopeer noquery
 restrict -6 default kod nomodify notrap nopeer noquery
+restrict ::1
 restrict 127.0.0.1
 {% if ntp_restricts | length > 0 %}
 {% for ntp_restrict in ntp_restricts %}
