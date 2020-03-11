@@ -11,6 +11,8 @@ packages:
   - iftop
   - ack
   - tmux
+  - nmap-ncat
+  - wget
 
 limits:
   - "*  soft  nofile  819200"
