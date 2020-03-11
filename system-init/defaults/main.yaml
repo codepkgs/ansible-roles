@@ -10,6 +10,7 @@ packages:
   - htop
   - iftop
   - ack
+  - tmux
 
 limits:
   - "*  soft  nofile  819200"
