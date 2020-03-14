@@ -94,10 +94,32 @@
   when:
     - disable_swap | bool
 
-- name: install epel-release
-  package:
-    name: epel-release
-    state: present
+- name: copy yum repos for rhel 6
+  copy:
+      dest: "/etc/yum.repos.d/{{ item.split('.')[0] }}.repo"
+      src: "{{ item }}"
+      owner: root
+      group: root
+      mode: "0644"
+  with_items:
+    - epel_6.repo
+    - CentOS-Base_6.repo
+  when:
+    - ansible_facts.distribution_major_version == '6'
+
+- name: copy yum repos for rhel 7
+  copy:
+      dest: "/etc/yum.repos.d/{{ item.split('_')[0] }}.repo"
+      src: "{{ item }}"
+      owner: root
+      group: root
+      mode: "0644"
+  with_items:
+    - epel_7.repo
+    - CentOS-Base_7.repo
+  when:
+    - ansible_facts.distribution_major_version == '7'
+
 
 - name: install packages
   tags: system-init-package
