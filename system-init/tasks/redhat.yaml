@@ -94,31 +94,36 @@
   when:
     - disable_swap | bool
 
-- name: copy yum repos for rhel 6
-  copy:
-      dest: "/etc/yum.repos.d/{{ item.split('.')[0] }}.repo"
-      src: "{{ item }}"
-      owner: root
-      group: root
-      mode: "0644"
-  with_items:
-    - epel_6.repo
-    - CentOS-Base_6.repo
-  when:
-    - ansible_facts.distribution_major_version == '6'
+- name: yum repos config
+  tags: system-init-repo
+  block:
+    - name: copy yum repos for rhel 6
+      copy:
+          dest: "/etc/yum.repos.d/{{ item.split('.')[0] }}.repo"
+          src: "{{ item }}"
+          owner: root
+          group: root
+          mode: "0644"
+      with_items:
+        - epel_6.repo
+        - CentOS-Base_6.repo
+      when:
+        - ansible_facts.distribution_major_version == '6'
 
-- name: copy yum repos for rhel 7
-  copy:
-      dest: "/etc/yum.repos.d/{{ item.split('_')[0] }}.repo"
-      src: "{{ item }}"
-      owner: root
-      group: root
-      mode: "0644"
-  with_items:
-    - epel_7.repo
-    - CentOS-Base_7.repo
+    - name: copy yum repos for rhel 7
+      copy:
+          dest: "/etc/yum.repos.d/{{ item.split('_')[0] }}.repo"
+          src: "{{ item }}"
+          owner: root
+          group: root
+          mode: "0644"
+      with_items:
+        - epel_7.repo
+        - CentOS-Base_7.repo
+      when:
+        - ansible_facts.distribution_major_version == '7'
   when:
-    - ansible_facts.distribution_major_version == '7'
+    - ansible_facts.distribution.lower() == 'centos'
 
 
 - name: install packages

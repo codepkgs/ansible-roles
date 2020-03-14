@@ -36,3 +36,8 @@
 
     - role: cobbler
       tags: cobbler
+
+- hosts: 10.0.100.2
+  roles:
+    - role: mariadb
+      tags: mariadb
