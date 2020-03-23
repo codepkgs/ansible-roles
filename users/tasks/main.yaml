@@ -1,0 +1,28 @@
+---
+- name: create users
+  user:
+    state: present
+    name: "{{ item.username | mandatory }}"
+    home: "{{ item.home | default(omit) }}"
+    shell: "{{ item.shell | default('/bin/bash', boolean=True) }}"
+    group: "{{ item.group | default(omit) }}"
+    groups: "{{ item.groups | default(omit) }}"
+    comment: "{{ item.comment | default(omit) }}"
+    system: "{{ item.system | default('no', boolean=True) }}"
+    create_home: "{{ item.create_home | default('yes', boolean=True) }}"
+    generate_ssh_key: "{{ item.generate_ssh_key | default('no', boolean=True) }}"
+  with_items: "{{ create_users }}"
+  when:
+    - create_users is defined
+    - create_users | length != 0
+
+- name: delete users
+  user:
+    state: absent
+    name: "{{ item.username | mandatory }}"
+    remove: "{{ item.remove_home | default('yes', boolean=True) }}"
+  with_items:
+    - "{{ delete_users }}"
+  when:
+    - delete_users is defined
+    - delete_users | length != 0
