@@ -97,7 +97,7 @@
 - name: yum repos config
   tags: system-init-repo
   block:
-    - name: copy yum repos for rhel 6
+    - name: copy yum repos for rhel 6 (not aliyun ecs)
       copy:
           dest: "/etc/yum.repos.d/{{ item.split('.')[0] }}.repo"
           src: "{{ item }}"
@@ -109,8 +109,9 @@
         - CentOS-Base_6.repo
       when:
         - ansible_facts.distribution_major_version == '6'
+        - "'alibaba' not in ansible_facts.product_name.lower()"
 
-    - name: copy yum repos for rhel 7
+    - name: copy yum repos for rhel 7 (not aliyun ecs)
       copy:
           dest: "/etc/yum.repos.d/{{ item.split('_')[0] }}.repo"
           src: "{{ item }}"
@@ -124,6 +125,7 @@
         - ansible_facts.distribution_major_version == '7'
   when:
     - ansible_facts.distribution.lower() == 'centos'
+    - "'alibaba' not in ansible_facts.product_name.lower()"
 
 
 - name: install packages
