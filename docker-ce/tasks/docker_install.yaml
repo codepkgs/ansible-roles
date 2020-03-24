@@ -1,0 +1,50 @@
+---
+- name: install dependency packages for docker-ce
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - yum-utils
+    - lvm2
+    - device-mapper-persistent-data
+    - bash-completion
+
+- name: copy docker-ce yum repo (aliyun yum repo)
+  copy:
+    src: docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+    owner: root
+    group: root
+    mode: '0644'
+  
+- name: install docker-ce
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+
+- name: create docker directory (/etc/docker)
+  file:
+    path: /etc/docker
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: load br_netfilter module for docker
+  modprobe:
+    name: br_netfilter
+    state: present
+
+- name: set sysctl for docker
+  sysctl:
+    name: "{{ item }}"
+    state: present
+    value: "1"
+    reload: yes
+  with_items:
+    - net.bridge.bridge-nf-call-ip6tables
+    - net.bridge.bridge-nf-call-iptables

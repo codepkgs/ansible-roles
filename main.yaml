@@ -43,3 +43,7 @@
       tags: php72
       vars:
         start_php72_service: yes
+
+    - role: docker-ce
+      tags: docker
+

@@ -1,0 +1,31 @@
+---
+- name: check docker daemon.json is exist or not
+  stat:
+    path: /etc/docker/daemon.json
+  register: docker_daemon
+
+- name: config docker accelerator if docker daemon.json is not exist
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: '0644'
+  when:
+    - not docker_daemon.stat.exists
+  notify:
+    - restart docker
+
+- name: set docker iptables rule (FORWARD ACCETP)
+  lineinfile:
+    path: /usr/lib/systemd/system/docker.service
+    regexp: '^ExecStartPost'
+    insertafter: "^ExecStart"
+    line: 'ExecStartPost=/sbin/iptables -P FORWARD ACCEPT'
+  notify:
+    - restart docker
+
+- name: modify iptables rule of FORWARD chain in runtime
+  iptables:
+    policy: ACCEPT
+    chain: FORWARD

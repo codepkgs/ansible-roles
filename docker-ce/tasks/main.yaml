@@ -1,86 +1,13 @@
 ---
-- name: install dependency packages
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - yum-utils
-    - lvm2
-    - device-mapper-persistent-data
-    - bash-completion
-
-- name: config docker-ce repository
-  copy:
-    src: docker-ce.repo
-    dest: /etc/yum.repos.d/docker-ce.repo
-    owner: root
-    group: root
-    mode: 0644
-  
-- name: install docker-ce
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - docker-ce
-    - docker-ce-cli
-    - containerd.io
-
-- name: load br_netfilter module
-  modprobe:
-    name: br_netfilter
-    state: present
-
-- name: set sysctl for docker
-  sysctl:
-    name: "{{ item }}"
-    state: present
-    value: "1"
-    reload: yes
-  with_items:
-    - net.bridge.bridge-nf-call-ip6tables
-    - net.bridge.bridge-nf-call-iptables
-
-- name: set docker iptables rule
-  lineinfile:
-    path: /usr/lib/systemd/system/docker.service
-    regexp: '^ExecStartPost'
-    insertafter: '^ExecStart'
-    line: 'ExecStartPost=/sbin/iptables -P FORWARD ACCEPT'
-  notify:
-    - restart docker
-
-- import_tasks: docker_flannel.yaml
+- name: install and config docker-ce for redhat 7 family
+  tags: docker-install-config
+  block:
+    - name: install docker-ce for redhat 7 family
+      tags: docker-install
+      import_tasks: docker_install.yaml
+    - name: config docker-ce for redhat 7 family
+      tags: docker-config
+      import_tasks: docker_config.yaml
   when:
-    - docker_flannel | bool
-
-- name: create docker directory
-  file:
-    path: /etc/docker
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-  when:
-    - docker_daemon_config | bool
-
-- name: config docker accelerator
-  copy:
-    src: daemon.json
-    dest: /etc/docker/daemon.json
-    owner: root
-    group: root
-    mode: 0644
-  when:
-    - docker_daemon_config | bool
-  notify:
-    - restart docker
-
-- name: flush handlers
-  meta: flush_handlers
-
-- name: ensure docker is running
-  service:
-    name: docker
-    state: started
-    enabled: yes
+    - ansible_facts.os_family.lower() == 'redhat'
+    - ansible_facts.distribution_major_version == '7'
