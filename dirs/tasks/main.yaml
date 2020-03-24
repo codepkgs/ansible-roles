@@ -6,5 +6,5 @@
     owner: "{{ item.owner | default('root', boolean=true) }}"
     group: "{{ item.group | default('root', boolean=true) }}"
     mode: "{{ item.mode | default('755', boolean=true) }}"
+    recurse: "{{ item.recurse | default('yes', boolean=true) }}"
   with_items: "{{ dirs }}"
-  

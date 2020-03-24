@@ -17,4 +17,5 @@
       owner: root
       group: root
       mode: 755
+      recurse: yes
     ```
