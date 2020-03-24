@@ -1,16 +1,16 @@
 ---
-- name: reload php72-php-fpm
-  tags: php72-service, php72-service-reload, php72-service-start
+- name: started php72-php-fpm
+  tags: php72-service-started
   service:
     name: php72-php-fpm
-    state: reloaded
+    state: started
     enabled: yes
   when:
     - start_php72_service is defined
     - start_php72_service | bool
 
 - name: stopped and disable php72-php-fpm
-  tags: php72-service, php72-service-disable, php72-service-stop
+  tags: php72-service-stopped
   service:
     name: php72-php-fpm
     state: stopped

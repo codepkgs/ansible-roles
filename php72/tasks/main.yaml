@@ -25,18 +25,21 @@
         recurse: yes
 
 - name: install packages for php 7.2
+  tags: php72-install
   import_tasks: php_install.yaml
   when:
     - ansible_facts.os_family.lower() == 'redhat'
     - ansible_facts.distribution_major_version == '7'
 
 - name: config php 7.2
+  tags: php72-config
   import_tasks: php_config.yaml
   when:
     - ansible_facts.os_family.lower() == 'redhat'
     - ansible_facts.distribution_major_version == '7'
 
 - name: php72-php-fpm service
+  tags: php72-service
   import_tasks: php_service.yaml
   when:
     - ansible_facts.os_family.lower() == 'redhat'

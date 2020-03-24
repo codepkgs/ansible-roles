@@ -1,6 +1,6 @@
 ---
 - name: epel repo check for not aliyun ecs
-  tags: php72-epel
+  tags: php72-install-epel
   block:
     - name: ensure epel repo is exist (not aliyun ecs)
       stat:
@@ -20,7 +20,7 @@
     - "'alibaba' not in ansible_facts.product_name.lower()"
 
 - name: install dependency packages for php 7.2
-  tags: php72-packages
+  tags: php72-install-package
   package:
     name: "{{ item }}"
     state: present
@@ -40,7 +40,7 @@
     - gd-devel
 
 - name: copy remi repo to destination
-  tags: php72-repo
+  tags: php72-install-repo
   copy:
     src: remi.repo
     dest: /etc/yum.repos.d/remi.repo
@@ -49,7 +49,7 @@
     mode: '0644'
 
 - name: install packages for php 7.2
-  tags: php72-packages
+  tags: php72-install-package
   package:
     name: "{{ item }}"
     state: present

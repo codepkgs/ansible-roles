@@ -12,7 +12,7 @@
     - reload php72-php-fpm
 
 - name: copy php config files of user custom
-  tags: php72-config, php72-config-custom
+  tags: php72-config-custom
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
