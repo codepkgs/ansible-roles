@@ -1,0 +1,9 @@
+---
+- hosts: 10.0.100.1
+  tasks:
+    - name: show
+      htpasswd:
+        path: /tmp/456
+        name: zhangsan
+        password: "123"
+        state: present

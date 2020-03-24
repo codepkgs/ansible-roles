@@ -39,5 +39,7 @@
 
 - hosts: 10.0.100.2
   roles:
-    - role: mariadb
-      tags: mariadb
+    - role: php72
+      tags: php72
+      vars:
+        start_php72_service: yes
