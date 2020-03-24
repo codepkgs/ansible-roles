@@ -1,45 +1,24 @@
-- name: copy php.ini to destination
+---
+- name: copy php config files
+  tags: php72-config
   copy:
-    src: php.ini
-    dest: /etc/opt/remi/php72/php.ini
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
+  with_items: "{{ install_configs }}"
   notify:
-    - restart php-fpm
+    - reload php72-php-fpm
 
-- name: render php-fpm.conf
-  template:
-    src: php-fpm.conf.j2
-    dest: /etc/opt/remi/php72/php-fpm.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - restart php-fpm
-
-- name: copy www.conf to destination
+- name: copy php config files of user custom
+  tags: php72-config, php72-config-custom
   copy:
-    src: www.conf
-    dest: /etc/opt/remi/php72/php-fpm.d/www.conf
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
+  with_items: "{{ custom_install_configs }}"
   notify:
-    - restart php-fpm
-    
-- name: render seaslog.conf
-  template:
-    src: 40-seaslog.ini.j2
-    dest: /etc/opt/remi/php72/php.d/40-seaslog.ini
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - restart php-fpm
-
-- name: ensure php-fpm is running
-  service:
-    name: php72-php-fpm
-    state: started
-    enabled: yes
+    - reload php72-php-fpm

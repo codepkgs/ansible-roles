@@ -1,22 +1,22 @@
-# 说明
+# 变量说明
 
-    安装和配置php-fpm。
+```text
+1. install_configs
+需要复制的配置文件列表。
+列表，里面是字典，每个字典需要有 src 和 dest 属性，格式如下：
 
-    默认会创建www用户和组，用来运行php-fpm。
-    
-    pm相关的配置：
-    pm = static
-    pm.max_children = 100
-    pm.start_servers = 5
-    pm.min_spare_servers = 5
-    pm.max_spare_servers = 35
+install_configs: [
+  {
+    'src': 'source-config',  # 源文件名，位于 files 目录中。
+    'dest': 'dest-path'      # 复制到的目标路径，绝对路径。
+  }
+]
 
-    listen配置：
-    listen = 127.0.0.1:9000
-    listen.backlog = 32768
-    listen.allowed_clients = 127.0.0.1
+2. custom_install_configs
+用户自定义的配置文件列表，优先于 install_configs
+列表，里面是字典，每个字典需要有 src 和 dest 属性，格式和 install_configs 一样。
 
-* 变量
-    ```text
-    php_log_dir         指定php日志目录。
-    ```
+3. start_php72_service
+是否启动 php72-fpm 服务，默认 yes。表示启动该服务，并设置开机自动启动。
+如果是 no，则表示停止服务，并取消开机自动启动。
+```

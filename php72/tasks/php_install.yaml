@@ -1,9 +1,30 @@
-- name: install php dependency packages
+---
+- name: epel repo check for not aliyun ecs
+  tags: php72-epel
+  block:
+    - name: ensure epel repo is exist (not aliyun ecs)
+      stat:
+        path: /etc/yum.repos.d/epel.repo
+      register: epel_repo
+
+    - name: copy epel repo if is not exist  (not aliyun ecs)
+      copy:
+        src: "epel_{{ ansible_facts.distribution_major_version }}.repo"
+        dest: /etc/yum.repos.d/epel.repo
+        owner: root
+        group: root
+        mode: '0644'
+      when:
+        - not epel_repo.stat.exists
+  when:
+    - "'alibaba' not in ansible_facts.product_name.lower()"
+
+- name: install dependency packages for php 7.2
+  tags: php72-packages
   package:
     name: "{{ item }}"
     state: present
   with_items:
-    - epel-release
     - gcc
     - gcc-c++
     - openssl
@@ -18,15 +39,17 @@
     - gd
     - gd-devel
 
-- name: copy remi repo
+- name: copy remi repo to destination
+  tags: php72-repo
   copy:
     src: remi.repo
     dest: /etc/yum.repos.d/remi.repo
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
 
-- name: install php72
+- name: install packages for php 7.2
+  tags: php72-packages
   package:
     name: "{{ item }}"
     state: present
@@ -85,11 +108,3 @@
     - php72-php-pecl-memcached
     - php72-php-pecl-mongodb
     - php72-php-pecl-zip
-
-- name: link php72 to php
-  file:
-    src: /usr/bin/php72
-    dest: /usr/bin/php
-    owner: root
-    group: root
-    state: link
