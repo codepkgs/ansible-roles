@@ -16,6 +16,19 @@
   notify:
     - restart docker
 
+- name: force config docker daemon.json
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: '0644'
+  when:
+    - docker_daemon_force is defined
+    - docker_daemon_force | bool
+  notify:
+    - restart docker
+
 - name: set docker iptables rule (FORWARD ACCETP)
   lineinfile:
     path: /usr/lib/systemd/system/docker.service

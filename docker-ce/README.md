@@ -4,12 +4,13 @@
     ```
     1. 安装docker-ce。使用阿里云yum源。
     2. 设置docker补全
-    3. 配置docker加速。使用docker_daemon_config变量控制。默认是true
+    3. 是否强制覆盖 docker/daemon.json。使用docker_daemon_force变量控制。默认是no
+    4. 如果不存在 daemon.json，则创建，否则不修改，可以用 docker_daemon_force 确定是否强制覆盖。
     ```
 
 * 变量
     ```
-    docker_daemon_config        # 是否修改/etc/docker/daemon.json文件。默认是yes\
+    docker_daemon_force         # 是否强制覆盖 docker/daemon.json，默认是 no。
     docker_flannel              # docker是否和flannel集成。默认是no
     ```
 
@@ -17,9 +18,8 @@
     ```json
     - hosts: docker
       roles:
-        - role: docker
+        - role: docker-ce
           tags: docker
           vars:
-            docker_daemon_config: yes
-            docker_flannel: yes
+            docker_daemon_force: yes
     ```
