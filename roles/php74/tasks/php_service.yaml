@@ -1,0 +1,20 @@
+---
+- name: started php74-php-fpm
+  tags: php74-service-started
+  service:
+    name: php74-php-fpm
+    state: started
+    enabled: yes
+  when:
+    - start_php74_service is defined
+    - start_php74_service | bool
+
+- name: stopped and disable php74-php-fpm
+  tags: php74-service-stopped
+  service:
+    name: php74-php-fpm
+    state: stopped
+    enabled: no
+  when:
+    - start_php74_service is defined
+    - not (start_php74_service | bool)

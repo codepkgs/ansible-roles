@@ -1,0 +1,24 @@
+---
+install_configs: [
+  { 
+    "src": "php.ini",
+    "dest": "/etc/opt/remi/php74/php.ini"
+  },
+  {
+    "src": "php-fpm.conf",
+    "dest": "/etc/opt/remi/php74/php-fpm.conf"
+  },
+  {
+    "src": "40-seaslog.ini",
+    "dest": "/etc/opt/remi/php74/php.d/40-seaslog.ini",
+  },
+]
+
+custom_install_configs: [
+  {
+    "src": "www.conf",
+    "dest": "/etc/opt/remi/php74/php-fpm.d/www.conf"
+  }
+]
+
+start_php74_service: yes

@@ -1,0 +1,10 @@
+---
+- name: reload php74-php-fpm
+  tags: php74-service, php74-service-reload, php74-service-start
+  service:
+    name: php74-php-fpm
+    state: reloaded
+    enabled: yes
+  when:
+    - start_php74_service is defined
+    - start_php74_service | bool

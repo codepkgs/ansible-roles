@@ -1,0 +1,46 @@
+---
+- name: create www user
+  import_role:
+    name: users
+  vars:
+    create_users:
+      - username: www
+        shell: /bin/bash
+        groups: []
+
+- name: create dirs for php
+  import_role:
+    name: dirs
+  vars:
+    dirs:
+      - path: /data/logs/php-seaslog
+        owner: www
+        group: www
+        mode: '0755'
+        recurse: yes
+      - path: /data/logs/php-fpm
+        owner: www
+        group: www
+        mode: '0755'
+        recurse: yes
+
+- name: install packages for php 7.4
+  tags: php74-install
+  import_tasks: php_install.yaml
+  when:
+    - ansible_facts.os_family.lower() == 'redhat'
+    - ansible_facts.distribution_major_version == '7'
+
+- name: config php 7.4
+  tags: php74-config
+  import_tasks: php_config.yaml
+  when:
+    - ansible_facts.os_family.lower() == 'redhat'
+    - ansible_facts.distribution_major_version == '7'
+
+- name: php74-php-fpm service
+  tags: php74-service
+  import_tasks: php_service.yaml
+  when:
+    - ansible_facts.os_family.lower() == 'redhat'
+    - ansible_facts.distribution_major_version == '7'
