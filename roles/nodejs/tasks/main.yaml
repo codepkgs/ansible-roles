@@ -1,67 +1,38 @@
 ---
-- name: copy nodejs repo
-  copy:
-    src: nodejs.repo
-    dest: /etc/yum.repos.d/nodejs.repo
-    owner: root
-    group: root
-    mode: 0644
+- name: install nodejs for rhel 7 family
+  block:
+    - name: create nodejs logs directory (/data/logs/nodejs)
+      import_role:
+        name: dirs
+      vars:
+        dirs:
+          - path: /data/logs/nodejs
+            owner: www
+            group: www
+            mode: '0755'
+            recurse: yes
 
-- name: install nodejs dependencies
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - ImageMagick
-    - ImageMagick-devel
-    - GraphicsMagick
-    - GraphicsMagick-devel
-    - logrotate
+    - name: create pm2 logrotate scripts directory (/opt/scripts)
+      import_role:
+        name: dirs
+      vars:
+        dirs:
+          - path: /opt/scripts
+            owner: root
+            group: root
+            mode: '0755'
 
-- name: install nodejs
-  package:
-    name: nodejs
-    state: present
+    - name: install nodejs 10.x
+      tags: nodejs-install
+      import_tasks: nodejs_install.yaml
 
-- name: install pm2 and egg-scripts and nodeinstall
-  npm:
-    name: "{{ item }}"
-    state: present
-    global: yes
-  with_items:
-    - pm2
-    - egg-scripts
-    - nodeinstall
+    - name: config pm2 logrotate
+      tags: nodejs-logroate, pm2-logrotate
+      import_tasks: nodejs_logrotate.yaml
+      when:
+        - pm2_logrotate_enable is defined
+        - pm2_logrotate_enable | bool
 
-- name: create nodejs runtime user
-  user:
-    name: "{{ nodejs_user | default('www') }}"
-    shell: /bin/bash
-    state: present
-
-- name: create scripts path
-  file:
-    path: /opt/scripts
-    owner: root
-    group: root
-    mode: 0755
-    state: directory
-
-- name: render pm2 logrotate script
-  template:
-    src: logrotate_pm2.j2
-    dest: /opt/scripts/logrotate_pm2
-    owner: root
-    group: root
-    mode: 0644
-
-- name: pm2 logrotate crontab
-  cron:
-    name: pm2 logrotate
-    job: "/usr/sbin/logrotate -f /opt/scripts/logrotate_pm2"
-    user: "{{ nodejs_user }}"
-    state: present
-    hour: "23"
-    minute: "59"
   when:
-    - nodejs_user | default('www')
+    - ansible_facts.os_family.lower() == 'redhat'
+    - ansible_facts.distribution_major_version == '7'

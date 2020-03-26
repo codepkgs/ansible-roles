@@ -1,0 +1,17 @@
+---
+- name: copy pm2 logrotate script
+  copy:
+    src: logrotate_pm2
+    dest: /opt/scripts/logrotate_pm2
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: config pm2 logrotate cron job (59 23 * * *)
+  cron:
+    name: logrotate_pm2
+    job: "/usr/sbin/logrotate -f /opt/scripts/logrotate_pm2"
+    state: present
+    minute: "59"
+    hour: "23"
+    user: root

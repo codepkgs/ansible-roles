@@ -1,3 +1,2 @@
 ---
-nodejs_user: www
-nodejs_logs: 7
+pm2_logrotate_enable: yes

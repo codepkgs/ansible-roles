@@ -1,0 +1,6 @@
+[nodesource]
+name=Node.js Packages for Enterprise Linux 7 - $basearch
+#baseurl=https://rpm.nodesource.com/pub_10.x/el/7/$basearch
+baseurl=http://repos.intra.maka.mobi/nodejs/7/$basearch
+enabled=1
+gpgcheck=0

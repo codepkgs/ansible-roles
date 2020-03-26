@@ -1,0 +1,42 @@
+---
+- name: install dependency packages for nodejs
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - ImageMagick
+    - ImageMagick-devel
+    - GraphicsMagick
+    - GraphicsMagick-devel
+
+- name: copy nodejs 10.x yum repository
+  copy:
+    src: nodesource-el7.repo
+    dest: /etc/yum.repos.d/nodesource-el7.repo
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: install nodejs
+  package:
+    name: nodejs
+    state: present
+
+- name: global install pm2
+  npm:
+    name: pm2
+    global: yes
+
+- name: copy pm2 service file (/etc/systemd/system/pm2.service)
+  copy:
+    src: pm2.service
+    dest: /etc/systemd/system/pm2.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: enable and start pm2 service
+  service:
+    name: pm2
+    enabled: yes
+    state: started
