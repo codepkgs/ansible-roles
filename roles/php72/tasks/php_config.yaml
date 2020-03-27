@@ -7,7 +7,7 @@
     owner: root
     group: root
     mode: '0644'
-  with_items: "{{ install_configs }}"
+  with_items: "{{ install_configs | difference(custom_install_configs) }}"
   notify:
     - reload php72-php-fpm
 
