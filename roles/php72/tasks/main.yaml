@@ -17,12 +17,12 @@
         owner: www
         group: www
         mode: '0755'
-        recurse: yes
+        recurse: no
       - path: /data/logs/php-fpm
         owner: www
         group: www
         mode: '0755'
-        recurse: yes
+        recurse: no
 
 - name: install packages for php 7.2
   tags: php72-install

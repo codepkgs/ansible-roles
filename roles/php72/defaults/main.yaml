@@ -1,22 +1,19 @@
 ---
 install_configs: [
-  { 
-    "src": "php.ini",
+  {
+    "src": "php.ini.j2",
     "dest": "/etc/opt/remi/php72/php.ini"
   },
   {
-    "src": "php-fpm.conf",
+    "src": "php-fpm.conf.j2",
     "dest": "/etc/opt/remi/php72/php-fpm.conf"
   },
   {
-    "src": "40-seaslog.ini",
-    "dest": "/etc/opt/remi/php72/php.d/40-seaslog.ini",
+    "src": "40-seaslog.ini.j2",
+    "dest": "/etc/opt/remi/php72/php.d/40-seaslog.ini"
   },
-]
-
-custom_install_configs: [
   {
-    "src": "www.conf",
+    "src": "www.conf.j2",
     "dest": "/etc/opt/remi/php72/php-fpm.d/www.conf"
   }
 ]

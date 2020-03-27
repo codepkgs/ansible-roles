@@ -1,24 +1,15 @@
 ---
 - name: copy php config files
   tags: php74-config
-  copy:
+  template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: root
     group: root
     mode: '0644'
-  with_items: "{{ install_configs | difference(custom_install_configs) }}"
+  with_items: "{{ install_configs }}"
   notify:
-    - reload php74-php-fpm
-
-- name: copy php config files of user custom
-  tags: php74-config-custom
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: root
-    group: root
-    mode: '0644'
-  with_items: "{{ custom_install_configs }}"
-  notify:
-    - reload php74-php-fpm
+    - restart php74-php-fpm
+  when:
+    - install_configs is defined
+    - install_configs | length != 0
