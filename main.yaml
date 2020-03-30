@@ -48,4 +48,13 @@
       tags: docker
       vars:
         docker_daemon_force: yes
+        docker_compose: yes
+
+- hosts: 10.0.100.3
+  roles:
+    - role: docker-ce
+      tags: docker
+      vars:
+        docker_daemon_force: yes
+        docker_compose: yes
 

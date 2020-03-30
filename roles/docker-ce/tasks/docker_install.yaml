@@ -48,3 +48,21 @@
   with_items:
     - net.bridge.bridge-nf-call-ip6tables
     - net.bridge.bridge-nf-call-iptables
+
+- name: install docker-compose
+  block:
+    - name: instsall pip
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - python2-pip
+        - python3-pip
+    - name: install docker-compose
+      pip:
+        executable: pip3
+        name: docker-compose
+        state: present
+  when:
+    - docker_compose is defined
+    - docker_compose |  bool

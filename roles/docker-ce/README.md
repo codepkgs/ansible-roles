@@ -12,6 +12,7 @@
     ```
     docker_daemon_force         # 是否强制覆盖 docker/daemon.json，默认是 no。
     docker_flannel              # docker是否和flannel集成。默认是no
+    docker_compose              # 是否安装 docker-compose，默认是 yes
     ```
 
 * 使用
