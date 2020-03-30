@@ -50,6 +50,7 @@
     - net.bridge.bridge-nf-call-iptables
 
 - name: install docker-compose
+  tags: docker-compose
   block:
     - name: instsall pip
       package:
