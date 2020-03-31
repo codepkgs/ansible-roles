@@ -1,4 +1,5 @@
 ---
+jenkins_secret_show: no
 jenkins_shell: /bin/bash
 jenkins_ssh_key: yes
 jenkins_http_port: 8080

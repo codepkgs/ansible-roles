@@ -1,0 +1,74 @@
+---
+- name: copy jenkins repo to destination
+  copy:
+    src: jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: install jenkins
+  package:
+    name: jenkins
+    state: present
+
+- name: render jenkins config
+  template:
+    src: jenkins.j2
+    dest: /etc/sysconfig/jenkins
+    owner: root
+    group: root
+    mode: '0600'
+  notify:
+    - restart jenkins
+
+- name: modify jenkins shell
+  user:
+    name: jenkins
+    shell: "{{ jenkins_shell }}"
+    home: "/var/lib/jenkins"
+  when:
+    - jenkins_shell != '/bin/false'
+
+- name: copy skel to jenkins home
+  copy:
+    src: "{{ item }}"
+    dest: "/var/lib/jenkins"
+    remote_src: yes
+    owner: "jenkins"
+    group: "jenkins"
+    mode: '0644'
+  when:
+    - jenkins_shell != '/bin/false'
+  with_items:
+    - /etc/skel/.bash_profile
+    - /etc/skel/.bashrc
+    - /etc/skel/.bash_logout
+
+- name: generate jenkins ssh keys
+  user:
+    name: jenkins
+    generate_ssh_key: yes
+  when:
+    - jenkins_shell == '/bin/bash'
+    - jenkins_ssh_key | bool
+
+- name: ensure jenkins is running
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+
+- name: show jenkins secret key
+  block:
+    - name: get jenkins secret key
+      shell: |
+        cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: jenkins_secret_key
+      ignore_errors: yes
+
+    - name: show jenkins secret key
+      debug:
+        var: jenkins_secret_key.stdout
+  when:
+    - jenkins_secret_show | bool

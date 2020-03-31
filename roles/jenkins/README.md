@@ -7,6 +7,7 @@
     ```text
     所有的变量均可选。
 
+    jenkins_secret_show: no                 # 是否展示 jenkins 的 secret。默认是 no。
     jenkins_shell: /bin/false               # 设置jenkins的bash。默认是/bin/false
     jenkins_ssh_key: yes                    # 是否产生jenkins ssh key, 只有当jenkins_shell为/bin/bash可用
     jenkins_http_port: 8080                 # 定义jenkins监听的端口。默认8080
