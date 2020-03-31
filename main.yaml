@@ -49,6 +49,8 @@
       vars:
         docker_daemon_force: yes
         docker_compose: yes
+    - role: nfs
+      tags: nfs-server
 
 - hosts: 10.0.100.3
   roles:
@@ -58,3 +60,11 @@
         docker_daemon_force: yes
         docker_compose: yes
 
+    - role: nfs
+      tags: nfs-client
+      vars:
+        nfs_server: no
+        nfs_mounts:
+          - src: 10.0.100.2:/data/nfs
+            dest: /data/nfs
+            state: absent
