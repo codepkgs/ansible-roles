@@ -9,7 +9,7 @@
 
 * 示例
     ```text
-    - hosts: 10.0.100.
+    - hosts: 10.0.100.1
       roles:
         - role: java
           tags: java

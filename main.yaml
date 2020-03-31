@@ -51,6 +51,8 @@
         docker_compose: yes
     - role: nfs
       tags: nfs-server
+    - role: jenkins
+      tags: jenkins
 
 - hosts: 10.0.100.3
   roles:
