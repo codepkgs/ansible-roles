@@ -6,4 +6,3 @@
       import_tasks: nfs_server.yaml
   when:
     - ansible_facts.os_family.lower() == 'redhat'
-    - ansible_facts.distribution_major_version == '7'
