@@ -1,0 +1,33 @@
+---
+- name: install nfs server
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - rpcbind
+    - nfs-utils
+
+- name: config nfs exports
+  block:
+    - name: create shared directory
+      file:
+        path: "{{ item.shared_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0777'
+      with_items: "{{ nfs_exports }}"
+
+    - name: render nfs exports config
+      template:
+        src: exports.j2
+        dest: /etc/exports
+        owner: root
+        group: root
+        mode: '0644'
+      notify:
+        - restart nfs
+  when:
+    - nfs_exports is defined
+    - nfs_exports | length != 0
+    - nfs_server | bool

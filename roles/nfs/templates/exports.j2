@@ -1,0 +1,3 @@
+{% for d in nfs_exports %}
+{{ d.shared_dir }}      {{ d.hosts_perms }}
+{% endfor %}
