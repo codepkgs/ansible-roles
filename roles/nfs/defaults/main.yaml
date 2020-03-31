@@ -3,3 +3,4 @@ nfs_server: yes
 nfs_exports:
   - shared_dir: /data/nfs
     hosts_perms: "*(rw,sync,no_subtree_check,no_root_squash)"
+nfs_mounts: []

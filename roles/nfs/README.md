@@ -12,4 +12,12 @@ hosts_perms 指定目标主机的权限，格式和 exports 的格式相同，�
 nfs_exports:
   - shared_dir: /data/nfs
     hosts_perms: "*(rw,sync,no_subtree_check,no_root_squash)"
+
+3. nfs_mounts
+作为 nfs 客户端时，挂载其他的 nfs 服务器端的共享目录。
+nfs_mounts:
+  - src: 10.0.100.2:/data/nfs  # 指定挂载的源路径
+    dest: /data/nfs # 指定挂载的目标路径。
+    state: present # 指定状态。默认值 present
+    opts: _netdev,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2  # 指定挂载选项。默认值 _netdev,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2'
 ```

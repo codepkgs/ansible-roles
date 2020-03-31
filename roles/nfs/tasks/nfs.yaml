@@ -7,7 +7,7 @@
     - rpcbind
     - nfs-utils
 
-- name: config nfs exports
+- name: config nfs server exports
   block:
     - name: create shared directory
       file:
@@ -31,3 +31,16 @@
     - nfs_exports is defined
     - nfs_exports | length != 0
     - nfs_server | bool
+
+- name: config nfs client mounts
+  mount:
+    src: "{{ item.src }}"
+    path: "{{ item.dest }}"
+    state: "{{ item.state | default('present') }}"
+    fstype: 'nfs'
+    opts: "{{ item.opts | default('_netdev,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2') }}"
+  with_items: "{{ nfs_mounts }}"
+  when:
+    - not (nfs_server | bool)
+    - nfs_mounts is defined
+    - nfs_mounts | length != 0
