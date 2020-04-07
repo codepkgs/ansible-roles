@@ -8,9 +8,9 @@ command = "ps aux | grep '/usr/local/logagent/bin' | grep -v 'grep' | wc -l"
 restart_command = "/etc/init.d/logagent restart"
 logagent_counts = int(os.popen(command).read().split()[0])
 hostname = socket.gethostname()
-access_token = "467ca0c4662fe99c580ae6d701a51b91027565aae72d386862555dc67014391c"
+access_token = "your-token"
 
-at_mobiles = ('18655750614',)
+at_mobiles = ('your-mobile',)
 
 if logagent_counts:
     print('{}: logagent is running'.format(hostname))
