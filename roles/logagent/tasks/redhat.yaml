@@ -1,0 +1,73 @@
+---
+- name: import role (create dir)
+  import_role:
+    name: dirs
+  vars:
+    dirs:
+      - path: /opt/scripts
+      - path: "{{ logagent_path | default('/data/logs/salog') }}"
+
+- name: check logagent is or not installed
+  stat:
+    path: "{{ logagent_install_path }}"
+  register: logagent_stat
+
+- name: install logagent
+  block:
+    - name: download logagent package
+      get_url:
+        url: "{{ logagent_download_url }}"
+        dest: /tmp/logagent.tar.gz
+        mode: '0644'
+    - name: unarchive logagent
+      unarchive:
+        src: /tmp/logagent.tar.gz
+        remote_src: yes
+        dest: "{{ logagent_install_path | dirname }}"
+  when:
+    - not logagent_stat.stat.exists or (not logagent_stat.stat.isdir)
+
+- name: render logagent config (logagent.conf)
+  template:
+    src: logagent.conf.j2
+    dest: "{{ logagent_install_path }}/logagent.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - restart logagent
+
+- name: copy logagent control script
+  copy:
+    src: logagent.sh
+    dest: /etc/init.d/logagent
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: install python pip
+  package:
+    name: python2-pip
+    state: present
+
+- name: install logagent monitor script
+  pip:
+    name: ['requests', 'dingtalk-webhook']
+    state: present
+    executable: pip2
+
+- name: copy logagent monitor script
+  copy:
+    src: logagent-monitor.py
+    dest: /opt/scripts
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: config logagent monitor cron
+  cron:
+    name: logagent-monitor
+    job: "python /opt/scripts/logagent-monitor.py"
+    user: root
+    minute: '*/5'
+    state: present

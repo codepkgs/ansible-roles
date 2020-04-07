@@ -1,0 +1,6 @@
+---
+- name: restart logagent
+  service:
+    name: logagent
+    enabled: yes
+    state: restarted

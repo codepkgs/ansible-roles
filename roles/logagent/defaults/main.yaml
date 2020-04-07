@@ -1,0 +1,8 @@
+---
+logagent_download_url: 'http://download.sensorsdata.cn/release/logagent/logagent_20191227.tgz'
+logagent_install_path: '/usr/local/logagent'
+logagent_path: '/data/logs/salog'
+logagent_path_pattern: 'sa.log.*'
+logagent_project: 'production'
+# logagent_server_host: '172.26.113.66'
+logagent_server_port: '8106'
