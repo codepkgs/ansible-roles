@@ -12,17 +12,18 @@
     - openssl-devel
 
 - name: check ruby is installed or not
-  shell:
-    which ruby
+  shell: |
+    PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin && which ruby
   ignore_errors: true
   register: ruby_state
 
 - name: check ruby version
-  shell: ruby -v
+  shell: |
+    PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin && ruby -v
   ignore_errors: true
   register: ruby_version
   when:
-    - ansible_os_family | lower == 'redhat'
+    - ansible_facts.os_family.lower() == 'redhat'
     - ruby_state is success
 
 - name: download ruby
@@ -31,7 +32,7 @@
     dest: /tmp/
   ignore_errors: true
   when:
-    - ansible_os_family | lower == 'redhat'
+    - ansible_facts.os_family.lower() == 'redhat'
     - ruby_state is failed or ruby_version.stdout.split()[1] <= '2.2'
 
 - name: unarchive ruby to destination
@@ -41,7 +42,7 @@
     dest: /tmp
   ignore_errors: true
   when:
-    - ansible_os_family | lower == 'redhat'
+    - ansible_facts.os_family.lower() == 'redhat'
     - ruby_state is failed or ruby_version.stdout.split()[1] <= '2.2'
 
 - name: install ruby
@@ -49,5 +50,14 @@
     cd /tmp/ruby-2.6.3 && ./configure && make && make install
   ignore_errors: true
   when:
-    - ansible_os_family | lower == 'redhat'
+    - ansible_facts.os_family.lower() == 'redhat'
     - ruby_state is failed or ruby_version.stdout.split()[1] <= '2.2'
+
+- name: link ruby and gem
+  file:
+    path: "/usr/bin/{{ item }}"
+    src: "/usr/local/bin/{{ item }}"
+    state: link
+  with_items:
+    - ruby
+    - gem

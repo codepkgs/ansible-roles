@@ -4,6 +4,7 @@
     name: "{{ item }}"
     state: present
     user_install: no
+    repository: https://mirrors.aliyun.com/rubygems/
   with_items:
     - capistrano
     - capistrano-scm-copy
