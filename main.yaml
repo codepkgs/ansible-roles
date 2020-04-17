@@ -27,15 +27,11 @@
         resolv_nameservers:
           - "10.0.0.254"
 
-- hosts: 10.0.100.1
-  roles:
-    - role: hostname
-      tags: hostname
+    - role: docker-ce
+      tags: docker
       vars:
-        hostname: "vm01.fdisk.cc"
-
-    - role: cobbler
-      tags: cobbler
+        docker_daemon_force: yes
+        docker_compose: yes
 
 - hosts: 10.0.100.2
   roles:
@@ -44,29 +40,5 @@
       vars:
         start_php72_service: yes
 
-    - role: docker-ce
-      tags: docker
-      vars:
-        docker_daemon_force: yes
-        docker_compose: yes
     - role: nfs
       tags: nfs-server
-    - role: jenkins
-      tags: jenkins
-
-- hosts: 10.0.100.3
-  roles:
-    - role: docker-ce
-      tags: docker
-      vars:
-        docker_daemon_force: yes
-        docker_compose: yes
-
-    - role: nfs
-      tags: nfs-client
-      vars:
-        nfs_server: no
-        nfs_mounts:
-          - src: 10.0.100.2:/data/nfs
-            dest: /data/nfs
-            state: absent
