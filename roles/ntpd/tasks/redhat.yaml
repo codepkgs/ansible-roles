@@ -34,3 +34,8 @@
     state: stopped
     enabled: false
 
+- name: ensure ntpd is running
+  service:
+    name: ntpd
+    state: started
+    enabled: yes
