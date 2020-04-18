@@ -6,3 +6,19 @@
 10.0.100.6  ansible_user=root
 10.0.100.7  ansible_user=root
 10.0.100.8  ansible_user=root
+
+[master]
+10.0.100.3  ansible_user=root
+10.0.100.4  ansible_user=root
+10.0.100.5  ansible_user=root
+
+[node]
+10.0.100.6  ansible_user=root
+10.0.100.7  ansible_user=root
+10.0.100.8  ansible_user=root
+
+[consul:children]
+master
+
+[etcd:children]
+master
