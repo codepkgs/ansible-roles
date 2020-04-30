@@ -25,13 +25,16 @@
           - "fdisk.cc"
         resolv_domain: "fdisk.cc"
         resolv_nameservers:
-          - "10.0.0.254"
+          - "10.0.100.1"
 
     - role: docker-ce
       tags: docker
       vars:
         docker_daemon_force: yes
         docker_compose: yes
+
+    - role: ipvs
+      tags: ipvs
 
 - hosts: 10.0.100.2
   roles:
@@ -42,3 +45,4 @@
 
     - role: nfs
       tags: nfs-server
+

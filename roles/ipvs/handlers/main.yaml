@@ -1,9 +1,3 @@
-- name: restart systemd-modules-load
-  service:
-    name: systemd-modules-load
-    enabled: yes
-    state: restarted
-
 - name: enable ipvsadm
   service:
     name: ipvsadm

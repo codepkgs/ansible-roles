@@ -11,14 +11,26 @@
     - libseccomp
 
 - name: load ipvs modules
+  modprobe:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - ip_vs
+    - ip_vs_rr
+    - ip_vs_wrr
+    - ip_vs_lc
+    - ip_vs_wlc
+    - ip_vs_sh
+    - nf_conntrack
+    - br_netfilter
+
+- name: copy ipvs module file
   copy:
     src: ipvs-modules.conf
     dest: /etc/modules-load.d/ipvs.conf
     owner: root
     group: root
     mode: 0644
-  notify:
-    - restart systemd-modules-load
 
 - name: set ipvs hash table size
   copy:
