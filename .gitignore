@@ -1,2 +1,4 @@
 ./authorized_key/files/*.pub
-
+ansible.cfg
+hosts
+*.yaml

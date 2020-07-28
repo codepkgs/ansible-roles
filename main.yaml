@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: es
   roles:
     - role: system-init
       tags: system-init
@@ -36,13 +36,13 @@
     - role: ipvs
       tags: ipvs
 
-- hosts: 10.0.100.2
-  roles:
-    - role: php72
-      tags: php72
-      vars:
-        start_php72_service: yes
-
-    - role: nfs
-      tags: nfs-server
-
+# - hosts: 10.0.100.2
+#   roles:
+#     - role: php72
+#       tags: php72
+#       vars:
+#         start_php72_service: yes
+# 
+#     - role: nfs
+#       tags: nfs-server
+# 
