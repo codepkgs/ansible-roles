@@ -1,7 +1,7 @@
 # 说明
 * ansible version
     ```text
-    测试所使用的ansible 版本为2.9.2
+    测试所使用的 ansible 版本为2.9.11
     ```
 
 * redis
@@ -17,11 +17,11 @@
 
 * 系统
     ```text
-    roles主要针对RedHat系列，主要是CentOS 7. 其他的系统没有做过充分的测试。
+    roles主要针对 RedHat 系列，主要是 CentOS 7. 其他的系统没有做过充分的测试。
     ```
 
 * main.yaml
     ```text
-    该文件为anbile-roles的入口文件，类似于salt的top.sls。
+    该文件为 anbile-roles 的入口文件，类似于 salt 的 top.sls。
     ```
 
