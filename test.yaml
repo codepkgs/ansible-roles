@@ -1,8 +1,0 @@
----
-- hosts: 10.0.100.1
-  tasks:
-    - name: template 1
-      template:
-        src: aa.j2
-        dest: /tmp/aa
-
