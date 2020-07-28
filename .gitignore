@@ -1,3 +1,1 @@
 ./authorized_key/files/*.pub
-*.yaml
-!hosts.yaml

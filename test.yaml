@@ -1,0 +1,6 @@
+---
+- hosts: 10.0.100.1
+  tasks:
+  - name: show debug
+    debug:
+      msg: "hostname: {{ inventory_hostname }}, gateway: {{ ansible_default_ipv4.gateway }}"
