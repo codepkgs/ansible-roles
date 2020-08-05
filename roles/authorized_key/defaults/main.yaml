@@ -2,5 +2,5 @@
 # users:
 #   - name: username
 #     state: present
-#     key: username.pub
+#     key: "http://10.0.100.1/keys/user.pub"
 #     key_options: "ssh key options, if not definded, omit"

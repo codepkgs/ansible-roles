@@ -1,0 +1,10 @@
+---
+- hosts: all
+  gather_facts: false
+  roles:
+    - role: authorized_key
+      vars:
+        users:
+          - name: root
+            state: present
+            key: "http://10.0.100.1/keys/zhanghe.pub"

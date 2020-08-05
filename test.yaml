@@ -1,6 +1,26 @@
 ---
 - hosts: 10.0.100.1
+  gather_facts: false
   tasks:
-  - name: show debug
-    debug:
-      msg: "hostname: {{ inventory_hostname }}, gateway: {{ ansible_default_ipv4.gateway }}"
+    - name: copy ssh public key to keys repository
+      copy:
+        dest: /var/www/html/keys
+        src: "{{ item }}"
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - ~/.ssh/id_rsa.pub
+
+- hosts: all
+  order: reverse_sorted
+  gather_facts: false
+  tasks:
+    - name: add public key authorized_key for user root
+      tags: key, apply_key
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ item }}"
+      with_items:
+        - http://10.0.100.1/keys/zhanghe.pub
