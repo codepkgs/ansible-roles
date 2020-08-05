@@ -51,16 +51,16 @@
 
 - name: disable services for redhat family
   tags: system-init-service
-  service: 
-    name: "{{ item }}" 
+  service:
+    name: "{{ item }}"
     state: stopped
     enabled: False
   with_items: "{{ disable_services }}"
 
 - name: disable services for redhat family 6
   tags: system-init-service
-  service: 
-    name: "{{ item }}" 
+  service:
+    name: "{{ item }}"
     state: stopped
     enabled: False
   with_items: "{{ disable_services_rhel6 }}"
@@ -69,8 +69,8 @@
 
 - name: disable services for redhat family 7
   tags: system-init-service
-  service: 
-    name: "{{ item }}" 
+  service:
+    name: "{{ item }}"
     state: stopped
     enabled: false
   with_items: "{{ disable_services_rhel7 }}"
@@ -88,7 +88,7 @@
   tags: system-init-swap
   lineinfile:
     path: /etc/fstab
-    regexp: '^([^#]*swap.*)'
+    regexp: "^([^#]*swap.*)"
     line: '#\1'
     backrefs: yes
   when:
@@ -99,11 +99,11 @@
   block:
     - name: copy yum repos for rhel 6 (not aliyun ecs)
       copy:
-          dest: "/etc/yum.repos.d/{{ item.split('.')[0] }}.repo"
-          src: "{{ item }}"
-          owner: root
-          group: root
-          mode: "0644"
+        dest: "/etc/yum.repos.d/{{ item.split('.')[0] }}.repo"
+        src: "{{ item }}"
+        owner: root
+        group: root
+        mode: "0644"
       with_items:
         - epel_6.repo
         - CentOS-Base_6.repo
@@ -113,11 +113,11 @@
 
     - name: copy yum repos for rhel 7 (not aliyun ecs)
       copy:
-          dest: "/etc/yum.repos.d/{{ item.split('_')[0] }}.repo"
-          src: "{{ item }}"
-          owner: root
-          group: root
-          mode: "0644"
+        dest: "/etc/yum.repos.d/{{ item.split('_')[0] }}.repo"
+        src: "{{ item }}"
+        owner: root
+        group: root
+        mode: "0644"
       with_items:
         - epel_7.repo
         - CentOS-Base_7.repo
@@ -126,7 +126,6 @@
   when:
     - ansible_facts.distribution.lower() == 'centos'
     - "'alibaba' not in ansible_facts.product_name.lower()"
-
 
 - name: install packages
   tags: system-init-package
