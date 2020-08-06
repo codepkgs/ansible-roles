@@ -165,3 +165,12 @@
         mode: "0644"
       when:
         - not pip_stat.stat.exists
+
+- name: create ansible facts directory
+  tags: system-init-ansible-facts
+  file:
+    path: /etc/ansible/facts.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
