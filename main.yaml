@@ -9,3 +9,6 @@
             state: present
             key: "http://10.0.100.1/keys/zhanghe.pub"
     - role: system-init
+      tags: system-init
+    - role: sudoers
+      tags: sudo
