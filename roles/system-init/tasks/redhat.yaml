@@ -27,7 +27,7 @@
   tags: system-init-sshd
   lineinfile:
     path: /etc/ssh/sshd_config
-    regexp: "^UseDNS\\s+yes"
+    regexp: "^UseDNS"
     line: "UseDNS no"
     insertafter: "^#UseDNS"
     state: present
