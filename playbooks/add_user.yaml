@@ -1,0 +1,42 @@
+---
+- hosts: all
+  tags: create
+  vars_prompt:
+    - name: username
+      prompt: "create username"
+      private: no
+    - name: password
+      prompt: "password"
+      private: yes
+      confirm: yes
+      encrypt: "sha512_crypt"
+    - name: update_password
+      prompt: "update password [always|on_create]? default is"
+      private: no
+      default: "on_create"
+    - name: create_home
+      prompt: "create home directory? [yes|no], default is"
+      private: no
+      default: "yes"
+    - name: system
+      prompt: "system user? [yes|no], default is"
+      private: no
+      default: "no"
+    - name: shell
+      prompt: "shell, default is"
+      private: no
+      default: "/bin/bash"
+    - name: user_groups
+      prompt: "groups, use space split"
+      private: no
+  tasks:
+    - name: "create user: {{ username }}"
+      user:
+        name: "{{ username }}"
+        state: present
+        password: "{{ password }}"
+        create_home: "{{ create_home | bool }}"
+        system: "{{ system | bool }}"
+        update_password: "{{ update_password }}"
+        shell: "{{ shell }}"
+        groups: "{{ user_groups.split() }}"

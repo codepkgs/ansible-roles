@@ -1,0 +1,22 @@
+- hosts: all
+  tags: delete
+  vars_prompt:
+    - name: username
+      prompt: "delete username"
+      private: no
+    - name: remove
+      prompt: "remove user home directory [yes|no], default is"
+      default: "yes"
+      private: no
+    - name: confirm
+      prompt: "confirm delete [yes|no]?"
+      default: "yes"
+      private: no
+  tasks:
+    - name: delete user {{ username }}
+      user:
+        name: "{{ username }}"
+        state: absent
+        remove: "{{ remove | bool }}"
+      when:
+        - confirm | bool
