@@ -99,7 +99,7 @@
   block:
     - name: copy yum repos for rhel 6 (not aliyun ecs)
       copy:
-        dest: "/etc/yum.repos.d/{{ item.split('.')[0] }}.repo"
+        dest: "/etc/yum.repos.d/{{ item.split('_')[0] }}.repo"
         src: "{{ item }}"
         owner: root
         group: root
@@ -148,7 +148,7 @@
   with_items:
     - "{{ sysctl_config }}"
 
-- name: config pip
+- name: config python pip source
   tags: system-init-pip
   block:
     - name: check pip is set or not
