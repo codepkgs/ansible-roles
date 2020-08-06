@@ -23,7 +23,7 @@
   notify:
     - restart sshd
 
-- name: close dns resolve for sshd
+- name: disable dns resolve for sshd
   tags: system-init-sshd
   lineinfile:
     path: /etc/ssh/sshd_config
