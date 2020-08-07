@@ -6,7 +6,7 @@
 
 * 变量
     ```text
-    local_clock: 是否启用本地时间服务器。
+    local_clock: 是否启用本地时间服务器。默认False，即不启用。
     ntp_servers: 定义ntp服务器的地址。列表。默认为 ntp.aliyun.com
     ntp_restrict: 定义允许哪些客户端进行时间同步。列表。需要有network和netmask字段。默认为空。
     ```

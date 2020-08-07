@@ -12,3 +12,5 @@
       tags: system-init
     - role: sudoers
       tags: sudo
+    - role: ntpd
+      tags: ntpd
