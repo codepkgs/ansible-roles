@@ -4,6 +4,9 @@ all:
     10.0.100.[11:17]:
       ansible_user: root
   children:
+    salt_master:
+      hosts:
+        10.0.100.11:
     ha:
       hosts:
         10.0.100.[11:12]:

@@ -1,0 +1,14 @@
+salt_role: master # master/minion
+salt_master: saltmaster.fdisk.cc # salt master 服务器的地址，minion使用
+# master_publish_port: 4505 # 默认是4505
+# master_ret_port: 4506 # 默认是4506
+
+# file_roots 配置
+file_roots:
+  base:
+    - /srv/salt/base
+# minion_id: <minion_id> # 使用每个机器的FQDN作为minion_id，不要设置该变量。
+
+# 定义自定签发的hosts列表。
+# autosign_hosts:
+#   - "*.fdisk.cc"
