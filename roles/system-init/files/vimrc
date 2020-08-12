@@ -31,7 +31,7 @@ set linebreak         " 启用整词折行
 set hidden            " 自动隐藏buff
 set autoread          " 自动更新文件
 set autochdir         " 自动切换目录
-set hlsearch          " 启用高亮查找
+set nohlsearch          " 启用高亮查找
 set incsearch         " 启用增量查找
 set autoindent        " 启用自动对齐
 set smartindent       " 启用智能对齐
