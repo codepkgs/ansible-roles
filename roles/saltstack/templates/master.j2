@@ -1591,7 +1591,15 @@ file_roots:
 
 {% raw %}#  - cmd_yaml: cat /etc/salt/yaml{% endraw %}
 
-
+{% if pillar_roots is defined and pillar_roots | length %}
+pillar_roots:
+  {% for env in pillar_roots %}
+  {{ env }}:
+  {% for v in pillar_roots[env] %}
+    - {{ v }}
+  {% endfor %}
+  {% endfor %}
+{% endif %}
 
 {% raw %}# A list of paths to be recursively decrypted during pillar compilation.{% endraw %}
 

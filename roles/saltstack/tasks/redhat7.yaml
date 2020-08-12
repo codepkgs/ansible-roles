@@ -51,6 +51,22 @@
         - file_roots is not none
       notify:
         - restart salt-master
+    - name: create saltstack master pillar_roots directory
+      tags: salt-master, config-salt-master
+      file:
+        path: "{{ item.1 }}"
+        recurse: true
+        owner: root
+        group: root
+        mode: "0755"
+        state: directory
+      with_subelements:
+        - "{{ pillar_roots | dict2items }}"
+        - "value"
+      when:
+        - pillar_roots is not none
+      notify:
+        - restart salt-master
     - name: render saltstack autosign file
       tags: salt-master, salt-master-autosign
       template:
