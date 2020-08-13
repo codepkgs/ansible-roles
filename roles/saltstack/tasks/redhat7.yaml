@@ -55,7 +55,6 @@
       tags: salt-master, config-salt-master
       file:
         path: "{{ item.1 }}"
-        recurse: true
         owner: root
         group: root
         mode: "0755"
