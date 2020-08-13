@@ -1075,7 +1075,7 @@ autosign_file: /etc/salt/autosign.conf
 
 {% raw %}# Default Jinja environment options for all templates except sls templates{% endraw %}
 
-{% raw %}#jinja_env:{% endraw %}
+jinja_env:
 
 {% raw %}#  block_start_string: '{%'{% endraw %}
 
@@ -1093,9 +1093,9 @@ autosign_file: /etc/salt/autosign.conf
 
 {% raw %}#  line_comment_prefix:{% endraw %}
 
-{% raw %}#  trim_blocks: False{% endraw %}
+  trim_blocks: True
 
-{% raw %}#  lstrip_blocks: False{% endraw %}
+  lstrip_blocks: True
 
 {% raw %}#  newline_sequence: '\n'{% endraw %}
 
@@ -1104,7 +1104,7 @@ autosign_file: /etc/salt/autosign.conf
 
 {% raw %}# Jinja environment options for sls templates{% endraw %}
 
-{% raw %}#jinja_sls_env:{% endraw %}
+jinja_sls_env:
 
 {% raw %}#  block_start_string: '{%'{% endraw %}
 
@@ -1122,9 +1122,9 @@ autosign_file: /etc/salt/autosign.conf
 
 {% raw %}#  line_comment_prefix:{% endraw %}
 
-{% raw %}#  trim_blocks: False{% endraw %}
+  trim_blocks: True
 
-{% raw %}#  lstrip_blocks: False{% endraw %}
+  lstrip_blocks: True
 
 {% raw %}#  newline_sequence: '\n'{% endraw %}
 
