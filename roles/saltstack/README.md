@@ -22,4 +22,7 @@ pillar_roots:
 autosign_hosts
   - "*.fdisk.cc"
 # minion_id: <minion_id> # 使用每个机器的FQDN作为minion_id，不要设置该变量。
+
+# 是否仅显示差异（发生变化的ID）
+state_output_diff: False
 ```

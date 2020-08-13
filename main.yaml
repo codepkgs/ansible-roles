@@ -25,5 +25,6 @@
       tags: saltstack, salt_master
       vars:
         salt_role: master
+        state_output_diff: True
         autosign_hosts:
           - "*.fdisk.cc"

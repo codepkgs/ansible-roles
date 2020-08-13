@@ -1172,6 +1172,9 @@ autosign_file: /etc/salt/autosign.conf
 
 {% raw %}#state_output_diff: False{% endraw %}
 
+{% if state_output_diff is defined and state_output_diff %}
+state_output_diff: True
+{% endif %}
 
 {% raw %}# Automatically aggregate all states that have support for mod_aggregate by{% endraw %}
 

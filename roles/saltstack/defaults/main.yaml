@@ -25,3 +25,6 @@ pillar_roots:
 # 定义自定签发的hosts列表。
 # autosign_hosts:
 #   - "*.fdisk.cc"
+
+# 是否仅显示差异（发生变化的ID）
+state_output_diff: False
