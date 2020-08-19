@@ -1,5 +1,8 @@
 salt_role: master # master/minion
-salt_master: saltmaster.fdisk.cc # salt master 服务器的地址，minion使用
+
+# salt master 服务器的地址，minion使用，支持多个master
+salt_master:
+  - saltmaster.fdisk.cc
 # master_publish_port: 4505 # 默认是4505
 # master_ret_port: 4506 # 默认是4506
 

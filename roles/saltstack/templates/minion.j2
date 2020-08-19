@@ -29,7 +29,10 @@
 {% raw %}# resolved, then the minion will fail to start.{% endraw %}
 
 {% if salt_master is defined and salt_master | length %}
-master: {{ salt_master }}
+master:
+{% for master in salt_master %}
+  - {{ master }}
+{% endfor %}
 {% else %}
 {% raw %}#master: salt{% endraw %}
 {% endif %}
