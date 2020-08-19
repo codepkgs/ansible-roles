@@ -6,7 +6,7 @@ all:
   children:
     salt_master:
       hosts:
-        10.0.100.11:
+        10.0.100.[11:12]:
     ha:
       hosts:
         10.0.100.[11:12]:
