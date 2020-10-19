@@ -18,6 +18,8 @@
       tags: saltstack, salt_minion
       vars:
         salt_role: minion
+        salt_master:
+          - saltmaster2.fdisk.cc
 
 - hosts: salt_master
   roles:
