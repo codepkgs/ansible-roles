@@ -32,6 +32,7 @@ disable_services_rhel6:
 
 disable_services_rhel7:
   - firewalld
+  - chronyd
 
 sysctl_config:
   - { name: "net.core.somaxconn", value: "65535" }
