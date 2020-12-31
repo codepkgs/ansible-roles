@@ -14,3 +14,5 @@
         resolv_nameservers:
           - "10.0.0.1"
           - "10.0.0.11"
+    - role: chrony
+      tags: chrony

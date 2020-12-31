@@ -1,0 +1,2 @@
+chrony_upstream_servers: ["ntp.aliyun.com"]
+chrony_acls: []
