@@ -4,3 +4,13 @@
   roles:
     - role: system-init
       tags: system-init
+    - role: resolv
+      tags: resolv
+      vars:
+        resolv_search:
+          - "fdisk.cc"
+        resolv_domain: "fdisk.cc"
+        resolv_options: "rotate timeout:2 attempts:3"
+        resolv_nameservers:
+          - "10.0.0.1"
+          - "10.0.0.11"
