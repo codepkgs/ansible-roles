@@ -16,3 +16,11 @@
           - "10.0.0.11"
     - role: chrony
       tags: chrony
+
+- hosts: jenkins
+  gather_facts: yes
+  roles:
+  - role: jenkins
+    tags: jenkins
+    vars:
+      jenkins_shell: /bin/bash
