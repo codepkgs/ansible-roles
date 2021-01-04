@@ -9,6 +9,8 @@
     测试时使用了 redis 存储 facts 信息，需要本地启用 redis-server，且没有密码，默认使用的 db 为15
     可以在 ansible.cfg 中修改。
 
+    安装redis模块：pip install redis
+
     gathering = smart
     fact_caching = redis
     fact_caching_timeout = 604800
