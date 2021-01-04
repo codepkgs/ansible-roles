@@ -12,7 +12,6 @@
         resolv_domain: "fdisk.cc"
         resolv_options: "rotate timeout:2 attempts:3"
         resolv_nameservers:
-          - "10.0.0.1"
           - "10.0.0.11"
     - role: chrony
       tags: chrony
