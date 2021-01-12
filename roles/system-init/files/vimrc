@@ -35,4 +35,3 @@ set browsedir=buffer  " 文件浏览器的目录
 set scrolloff=0       " 到达边界时自动滚屏
 set pastetoggle=<F12> " 设置粘贴模式的快捷键
 set ignorecase        " 忽略大小写
-
