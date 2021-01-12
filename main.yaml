@@ -15,6 +15,12 @@
           - "10.0.0.11"
     - role: chrony
       tags: chrony
+    - role: saltstack
+      tags: saltstack
+      vars:
+        salt_role: minion
+        salt_master: ["salt.fdisk.cc"]
+
 
 - hosts: jenkins
   gather_facts: yes
@@ -23,3 +29,13 @@
     tags: jenkins
     vars:
       jenkins_shell: /bin/bash
+
+- hosts: saltmaster
+  gather_facts: yes
+  roles:
+  - role: saltstack
+    tags: saltstack
+    vars:
+      salt_role: master
+      autosign_hosts:
+        - "*.fdisk.cc"
