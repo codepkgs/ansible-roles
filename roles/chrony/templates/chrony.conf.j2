@@ -28,7 +28,7 @@ rtcsync
 {% for acl in chrony_acls %}
 {{ acl }}
 {% endfor %}
-{% endif %}
+{% endif -%}
 
 # Serve time even if not synchronized to a time source.
 # local stratum 10
