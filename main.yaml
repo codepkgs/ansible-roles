@@ -2,8 +2,6 @@
 - hosts: all
   gather_facts: true
   roles:
-    - role: system-init
-      tags: system-init
     - role: resolv
       tags: resolv
       vars:
@@ -12,7 +10,10 @@
         resolv_domain: "fdisk.cc"
         resolv_options: "rotate timeout:2 attempts:3"
         resolv_nameservers:
-          - "10.0.0.11"
+          - "10.0.100.1"
+          - "10.0.100.2"
+    - role: system-init
+      tags: system-init
     - role: chrony
       tags: chrony
     - role: saltstack
