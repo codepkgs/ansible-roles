@@ -1,42 +1,5 @@
 ---
-- hosts: all
-  gather_facts: true
+- hosts: "{{ host }}"
+  gather_facts: "{{ gather_facts | default('yes') }}"
   roles:
-    - role: resolv
-      tags: resolv
-      vars:
-        resolv_search:
-          - "fdisk.cc"
-        resolv_domain: "fdisk.cc"
-        resolv_options: "rotate timeout:2 attempts:3"
-        resolv_nameservers:
-          - "10.0.100.1"
-          - "10.0.100.2"
-    - role: system-init
-      tags: system-init
-    - role: chrony
-      tags: chrony
-    - role: saltstack
-      tags: saltstack
-      vars:
-        salt_role: minion
-        salt_master: ["salt.fdisk.cc"]
-
-
-- hosts: jenkins
-  gather_facts: yes
-  roles:
-  - role: jenkins
-    tags: jenkins
-    vars:
-      jenkins_shell: /bin/bash
-
-- hosts: saltmaster
-  gather_facts: yes
-  roles:
-  - role: saltstack
-    tags: saltstack
-    vars:
-      salt_role: master
-      autosign_hosts:
-        - "*.fdisk.cc"
+    - role: "{{ role }}"
