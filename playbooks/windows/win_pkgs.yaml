@@ -9,6 +9,7 @@
       with_items:
         - microsoft-edge
         - notepadplusplus
+        - 7zip
         - putty
         - telnet
       when:

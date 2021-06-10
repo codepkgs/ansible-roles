@@ -1,0 +1,19 @@
+---
+- hosts: "{{ host }}"
+  gather_facts: "{{ gather_facts | default('no') }}"
+  tasks:
+    - name: "config ntp client for windows"
+      ansible.windows.win_powershell:
+        script: |
+          Push-Location
+          Set-Location HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\DateTime\Servers
+          Set-ItemProperty . 0 "172.16.201.4"
+          Set-ItemProperty . 1 "172.16.201.224"
+          Set-ItemProperty . "(Default)" "0"
+          Set-Location HKLM:\SYSTEM\CurrentControlSet\services\W32Time\Parameters
+          Set-ItemProperty . NtpServer "172.16.201.4 172.16.201.224"
+          Set-Location HKLM:\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient
+          Set-ItemProperty . SpecialPollInterval "120"
+          Pop-Location
+          Stop-Service w32time
+          Start-Service w32time
