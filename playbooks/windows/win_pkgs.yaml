@@ -1,0 +1,26 @@
+---
+- hosts: "{{ host }}"
+  gather_facts: "{{ gather_facts | default('no') }}"
+  tasks:
+    - name: install windows packages with defaults pkgs
+      win_chocolatey:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - microsoft-edge
+        - notepadplusplus
+        - putty
+        - telnet
+      when:
+        - pkgs is undefined
+
+    - name: install or uninstall windows packages with user defined
+      win_chocolatey:
+        name: "{{ item }}"
+        state: "{{ state | default('present') }}"
+      with_items: "{{ pkgs }}"
+      when:
+        - state is defined
+        - state is not none
+        - pkgs is defined
+        - pkgs | list

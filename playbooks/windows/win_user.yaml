@@ -1,0 +1,58 @@
+---
+- hosts: "{{ host }}"
+  gather_facts: "{{ gather_facts | default('no') }}"
+  tasks:
+    - name: "create user {{ user }} and join to groups {{usergroups}}"
+      ansible.windows.win_user:
+        name: "{{ user | mandatory }}"
+        password: "{{ password | mandatory }}"
+        account_disabled: no
+        groups: "{{ usergroups | mandatory }}"
+        password_never_expires: yes
+        state: present
+      when:
+        - state is defined
+        - state == 'present'
+        - password is defined
+        - password is not none
+        - usergroups | list
+
+    - name: "create user {{ user }} with default groups Users"
+      ansible.windows.win_user:
+        name: "{{ user | mandatory }}"
+        password: "{{ password | mandatory }}"
+        account_disabled: no
+        password_never_expires: yes
+        state: present
+      when:
+        - state is defined
+        - state == 'present'
+        - password is defined
+        - password is not none
+        - usergroups is undefined
+
+    - name: "delete user {{ user }}"
+      ansible.windows.win_user:
+        name: "{{ user | mandatory }}"
+        account_disabled: no
+        password_never_expires: yes
+        state: absent
+      when:
+        - state is defined
+        - state == 'absent'
+
+    - name: "enabled user {{ user }}"
+      ansible.windows.win_user:
+        name: "{{ user | mandatory }}"
+        account_disabled: no
+      when:
+        - state is defined
+        - state == 'enabled'
+
+    - name: "disabled user {{ user | mandatory }}"
+      ansible.windows.win_user:
+        name: "{{ user | mandatory }}"
+        account_disabled: yes
+      when:
+        - state is defined
+        - state == 'disabled'
