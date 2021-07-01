@@ -1,14 +1,30 @@
 ---
 - name: install java 8
   package:
-    name: java-1.8.0-openjdk
+    name: "{{ item }}"
     state: present
+  with_items:
+    - java-1.8.0-openjdk
+    - java-1.8.0-openjdk-devel
   when:
     - java_version | string == '8'
 
 - name: install java 11
   package:
-    name: java-11-openjdk
+    name: "{{ item }}"
     state: present
+  with_items:
+    - java-11-openjdk
+    - java-11-openjdk-devel
   when:
     - java_version | string == '11'
+
+- name: install java 16
+  package:
+    name: "{{ items }}"
+    state: present
+  with_items:
+    - java-latest-openjdk
+    - java-latest-openjdk-devel
+  when:
+    - java_version | string == '16'
