@@ -1,0 +1,26 @@
+---
+- name: check confd is installed or not
+  shell: |
+    which confd
+  register: confd_cmd
+  ignore_errors: true
+  changed_when: false
+  no_log: true
+
+- name: download and install confd to /usr/local/bin
+  get_url:
+    url: https://github.com/kelseyhightower/confd/releases/download/v{{confd_version}}/confd-{{confd_version}}-linux-amd64
+    dest: /usr/local/bin/confd
+    owner: root
+    group: root
+    mode: 0755
+  when:
+    - "'which' not in confd_cmd"
+
+- name: mkdir confd config directory
+  file:
+    path: /etc/confd/conf.d
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
