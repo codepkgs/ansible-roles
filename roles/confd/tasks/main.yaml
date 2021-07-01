@@ -19,8 +19,11 @@
 
 - name: mkdir confd config directory
   file:
-    path: /etc/confd/conf.d
+    path: /etc/confd/{{ item }}
     owner: root
     group: root
     mode: 0755
     state: directory
+  with_items:
+    - conf.d
+    - templates
