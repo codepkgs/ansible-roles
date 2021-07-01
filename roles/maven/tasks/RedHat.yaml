@@ -1,0 +1,29 @@
+---
+- name: check maven version is supported or not
+  debug:
+    msg: "The maven version {{maven_version}} is not supported, supported maven versions: {{maven_versions}}"
+  failed_when: maven_version not in maven_versions
+
+- name: check maven is installed or not
+  ansible.builtin.stat:
+    path: /usr/local/apache-maven-{{maven_version}}
+  register: mvnst
+
+- name: download and unarchive maven binary package
+  unarchive:
+    src: https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/{{maven_version}}/binaries/apache-maven-{{maven_version}}-bin.tar.gz
+    remote_src: yes
+    dest: /usr/local/
+    owner: root
+    group: root
+  when:
+    - mvnst.stat.isdir is not defined or not mvnst.stat.isdir
+
+- name: config environment for maven
+  template:
+    src: maven.sh.j2
+    dest: /etc/profile.d/maven.sh
+    owner: root
+    group: root
+    mode: 0644
+  notify: exec_maven_profile

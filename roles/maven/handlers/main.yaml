@@ -1,0 +1,4 @@
+---
+- name: exec_maven_profile
+  shell: |
+    /bin/bash /etc/profile.d/maven.sh
