@@ -1,4 +1,7 @@
-# 创建用户
+# 用户管理
+
+## 创建用户
+
 ```text
 变量：create_users，字典形式
 
@@ -14,14 +17,15 @@ generate_ssh_key: 是否为用户产生 ssh key pair，默认 no
 
 # 示例
 vars:
-  create_usrs:
+  create_users:
     - username: zhangsan
       shell: /bin/zsh
       groups: ['wheel']
       create_home: yes
 ```
 
-# 删除用户
+## 删除用户
+
 ```text
 变量：delete_users，字典形式。
 

@@ -20,7 +20,7 @@
   user:
     state: absent
     name: "{{ item.username | mandatory }}"
-    remove: "{{ item.remove_home | default('yes', boolean=True) }}"
+    remove: "{{ item.remove_home | default('no', boolean=True) }}"
   with_items:
     - "{{ delete_users }}"
   when:
