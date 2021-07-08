@@ -1,0 +1,15 @@
+---
+- hosts: "{{ host }}"
+  gather_facts: false
+  tasks:
+    - name: "management the users in windows system"
+      win_user:
+        name: "{{ user.name }}"
+        password: "{{ user.password | default(omit) }}"
+        account_disabled: "{{ user.disabled | default('no') }}"
+        groups: "{{ user.groups | default(omit) }}"
+        password_never_expires: yes
+        state: "{{ user.state | default('present') }}"
+      with_items: "{{ users }}"
+      loop_control:
+        loop_var: user
