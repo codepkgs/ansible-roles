@@ -1,5 +1,5 @@
 ---
-- name: install ntpd
+- name: install ntpd package
   package:
     name: ntp
     state: present
@@ -12,7 +12,7 @@
     group: root
     mode: "0644"
   notify:
-    - group ntpd
+    - restart ntpd
   when:
     - "'alibaba' in ansible_facts.product_name.lower()"
 
@@ -24,11 +24,11 @@
     group: root
     mode: "0644"
   notify:
-    - group ntpd
+    - restart ntpd
   when:
     - "'alibaba' not in ansible_facts.product_name.lower()"
 
-- name: stop chronyd
+- name: stop chronyd service
   service:
     name: chronyd
     state: stopped

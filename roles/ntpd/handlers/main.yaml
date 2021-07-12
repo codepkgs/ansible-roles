@@ -1,6 +1,5 @@
 ---
 - name: restart ntpd
-  listen: group ntpd
   service:
     name: ntpd
     state: restarted
