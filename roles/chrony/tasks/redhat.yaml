@@ -1,10 +1,10 @@
 ---
-- name: install chrony
+- name: install chrony package
   package:
     name: chrony
     state: present
 
-- name: render chrony config(/etc/chrony.conf)
+- name: render chrony config (/etc/chrony.conf)
   template:
     src: chrony.conf.j2
     dest: /etc/chrony.conf
@@ -23,9 +23,3 @@
     state: stopped
     enabled: false
   when: "'ntpd' in services"
-
-- name: ensure chronyd is running
-  service:
-    name: chronyd
-    state: started
-    enabled: yes

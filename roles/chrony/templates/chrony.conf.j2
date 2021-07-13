@@ -31,7 +31,11 @@ rtcsync
 {% endif -%}
 
 # Serve time even if not synchronized to a time source.
+{% if local_as_server %}
+local stratum 10
+{% else %}
 # local stratum 10
+{% endif %}
 
 # Specify file containing keys for NTP authentication.
 #keyfile /etc/chrony.keys
