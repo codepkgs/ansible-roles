@@ -34,5 +34,5 @@
   ansible-playbook main.yaml -e '{"role": "chrony", "host": "10.100.2.1"}'
 
   # 2. 启用 chrony，并将本地作为NTP服务器。
-  ansible-playbook main.yaml -e '{"role": "chrony", "host": "10.100.2.1", "local_as_server": "true", "chrony_acls": ["allow 10.100.2.0/24"]}'
+  ansible-playbook main.yaml -e '{"role": "chrony", "host": "10.100.2.1", "local_as_server": true, "chrony_acls": ["allow 10.100.2.0/24"]}'
   ```
