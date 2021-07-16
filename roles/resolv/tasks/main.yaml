@@ -1,4 +1,5 @@
 ---
-- import_tasks: redhat.yaml
+- name: import tasks for redhat os family
+  import_tasks: redhat.yaml
   when:
     - ansible_facts.os_family.lower() == 'redhat'
