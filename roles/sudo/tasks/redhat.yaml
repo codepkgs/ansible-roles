@@ -1,0 +1,24 @@
+---
+- name: set sudoers for user
+  lineinfile:
+    path: /etc/sudoers
+    regexp: "^\\b{{ user.name }}\\b"
+    line: "{{ user.name }}   ALL=(ALL)   NOPASSWD: ALL"
+    state: "{{ user.state | default('present') }}"
+  with_items: "{{ sudo_users | list }}"
+  loop_control:
+    loop_var: "user"
+  when:
+    - sudo_users | length > 0
+
+- name: set sudoers for group
+  lineinfile:
+    path: /etc/sudoers
+    regexp: "^%{{ group.name }}"
+    line: "%{{ group.name }}   ALL=(ALL)   NOPASSWD: ALL"
+    state: "{{ user.state | default('present') }}"
+  with_items: "{{ sudo_groups | list }}"
+  loop_control:
+    loop_var: "group"
+  when:
+    - sudo_groups | length > 0
