@@ -1,5 +1,0 @@
-172.16.197.111
-172.16.197.112
-
-[all:vars]
-ansible_user=zhanghe5
