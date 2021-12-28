@@ -1,0 +1,13 @@
+---
+- name: copy squid yum repo
+  copy:
+    src: squid.repo
+    dest: /etc/yum.repos.d/squid.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install squid package
+  package:
+    name: squid
+    state: present
