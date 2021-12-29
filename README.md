@@ -26,7 +26,9 @@
   roles主要针对 RedHat 系列，主要是 CentOS 7. 其他的系统没有做过充分的测试。
   ```
 
-- main.yaml
+- role.yaml
+
+  执行单独的 role 时使用该文件。
 
   ```text
   该文件为 anbile-roles 的入口文件，使用该文件时需要传递如下几个变量：
@@ -39,3 +41,7 @@
   示例：使用hostname这个role修改主机名
   ansible-playbook main.yaml -e host=10.100.2.1 -e role=hostname -e hostname='vm01.fdisk.cc'
   ```
+
+- main.yaml
+
+  所有机器的 ansible 配置的入口文件。
