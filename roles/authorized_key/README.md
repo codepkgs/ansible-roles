@@ -10,12 +10,12 @@
   users: 指定从指定的用户中添加或删除public key。
       格式如下: users中可以指定多个用户。
       users:
-        - name: username1             # 要添加或删除的用户名
-          state: present | absent     # 期望的状态。absent或present。默认值是present
+        - username: username1             # 要添加或删除的用户名
+          state: present | absent         # 期望的状态。absent或present。默认值是present
           key: "http://10.0.100.1/keys/user.pub"          # public key文件的名称,该文件需要放在服务器上。
           key_options: "ssh key options, if not definded, omit"
           key_from: url    # 指定key的来源。可以是url，也可以是file
-        - name: username2
+        - username: username2
           state: present
           key: "~/.ssh/id_rsa.pub"
           key_from: file
