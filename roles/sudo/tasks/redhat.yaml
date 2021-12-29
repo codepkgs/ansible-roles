@@ -1,5 +1,6 @@
 ---
 - name: set sudoers for user
+  tags: sudo:users
   lineinfile:
     path: /etc/sudoers
     regexp: "^\\b{{ user.name }}\\b"
@@ -12,6 +13,7 @@
     - sudo_users | length > 0
 
 - name: set sudoers for group
+  tags: sudo:groups
   lineinfile:
     path: /etc/sudoers
     regexp: "^%{{ group.name }}"
