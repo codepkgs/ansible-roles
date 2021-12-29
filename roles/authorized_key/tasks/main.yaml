@@ -1,8 +1,20 @@
 ---
-- name: manage authorized key
+- name: manage authorized key from url
   authorized_key:
     user: "{{ item.name }}"
     state: "{{ item.state | default('present', boolean=true) }}"
     key: "{{ item.key }}"
     key_options: "{{ item.key_options | default(omit)}}"
   with_items: "{{ users }}"
+  when:
+    - item.key_from == 'url'
+
+- name: manage authorized key from file
+  authorized_key:
+    user: "{{ item.name }}"
+    state: "{{ item.state | default('present', boolean=true) }}"
+    key: "{{ lookup('file', item.key) }}"
+    key_options: "{{ item.key_options | default(omit)}}"
+  with_items: "{{ users }}"
+  when:
+    - item.key_from == 'file'

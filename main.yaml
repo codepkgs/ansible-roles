@@ -1,5 +1,13 @@
 ---
-- hosts: "{{ host }}"
-  gather_facts: "{{ facts | default('yes') }}"
+- hosts: all
+  gather_facts: false
   roles:
-    - role: "{{ role }}"
+    - role: authorized_key
+      vars:
+        
+        users:
+          - name: zhanghe5
+            key_from: file
+            key: "~/.ssh/id_rsa.pub"
+            state: present
+          
