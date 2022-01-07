@@ -2,7 +2,7 @@
 
 - 功能
 
-  该 role 用于安装并配置 `chrony` 服务，并关闭 `ntpd` 服务，如果没有配置 `chronyd_upstream_servers` 变量，则采用阿里云的 `ntp` 服务器 (`ntp.aliyun.com`).
+  该 role 用于安装并配置 `chrony` 服务，如果没有配置 `chronyd_upstream_servers` 变量，则采用阿里云的 `ntp` 服务器 (`ntp.aliyun.com`).
 
 - 变量
 

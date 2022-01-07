@@ -1,13 +1,6 @@
 ---
-- block:
-  - name: restart ntpd
-    service:
-      name: ntpd
-      state: restarted
-      enabled: true
-  rescue:
-    - name: restart ntpd
-      service:
-        name: ntp
-        state: restarted
-        enabled: true
+- name: restart ntpd
+  service:
+    name: "{{ntp_service_name}}"
+    state: restarted
+    enabled: true

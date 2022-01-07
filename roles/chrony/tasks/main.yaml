@@ -1,4 +1,66 @@
-- name: import tasks for redhat os family
-  import_tasks: redhat.yaml
+---
+- name: install chrony package and set fact for redhat family
+  block:
+    - name: set fact for redhat family
+      set_fact:
+        chrony_config: "/etc/chrony.conf"
+        chrony_service_name: "chronyd"
+        ntp_service_name: "ntpd"
+    - name: install chrony package
+      yum:
+        name: chrony
+        state: present
   when:
-    - ansible_facts.os_family.lower() == 'redhat'
+    - ansible_os_family.lower() == 'redhat'
+
+- name: install chrony package and set fact for debian family
+  block:
+    - name: set fact for debian family
+      set_fact:
+        chrony_config: "/etc/chrony/chrony.conf"
+        chrony_service_name: "chrony"
+        ntp_service_name: "ntp"
+    - name: install chrony package
+      apt:
+        name: chrony
+        state: present
+        update_cache: yes
+  when:
+    - ansible_os_family.lower() == 'debian' 
+
+- name: copy chrony config for aliyun ecs
+  copy:
+    src: aliyun_chrony.conf
+    dest: "{{chrony_config}}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - restart chrony
+  when:
+    - "'alibaba' in ansible_facts.product_name.lower()"
+
+- name: render chrony config (/etc/chrony.conf)
+  template:
+    src: chrony.conf.j2
+    dest: "{{chrony_config}}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - restart chrony
+  when:
+    - "'alibaba' not in ansible_facts.product_name.lower()"
+
+- name: ensure chrony is running
+  service: 
+    name: "{{chrony_service_name}}"
+    state: started
+    enabled: yes
+  ignore_errors: yes
+
+- name: ensure ntp service is disabled
+  service:
+    name: "{{ntp_service_name}}"
+    enabled: false
+  ignore_errors: yes

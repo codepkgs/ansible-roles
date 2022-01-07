@@ -1,8 +1,7 @@
 #jinja2: lstrip_blocks: True
-# Use public servers from the pool.ntp.org project.
-# Please consider joining the pool (http://www.pool.ntp.org/join.html).
+# Use public servers
 {% for server in chrony_upstream_servers %}
-server {{ server }} iburst
+server {{ server }} minpoll 4 maxpoll 10 iburst
 {% endfor %}
 
 # Record the rate at which the system clock gains/losses time.
@@ -36,6 +35,9 @@ local stratum 10
 {% else %}
 # local stratum 10
 {% endif %}
+
+# Disable logging of client accesses.
+noclientlog
 
 # Specify file containing keys for NTP authentication.
 #keyfile /etc/chrony.keys
