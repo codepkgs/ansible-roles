@@ -1,0 +1,22 @@
+---
+- name: set fact for support java versions
+  set_fact:
+    java_versions: ["11", "17"]
+
+- name: check java version
+  debug:
+    msg: "java version {{java_version}} is not supported, supported versions: {{java_versions}}"
+  failed_when: java_version | string not in java_versions
+  when:
+    - java_version | string not in java_versions
+
+- name: install openjdk {{java_version}}
+  apt:
+    name: "openjdk-{{java_version}}-jdk"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - 
+  when:
+    - java_version | string in java_versions

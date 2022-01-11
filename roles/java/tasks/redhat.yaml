@@ -1,0 +1,30 @@
+---
+- name: set fact for support java versions
+  set_fact:
+    java_versions: ["8", "11", "latest"]
+
+- name: check java version
+  debug:
+    msg: "java version {{java_version}} is not supported, supported versions: {{java_versions}}"
+  failed_when: java_version | string not in java_versions
+  when: java_version | string not in java_versions
+
+- name: install java 8
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - java-1.8.0-openjdk
+    - java-1.8.0-openjdk-devel
+  when:
+    - java_version | string == '8'
+
+- name: install java {{java_version}}
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - java-{{java_version}}-openjdk
+    - java-{{java_version}}-openjdk-devel
+  when:
+    - java_version | string in java_versions
