@@ -1,5 +1,14 @@
 ---
-- name: import tasks for redhat os family
-  import_tasks: redhat.yaml
-  when:
-    - ansible_facts.os_family.lower() == 'redhat'
+- name: check resolv_nameservers
+  debug:
+    msg: "resolv_nameservers config error, it must be list and can not empty"
+  failed_when: resolv_nameservers is not defined or resolv_nameservers is none
+  when: resolv_nameservers is not defined or resolv_nameservers is none
+
+- name: render template for resolv.conf
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: "0644"
