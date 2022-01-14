@@ -1,0 +1,29 @@
+---
+- name: set fact
+  set_fact:
+    redis_config_filename: '/etc/redis/redis.conf'
+    redis_servername: redis-server
+
+- name: config source list
+  block:
+    - name: config apt key for redis
+      apt_key:
+        url: https://packages.redis.io/gpg
+        state: present
+
+    - name: config apt repository for redis
+      apt_repository:
+        repo: deb https://packages.redis.io/deb {{ansible_distribution_release}} main
+        state: present
+        filename: redis
+        mode: 0644
+
+- name: install redis
+  apt:
+    name: redis-server
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: include redis config
+  include_tasks: redis_config.yaml

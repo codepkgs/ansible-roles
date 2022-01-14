@@ -1,0 +1,146 @@
+- name: config redis bind address
+  lineinfile:
+    path: "{{redis_config_filename}}"
+    regexp: '^bind\s+'
+    line: 'bind {{redis_listen_address}}'
+  notify: restart redis
+
+- name: config redis listen port
+  lineinfile:
+    path: "{{redis_config_filename}}"
+    regexp: '^port\s+'
+    line: 'port {{redis_port | int}}'
+  notify: restart redis
+
+- name: config redis password (your password)
+  lineinfile:
+    path: "{{redis_config_filename}}"
+    regexp: '^requirepass\s+'
+    insertafter: '^# requirepass'
+    line: 'requirepass {{redis_password}}'
+  notify: restart redis
+  when:
+    - redis_password is defined
+    - redis_password | string | length > 0
+
+- name: config redis password (random password)
+  block:
+    - name: write random redis password to file
+      set_fact:
+        random_redis_password: "{{ lookup('password', '/tmp/random_redis_password.txt length=15 chars=ascii_letters,digits,punctuation') }}"
+
+    - name: copy random password to host
+      copy:
+        dest: "/tmp/random_redis_password.txt"
+        content: "{{lookup('file', '/tmp/random_redis_password.txt')}}"
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: redis random password file
+      debug:
+        msg: "write random password to /tmp/random_redis_password.txt"
+    
+    - name: config redis password (random password)
+      lineinfile:
+        path: "{{redis_config_filename}}"
+        regexp: '^requirepass\s+'
+        insertafter: '^# requirepass'
+        line: 'requirepass {{random_redis_password}}'
+      notify: restart redis
+  when: redis_password is undefined or redis_password | string | length == 0
+
+- name: config redis maxclients (enable)
+  lineinfile:
+    path: "{{redis_config_filename}}"
+    regexp: '^maxclients\s+'
+    insertafter: '#\s+maxclients\s+'
+    line: 'maxclients {{redis_maxclients | int}}'
+  notify: restart redis
+  when: redis_maxclients | int != 0
+
+- name: config redis maxclients (disalbe)
+  lineinfile:
+    path: "{{redis_config_filename}}"
+    regexp: '^maxclients\s+(.*)$'
+    insertafter: '#\s+maxclients\s+'
+    line: '# maxclients \1'
+    backrefs: yes
+  notify: restart redis
+  when: redis_maxclients | int == 0
+
+- name: config redis maxmemory (enable)
+  lineinfile:
+    path: "{{redis_config_filename}}"
+    regexp: '^maxmemory\s+'
+    insertafter: '#\s+maxmemory\s+'
+    line: 'maxmemory {{redis_maxmemory}}'
+  notify: restart redis
+  when:
+    - redis_maxmemory is defined
+    - redis_maxmemory | string | length >= 2
+
+- name: config redis maxmemory (disable)
+  lineinfile:
+    path: "{{redis_config_filename}}"
+    regexp: '^maxmemory\s+(.*)$'
+    insertafter: '#\s+maxmemory\s+'
+    line: '# maxmemory \1'
+    backrefs: yes
+  notify: restart redis
+  when:
+    - redis_maxmemory is defined
+    - redis_maxmemory | string | length < 2
+
+- name: config redis databases
+  lineinfile:
+    path: "{{redis_config_filename}}"
+    regexp: '^databases\s+'
+    line: 'databases {{redis_databases | int}}'
+  notify: restart redis
+
+- name: config redis dir
+  block:
+    - name: create redis dir
+      file:
+        path: "{{redis_dir}}"
+        state: directory
+        owner: redis
+        group: redis
+        mode: 0750
+
+    - name: config redis dir
+      lineinfile:
+        path: "{{redis_config_filename}}"
+        regexp: '^dir\s+'
+        line: 'dir {{redis_dir}}'
+      notify: restart redis
+
+- name: config redis dbfilename
+  lineinfile:
+    path: "{{redis_config_filename}}"
+    regexp: '^dbfilename\s+'
+    line: 'dbfilename {{redis_dbfilename}}'
+  notify: restart redis
+
+- name: config redis appendonly
+  lineinfile:
+    path: "{{redis_config_filename}}"
+    regexp: '^appendonly\s+'
+    line: 'appendonly {{ "yes" if redis_appendonly|bool else "no"}}'
+  notify: restart redis
+
+- name: config redis appendfilename
+  lineinfile:
+    path: "{{redis_config_filename}}"
+    regexp: '^appendfilename\s+'
+    line: 'appendfilename "{{redis_appendfilename}}"'
+  notify: restart redis
+
+- name: config redis appendfsync
+  lineinfile:
+    path: "{{redis_config_filename}}"
+    regexp: '^appendfsync\s+'
+    line: 'appendfsync {{redis_appendfsync}}'
+  notify: restart redis
+  when: redis_appendfsync in ['always', 'no', 'everysec']

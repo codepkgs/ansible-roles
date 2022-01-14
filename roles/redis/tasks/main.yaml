@@ -1,16 +1,3 @@
 ---
-- name: install epel-release
-  package:
-    name: epel-release
-    state: present
-
-- name: install redis
-  package:
-    name: redis
-    state: present
-
-- name: ensure redis is running
-  service:
-    name: redis
-    state: started
-    enabled: yes
+- name: import redis for redhat family
+  include_tasks: "{{ansible_os_family.lower() }}.yaml"

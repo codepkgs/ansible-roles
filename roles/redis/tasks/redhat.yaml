@@ -1,0 +1,46 @@
+---
+- name: set fact
+  set_fact:
+    redis_config_filename: '/etc/redis.conf'
+    redis_servername: redis
+
+- name: check redis_version
+  debug:
+    msg: "redis version {{redis_version}} is not supported, supported versions: {{redis_supported_versions}}"
+  failed_when: redis_version not in redis_supported_versions
+  when: redis_version not in redis_supported_versions
+
+- name: copy remi repo
+  copy:
+    src: remi.repo
+    dest: /etc/yum.repos.d/remi.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: check redis version
+  shell: >
+    yum search redis --showduplicates |
+    grep "^redis-{{redis_version}}" |
+    tail -n 1 |
+    awk -F':' '{print $1}'
+  register: matched_redisversion
+  when: 
+    - redis_version | string != 'latest'
+
+- name: "install redis version: {{ matched_redisversion.stdout }}"
+  yum:
+    name: "{{matched_redisversion.stdout}}"
+    state: present
+  when:
+    - redis_version | string != 'latest'
+    - matched_redisversion.stdout_lines | length > 0
+
+- name: install latest redis
+  yum:
+    name: redis
+    state: latest
+  when: redis_version | string == 'latest'
+
+- name: include redis config
+  include_tasks: redis_config.yaml
