@@ -1,19 +1,23 @@
 - name: set facts for redhat os family
   set_fact:
     mariadb_client_config: '/etc/my.cnf.d/mysql-clients.cnf'
+    mariadb_client_section: 'mysql'
     mariadb_server_config: '/etc/my.cnf.d/server.cnf'
+    mariadb_server_secion: 'mariadb'
   when: ansible_os_family.lower() == 'redhat'
 
 - name: set facts for debian os family
   set_fact:
     mariadb_client_config: '/etc/mysql/mariadb.conf.d/50-client.cnf'
+    mariadb_client_section: 'client'
     mariadb_server_config: '/etc/mysql/mariadb.conf.d/50-server.cnf'
+    mariadb_server_secion: 'mariadb'
   when: ansible_os_family.lower() == 'debian'
 
 - name: mariadb client configs
   ini_file:
     path: "{{mariadb_client_config}}"
-    section: 'mysql'
+    section: "{{mariadb_client_section}}"
     option: "{{item.key}}"
     value: "{{item.value}}"
   with_dict: "{{mariadb_client_configs}}"
@@ -22,7 +26,7 @@
 - name: mariadb server configs
   ini_file:
     path: "{{mariadb_server_config}}"
-    section: 'mariadb'
+    section: "{{mariadb_server_secion}}"
     option: "{{item.key}}"
     value: "{{item.value}}"
   with_dict: "{{mariadb_server_configs}}"
