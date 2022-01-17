@@ -1,2 +1,9 @@
 ---
-mariadb_version: 10.4
+mariadb_version: '10.6'
+
+mariadb_client_configs:
+  default-character-set: 'utf8mb4'
+
+mariadb_server_configs:
+  character-set-server: 'utf8mb4'
+  bind-address: '127.0.0.1'

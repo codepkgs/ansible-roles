@@ -1,0 +1,30 @@
+- name: check mariadb version
+  debug:
+    msg: "mariadb version {{mariadb_version}} is not supported, supported versions: {{mariadb_supported_versions}}"
+  failed_when: mariadb_version not in mariadb_supported_versions
+  when: mariadb_version not in mariadb_supported_versions
+
+- name: config apt key for mariadb
+  apt_key:
+    url: https://mariadb.org/mariadb_release_signing_key.asc
+    state: present
+
+- name: copy mariadb repository
+  template:
+    src: debian_mariadb_repo.j2
+    dest: /etc/apt/sources.list.d/MariaDB.list
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: install mariadb server
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - mariadb-server
+
+- name: include mariadb config
+  include_tasks: configs.yaml

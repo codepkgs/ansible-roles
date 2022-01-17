@@ -1,5 +1,3 @@
 ---
-- import_tasks: centos.yaml
-  when:
-    - ansible_facts.distribution.lower() == 'centos'
-    - ansible_facts.distribution_major_version == '7'
+- name: include playbook for your system
+  include_tasks: "{{ ansible_os_family | lower }}.yaml"

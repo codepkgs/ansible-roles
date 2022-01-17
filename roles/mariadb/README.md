@@ -1,21 +1,20 @@
 # 说明
-* 功能
-    ```text
-    1. 安装mariadb并启动
-    2. 修改bind-address的地址
-    ```
 
-* 变量
-    ```text
-    mariadb_bind_address        # 修改mariadb的bind-address。默认是127.0.0.1
-    ```
+- 功能
+  受支持的版本：10.5、10.6、10.7。默认安装 10.6 版本
 
-* 使用
-    ```json
-    - hosts: 192.168.1.1
-      roles:
-        - role: mariadb
-          tags: mariadb
-          vars:
-            - mariadb_bind_address: 127.0.0.1
-    ```
+- 变量
+
+  ```text
+  mariadb_version               # 要安装的mariadb版本。默认10.6
+  mariadb_client_configs        # 存放MariaDB Client端的配置信息。字典形式
+  mariadb_server_configs        # 存放MariaDB Server端的配置信息。字典形式。默认绑定的地址：127.0.0.1
+  ```
+
+- 使用
+  ```json
+  - hosts: 192.168.1.1
+    roles:
+      - role: mariadb
+        tags: mariadb
+  ```
