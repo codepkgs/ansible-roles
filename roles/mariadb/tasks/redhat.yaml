@@ -2,6 +2,7 @@
   debug:
     msg: "mariadb version {{mariadb_version}} is not supported, supported versions: {{mariadb_supported_versions}}"
   failed_when: mariadb_version not in mariadb_supported_versions
+  changed_when: false
   when: mariadb_version not in mariadb_supported_versions
 
 - name: copy mariadb repository
