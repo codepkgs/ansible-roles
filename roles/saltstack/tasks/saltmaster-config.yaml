@@ -1,0 +1,108 @@
+- name: config salt listen address
+  lineinfile:
+    path: /etc/salt/master
+    insertafter: "^#interface:"
+    line: "interface: {{master_interface}}"
+  notify: restart salt-master
+  when: 
+    - master_interface is defined
+    - master_interface is not none
+
+- name: config publish_port
+  lineinfile:
+    path: /etc/salt/master
+    insertafter: "^#publish_port:"
+    line: "publish_port: {{master_publish_port}}"
+  notify: restart salt-master
+  when: 
+    - master_publish_port is defined
+    - master_publish_port is not none
+
+- name: config ret_port
+  lineinfile:
+    path: /etc/salt/master
+    insertafter: "^#ret_port:"
+    line: "ret_port: {{master_ret_port}}"
+  notify: restart salt-master
+  when: 
+    - master_ret_port is defined
+    - master_ret_port is not none
+
+- name: config worker_threads
+  lineinfile:
+    path: /etc/salt/master
+    insertafter: "^#worker_threads:"
+    line: "worker_threads: {{master_worker_threads}}"
+  notify: restart salt-master
+  when: 
+    - master_worker_threads is defined
+    - master_worker_threads is not none
+
+- name: create and config file_roots
+  block:
+    - name: create file_roots directory
+      file:
+        path: "{{ item.1 }}"
+        recurse: true
+        owner: root
+        group: root
+        mode: "0755"
+        state: directory
+      with_subelements:
+        - "{{ file_roots | dict2items }}"
+        - "value"
+
+    - name: config file_roots
+      template:
+        src: file_roots.conf.j2
+        dest: /etc/salt/master.d/file_roots.conf
+        owner: root
+        group: root
+        mode: 0644
+  notify: restart salt-master
+  when:
+    - file_roots is not none
+
+- name: create saltstack master pillar_roots directory
+  tags: salt-master, config-salt-master
+  file:
+    path: "{{ item.1 }}"
+    owner: root
+    group: root
+    mode: "0755"
+    state: directory
+  with_subelements:
+    - "{{ pillar_roots | dict2items }}"
+    - "value"
+  when:
+    - pillar_roots is not none
+  notify: restart salt-master
+
+- name: config pillar_roots
+  template:
+    src: pillar_roots.conf.j2
+    dest: /etc/salt/master.d/pillar_roots.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart salt-master
+  when:
+    - pillar_roots is not none
+
+- name: config autosign
+  block:
+    - name: config autofile file
+      template:
+        src: autosign.j2
+        dest: /etc/salt/autosign.conf
+        owner: root
+        group: root
+        mode: "0644"
+    
+    - name: config worker_threads
+      lineinfile:
+        path: /etc/salt/master
+        regexp: "^#autosign_file:"
+        line: "autosign_file: /etc/salt/autosign.conf"
+  notify: restart salt-master
+  when: autosign_hosts is not none

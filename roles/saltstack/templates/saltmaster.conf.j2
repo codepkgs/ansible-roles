@@ -1,0 +1,14 @@
+#jinja2: lstrip_blocks: True
+{% if salt_masters is defined and salt_masters | length %}
+master:
+{% for master in salt_masters %}
+  - {{ master }}
+{% endfor %}
+{% endif %}
+
+# 设置minion id
+{% if minion_id is defined and minion_id | length %}
+id: {{ minion_id }}
+{% else %}
+id: {{ ansible_default_ipv4.address }}
+{% endif %}

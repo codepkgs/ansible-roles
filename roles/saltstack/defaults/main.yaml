@@ -1,11 +1,21 @@
-salt_role: master # master/minion
+# salt角色 master 或 minion
+salt_role: master 
 
-# salt master 服务器的地址，minion使用，支持多个master
-salt_master:
-  - saltmaster.fdisk.cc
-  - saltmaster2.fdisk.cc
-# master_publish_port: 4505 # 默认是4505
-# master_ret_port: 4506 # 默认是4506
+# master监听地址
+master_interface: 0.0.0.0
+
+# 默认是4505
+master_publish_port: 4505
+
+# 默认是4506
+master_ret_port: 4506
+
+# 启动多少个线程。默认10个
+master_worker_threads: 10
+
+# salt master 服务器的地址，minion使用，支持多个master。
+#salt_masters:
+#  - 127.0.0.1
 
 # file_roots 配置
 file_roots:
@@ -24,11 +34,16 @@ pillar_roots:
     - /srv/salt/pillar/dev
   prod:
     - /srv/salt/pillar/prod
+
 # minion_id: <minion_id> # 使用每个机器的FQDN作为minion_id，不要设置该变量。
 
-# 定义自定签发的hosts列表。
-# autosign_hosts:
-#   - "*.fdisk.cc"
+# 定义自定签发的hosts列表。默认是所有私有地址段
+autosign_hosts:
+  - 10(\.\d{1,3}){2}\.\d{1,3}
+  - 172\.1[6-9]\.\d{1,3}\.\d{1,3}
+  - 172\.2[0-9]\.\d{1,3}\.\d{1,3}
+  - 172\.31\.\d{1,3}\.\d{1,3}
+  - 192\.168\.\d{1,3}\.\d{1,3}
 
 # 是否仅显示差异（发生变化的ID）
 state_output_diff: False

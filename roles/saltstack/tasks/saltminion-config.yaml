@@ -1,0 +1,13 @@
+- name: check salt_masters vars is defined or not
+  debug:
+    msg: "salt_masters is not defined or it's none. please set it. it must be list"
+  failed_when: salt_masters is undefined or salt_masters is none
+
+- name: render saltstack minion config
+  template:
+    src: saltmaster.conf.j2
+    dest: /etc/salt/minion.d/saltmaster.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart salt-minion

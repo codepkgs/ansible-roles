@@ -1,0 +1,10 @@
+#jinja2: lstrip_blocks: True
+{% if file_roots is defined and file_roots | length %}
+file_roots:
+  {% for env in file_roots %}
+  {{ env }}:
+  {% for v in file_roots[env] %}
+    - {{ v }}
+  {% endfor %}
+  {% endfor %}
+{% endif %}

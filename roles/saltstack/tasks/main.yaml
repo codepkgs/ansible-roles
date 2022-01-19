@@ -1,4 +1,2 @@
-- import_tasks: redhat7.yaml
-  when:
-    - ansible_facts.os_family.lower() == "redhat"
-    - ansible_facts.distribution_major_version == "7"
+- name: include tasks for your system
+  include_tasks: "{{ansible_os_family|lower}}.yaml"
