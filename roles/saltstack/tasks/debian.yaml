@@ -1,0 +1,54 @@
+- name: config apt key
+  apt_key:
+    url: https://repo.saltproject.io/py3/debian/11/amd64/latest/salt-archive-keyring.gpg
+    state: present
+
+- name: copy saltstack repository
+  template:
+    src: debian_saltstack_repo.j2
+    dest: /etc/apt/sources.list.d/salt.list
+    owner: root
+    group: root
+    mode: "0644"
+
+# salt master
+- name: install and config saltstack master
+  block:
+    - name: install saltstack packages [salt-master]
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600
+      with_items:
+        - salt-master
+        - salt-minion
+        - salt-ssh
+        - salt-syndic
+        - salt-cloud
+        - salt-api
+
+    - name: config salt master
+      include_tasks: saltmaster-config.yaml
+
+  when:
+    - salt_role is not none
+    - salt_role | lower == "master"
+
+# salt minion
+- name: install and config saltstack minion
+  block:
+    - name: install saltstack packages [salt-minion]
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600
+      with_items:
+        - salt-minion
+    
+    - name: include salt minion config
+      include_tasks: saltminion-config.yaml
+  when:
+    - salt_role is not none
+    - salt_role | lower == "minion"
