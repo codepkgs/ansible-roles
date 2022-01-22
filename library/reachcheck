@@ -1,0 +1,9 @@
+#!/bin/bash
+
+nc -zv -w 1 $(cat $1 | awk -F'[ =]' '{print $2,$4}') &> /dev/null
+retval=$?
+if [ $retval -eq 0 ]; then
+    echo '{"changed": false, "failed": false, "msg": "port is opened"}'
+else
+    echo '{"changed": false, "failed": true, "msg": "port is closed"}'
+fi
