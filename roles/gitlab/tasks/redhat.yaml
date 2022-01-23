@@ -27,6 +27,7 @@
 
 - name: include gitlab config
   include_tasks: config.yaml
+  when: gitlab_config_force_update | bool
 
 - meta: flush_handlers
 
