@@ -1,0 +1,24 @@
+---
+- name: config gitlab external-url
+  lineinfile:
+    path: "{{gitlab_config}}"
+    regexp: "^external_url\\s+"
+    line: "external_url '{{gitlab_external_url}}'"
+  notify: gitlab-reconfig
+  when: 
+    - gitlab_external_url is defined
+    - gitlab_external_url is not none
+    - gitlab_external_url is match('http://') or gitlab_external_url is match('htts://')
+
+# - name: config gitlab external-url
+#   lineinfile:
+#     path: "{{gitlab_config}}"
+#     regexp: "^external_url\\s+"
+#     line: "external_url '{{gitlab_external_url}}'"
+#   # notify: restart gitlab
+#   when: 
+#     - gitlab_external_url is defined
+#     - gitlab_external_url is not none
+#     - gitlab_external_url is match('http://') or gitlab_external_url is match('htts://')
+
+
