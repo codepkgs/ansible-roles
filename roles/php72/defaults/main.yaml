@@ -1,21 +1,135 @@
 ---
-install_configs: [
+# install_configs: [
+#   {
+#     "src": "php.ini.j2",
+#     "dest": "/etc/opt/remi/php72/php.ini"
+#   },
+#   {
+#     "src": "php-fpm.conf.j2",
+#     "dest": "/etc/opt/remi/php72/php-fpm.conf"
+#   },
+#   {
+#     "src": "40-seaslog.ini.j2",
+#     "dest": "/etc/opt/remi/php72/php.d/40-seaslog.ini"
+#   },
+#   {
+#     "src": "www.conf.j2",
+#     "dest": "/etc/opt/remi/php72/php-fpm.d/www.conf"
+#   }
+# ]
+
+php72_service_start: yes
+
+php72_configs: [
   {
-    "src": "php.ini.j2",
-    "dest": "/etc/opt/remi/php72/php.ini"
+    "path": "/etc/opt/remi/php72/php.ini",
+    "name": "memory_limit",
+    "value": "256M"
   },
   {
-    "src": "php-fpm.conf.j2",
-    "dest": "/etc/opt/remi/php72/php-fpm.conf"
+    "path": "/etc/opt/remi/php72/php.ini",
+    "name": "error_reporting",
+    "value": "E_ERROR"
   },
   {
-    "src": "40-seaslog.ini.j2",
-    "dest": "/etc/opt/remi/php72/php.d/40-seaslog.ini"
+    "path": "/etc/opt/remi/php72/php.ini",
+    "name": "post_max_size",
+    "value": "256M"
   },
   {
-    "src": "www.conf.j2",
-    "dest": "/etc/opt/remi/php72/php-fpm.d/www.conf"
+    "path": "/etc/opt/remi/php72/php.ini",
+    "name": "upload_max_filesize",
+    "value": "256M"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php.ini",
+    "name": "max_file_uploads",
+    "value": "20"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php.ini",
+    "name": "date.timezone",
+    "value": "Asia/Shanghai"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.conf",
+    "name": "error_log",
+    "value": "/data/logs/php-fpm/error.log"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.d/www.conf",
+    "name": "user",
+    "value": "www"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.d/www.conf",
+    "name": "group",
+    "value": "www"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.d/www.conf",
+    "name": "listen",
+    "value": "127.0.0.1:9000"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.d/www.conf",
+    "name": "listen.backlog",
+    "value": "32768"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.d/www.conf",
+    "name": "listen.allowed_clients",
+    "value": "127.0.0.1"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.d/www.conf",
+    "name": "pm",
+    "value": "dynamic"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.d/www.conf",
+    "name": "pm.max_children",
+    "value": "100"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.d/www.conf",
+    "name": "pm.start_servers",
+    "value": "10"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.d/www.conf",
+    "name": "pm.min_spare_servers",
+    "value": "10"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.d/www.conf",
+    "name": "pm.max_spare_servers",
+    "value": "20"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.d/www.conf",
+    "name": "pm.max_requests",
+    "value": "1000"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.d/www.conf",
+    "name": "slowlog",
+    "value": "/data/logs/php-fpm/www-slow.log"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php-fpm.d/www.conf",
+    "regexp": "php_admin_value\\[error_log\\]",
+    "name": "php_admin_value[error_log]",
+    "value": "/data/logs/php-fpm/www-error.log"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php.d/40-seaslog.ini",
+    "name": "seaslog.default_basepath",
+    "value": "'/data/logs/php-seaslog'"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php.d/40-seaslog.ini",
+    "name": "seaslog.default_template",
+    "value": "'%M'"
   }
 ]
-
-start_php72_service: yes

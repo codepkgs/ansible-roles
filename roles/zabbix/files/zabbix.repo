@@ -1,0 +1,11 @@
+[zabbix]
+name=Zabbix Official Repository - $basearch
+baseurl=http://repo.zabbix.com/zabbix/5.0/rhel/7/$basearch/
+enabled=1
+gpgcheck=0
+
+[zabbix-frontend]
+name=Zabbix Official Repository frontend - $basearch
+baseurl=http://repo.zabbix.com/zabbix/5.0/rhel/7/$basearch/frontend
+enabled=1
+gpgcheck=0

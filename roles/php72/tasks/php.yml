@@ -1,0 +1,34 @@
+---
+- name: create www user
+  import_role:
+    name: users
+  vars:
+    create_users:
+      - username: www
+        shell: /bin/bash
+        groups: []
+
+- name: create dirs for php
+  import_role:
+    name: dirs
+  vars:
+    dirs:
+      - path: /data/logs/php-seaslog
+        owner: www
+        group: www
+        mode: "0755"
+        recurse: no
+      - path: /data/logs/php-fpm
+        owner: www
+        group: www
+        mode: "0755"
+        recurse: no
+
+- name: install php 7.2
+  import_tasks: php_install.yml
+
+- name: config php 7.2
+  import_tasks: php_config.yml
+
+- name: service php 7.2
+  import_tasks: php_service.yml

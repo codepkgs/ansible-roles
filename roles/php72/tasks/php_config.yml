@@ -1,0 +1,21 @@
+---
+- name: config php with php72_configs parameters
+  lineinfile:
+    path: "{{ item.path }}"
+    regexp: "^\\s*{{item.regexp | default(item.name) }}\\s+="
+    insertafter: "^;\\s*{{item.name}}\\s*="
+    line: "{{item.name}} = {{ item.value }}"
+  with_items: "{{php72_configs}}"
+  notify: restart php72-php-fpm
+
+- name: config php with php72_extra_configs parameters
+  lineinfile:
+    path: "{{ item.path }}"
+    regexp: "^\\s*{{item.regexp | default(item.name) }}\\s+="
+    insertafter: "^;\\s*{{item.name}}\\s*="
+    line: "{{item.name}} = {{ item.value }}"
+  with_items: "{{php72_extra_configs}}"
+  notify: restart php72-php-fpm
+  when:
+    - php72_extra_configs is defined
+    - php72_extra_configs | length != 0

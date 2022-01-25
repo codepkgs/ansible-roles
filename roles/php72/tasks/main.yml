@@ -1,0 +1,6 @@
+---
+- name: incloud playbook for your system
+  include_tasks: php.yml
+  when:
+    - ansible_facts.os_family.lower() == 'redhat'
+    - ansible_facts.distribution_major_version == '7'

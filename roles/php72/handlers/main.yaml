@@ -1,11 +1,9 @@
 ---
 - name: restart php72-php-fpm
-  tags: php72-service, php72-service-reload, php72-service-start
   service:
     name: php72-php-fpm
     state: restarted
     enabled: yes
   when:
-    - start_php72_service is defined
-    - start_php72_service | bool
-
+    - php72_service_start is defined
+    - php72_service_start | bool
