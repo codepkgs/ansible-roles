@@ -3,6 +3,8 @@
 安装并配置 PHP72。
 默认会创建 www 用户，并且将 php72-php-fpm 的进程 user 和 group 均使用该用户运行。
 
+日志目录：/data/logs/php-seaslog 和 /data/logs/php-fpm
+
 # 变量
 
 - php72_service_start
