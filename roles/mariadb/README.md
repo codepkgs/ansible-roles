@@ -9,6 +9,8 @@
   mariadb_version               # 要安装的mariadb版本。默认10.6
   mariadb_client_configs        # 存放MariaDB Client端的配置信息。字典形式
   mariadb_server_configs        # 存放MariaDB Server端的配置信息。字典形式。默认绑定的地址：127.0.0.1
+  mariadb_extra_client_configs  # 用于定义客户端额外的配置。用户自定义配置
+  mariadb_extra_server_configs  # 用于定义服务器端额外的配置。用户自定义配置
   ```
 
 - 使用

@@ -23,6 +23,17 @@
   with_dict: "{{mariadb_client_configs}}"
   notify: restart mariadb
 
+- name: mariadb client extra configs
+  ini_file:
+    path: "{{mariadb_client_config}}"
+    section: "{{mariadb_client_section}}"
+    option: "{{item.key}}"
+    value: "{{item.value}}"
+  with_dict: "{{mariadb_extra_client_configs}}"
+  notify: restart mariadb
+  when:
+    - mariadb_extra_client_configs is defined
+
 - name: mariadb server configs
   ini_file:
     path: "{{mariadb_server_config}}"
@@ -31,3 +42,14 @@
     value: "{{item.value}}"
   with_dict: "{{mariadb_server_configs}}"
   notify: restart mariadb
+
+- name: mariadb server extra configs
+  ini_file:
+    path: "{{mariadb_server_config}}"
+    section: "{{mariadb_server_secion}}"
+    option: "{{item.key}}"
+    value: "{{item.value}}"
+  with_dict: "{{mariadb_extra_server_configs}}"
+  notify: restart mariadb
+  when:
+    - mariadb_extra_server_configs is defined
