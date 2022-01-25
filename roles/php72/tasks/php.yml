@@ -1,10 +1,10 @@
 ---
-- name: create www user
+- name: create user
   import_role:
     name: users
   vars:
     create_users:
-      - username: www
+      - username: "{{php72_user | default('www') }}"
         shell: /bin/bash
         groups: []
 
@@ -14,13 +14,13 @@
   vars:
     dirs:
       - path: /data/logs/php-seaslog
-        owner: www
-        group: www
+        owner: "{{php72_user | default('www') }}"
+        group: "{{php72_user | default('www') }}"
         mode: "0755"
         recurse: no
       - path: /data/logs/php-fpm
-        owner: www
-        group: www
+        owner: "{{php72_user | default('www') }}"
+        group: "{{php72_user | default('www') }}"
         mode: "0755"
         recurse: no
 
