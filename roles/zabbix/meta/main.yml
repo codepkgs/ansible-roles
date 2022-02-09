@@ -1,5 +1,7 @@
 dependencies:
   - role: php72
+    php72_user: "{{zabbix_php72_user | default('www')}}"
+
   - role: mariadb
     mariadb_version: "10.6"
     mariadb_extra_server_configs:

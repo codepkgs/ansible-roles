@@ -29,6 +29,16 @@ php72_configs: [
   },
   {
     "path": "/etc/opt/remi/php72/php.ini",
+    "name": "max_execution_time",
+    "value": "300"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php.ini",
+    "name": "max_input_time",
+    "value": "300"
+  },
+  {
+    "path": "/etc/opt/remi/php72/php.ini",
     "name": "date.timezone",
     "value": "Asia/Shanghai"
   },

@@ -1,2 +1,13 @@
 ---
-# defaults file for zabbix
+httpd_user: "www"
+zabbix_external_database: false
+zabbix_db_user: "zabbix"
+zabbix_db_host: "localhost"
+zabbix_db_port: 3306
+zabbix_db_password: "Zabbix1234!@#$"
+mysql_unix_socket: "/var/lib/mysql/mysql.sock"
+zabbix_server_logfile: "/var/log/zabbix/zabbix_server.log"
+zabbix_server_alertscriptpath: "/usr/lib/zabbix/alertscripts"
+zabbix_server_externalscriptpath: "/usr/lib/zabbix/externalscripts"
+zabbix_server_allowroot: 1
+# zabbix_nginx_servername: "zabbix.fdisk.cc"

@@ -6,8 +6,10 @@
   with_items:
     - openssl
     - openssl-devel
-    - httpd
-    - httpd-devel
+    - python2-PyMySQL
+
+- name: include nginx config
+  import_tasks: zabbix-nginx.yml
 
 - name: copy zabbix repo
   copy:
@@ -16,3 +18,31 @@
     owner: root
     group: root
     mode: 0644
+
+- name: install zabbix server and agent
+  package:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - centos-release-scl
+    - zabbix-server-mysql
+    - zabbix-agent
+    - zabbix-agent2
+    - zabbix-get
+    - zabbix-sender
+    - zabbix-web-mysql-scl
+    - zabbix-apache-conf-scl
+
+- name: import zabbix database config
+  import_tasks: zabbix-server-db.yml
+  when: not (zabbix_external_database | bool)
+
+- name: import zabbix server config
+  import_tasks: zabbix-server-config.yml
+  notify: restart zabbix-server
+
+- name: ensure zabbix server is running
+  service:
+    name: zabbix-server
+    state: started
+    enabled: yes

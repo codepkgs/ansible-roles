@@ -23,3 +23,11 @@
 
 - name: include mariadb configs
   include_tasks: configs.yaml
+
+- meta: flush_handlers
+
+- name: ensure mariadb is running
+  service:
+    name: mariadb
+    state: started
+    enabled: yes

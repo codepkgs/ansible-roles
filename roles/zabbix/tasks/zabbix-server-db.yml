@@ -1,0 +1,23 @@
+---
+- name: create zabbix database
+  community.mysql.mysql_db:
+    name: zabbix
+    state: present
+    encoding: utf8
+    collation: utf8_bin
+    login_unix_socket: "{{mysql_unix_socket | default(omit)}}"
+  register: zabbix_db
+
+- name: create zabbix user and grant privileges
+  community.mysql.mysql_user:
+    name: zabbix
+    host: "localhost"
+    password: "{{zabbix_db_password}}"
+    priv: "zabbix.*:ALL"
+    state: present
+    login_unix_socket: "{{mysql_unix_socket | default(omit)}}"
+
+- name: import data to zabbix database
+  shell: |
+    zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -u zabbix -h localhost -p'{{zabbix_db_password}}' zabbix
+  when: zabbix_db is changed

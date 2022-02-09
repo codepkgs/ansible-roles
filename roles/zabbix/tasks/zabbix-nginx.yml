@@ -1,0 +1,17 @@
+---
+- name: install nginx
+  package:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - nginx
+    - nginx-mod-stream
+
+- name: copy zabbix config to nginx
+  template:
+    src: zabbix.conf.j2
+    dest: /etc/nginx/conf.d/zabbix.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart nginx

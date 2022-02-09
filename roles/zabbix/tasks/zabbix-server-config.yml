@@ -1,0 +1,113 @@
+---
+- name: set facts for zabbix server
+  set_fact:
+    zabbix_server_configfile: "/etc/zabbix/zabbix_server.conf"
+
+- name: set permissions
+  file:
+    path: /var/opt/remi/php72
+    owner: "{{zabbix_php72_user | default('www')}}"
+    group: "{{zabbix_php72_user | default('www')}}"
+    recurse: yes
+
+- name: config zabbix server logfile
+  lineinfile:
+    path: "{{zabbix_server_configfile}}"
+    regexp: "^LogFile="
+    line: "LogFile={{zabbix_server_logfile}}"
+
+- name: config zabbix server dbhost
+  lineinfile:
+    path: "{{zabbix_server_configfile}}"
+    regexp: "^DBHost="
+    insertafter: '^#\s*DBHost='
+    line: "DBHost={{zabbix_db_host}}"
+  when:
+    - zabbix_db_host is defined
+    - zabbix_db_host is not none
+
+- name: config zabbix server dbuser
+  lineinfile:
+    path: "{{zabbix_server_configfile}}"
+    regexp: "^DBUser="
+    insertafter: '^#\s*DBUser='
+    line: 'DBUser={{zabbix_db_user | default("zabbix")}}'
+  when:
+    - zabbix_db_user is defined
+    - zabbix_db_user is not none
+
+- name: config zabbix server dbpassword
+  lineinfile:
+    path: "{{zabbix_server_configfile}}"
+    regexp: "^DBPassword="
+    insertafter: '^#\s*DBPassword='
+    line: "DBPassword={{zabbix_db_password}}"
+  when:
+    - zabbix_db_password is defined
+    - zabbix_db_password is not none
+
+- name: config zabbix server dbport
+  lineinfile:
+    path: "{{zabbix_server_configfile}}"
+    regexp: "^DBPort="
+    insertafter: '^#\s*DBPort='
+    line: "DBPort={{zabbix_db_port | default(3306)}}"
+  when:
+    - zabbix_db_port is defined
+    - zabbix_db_port is not none
+
+- name: config zabbix server cachesize
+  lineinfile:
+    path: "{{zabbix_server_configfile}}"
+    regexp: "^CacheSize="
+    insertafter: '^#\s*CacheSize='
+    line: 'CacheSize={{zabbix_server_cachesize | default("128M")}}'
+
+- name: config zabbix server history_cachesize
+  lineinfile:
+    path: "{{zabbix_server_configfile}}"
+    regexp: "^HistoryCacheSize="
+    insertafter: '^#\s*HistoryCacheSize='
+    line: 'HistoryCacheSize={{zabbix_server_historycachesize | default("256M")}}'
+
+- name: config zabbix server history_index_cachesize
+  lineinfile:
+    path: "{{zabbix_server_configfile}}"
+    regexp: "^HistoryIndexCacheSize="
+    insertafter: '^#\s*HistoryIndexCacheSize='
+    line: 'HistoryIndexCacheSize={{zabbix_server_historyindexcachesize | default("64M")}}'
+
+- name: config zabbix server tread_cachesize
+  lineinfile:
+    path: "{{zabbix_server_configfile}}"
+    regexp: "^TrendCacheSize="
+    insertafter: '^#\s*TrendCacheSize='
+    line: 'TrendCacheSize={{zabbix_server_treadcachesize | default("64M")}}'
+
+- name: config zabbix server value_cachesize
+  lineinfile:
+    path: "{{zabbix_server_configfile}}"
+    regexp: "^ValueCacheSize="
+    insertafter: '^#\s*ValueCacheSize='
+    line: 'ValueCacheSize={{zabbix_server_valuecachesize | default("128M")}}'
+
+- name: config zabbix server alertscriptpath
+  lineinfile:
+    path: "{{zabbix_server_configfile}}"
+    regexp: "^AlertScriptsPath="
+    insertafter: '^#\s*AlertScriptsPath='
+    line: "AlertScriptsPath={{zabbix_server_alertscriptpath}}"
+
+- name: config zabbix server externalscriptpath
+  lineinfile:
+    path: "{{zabbix_server_configfile}}"
+    regexp: "^ExternalScripts="
+    insertafter: '^#\s*ExternalScripts='
+    line: "ExternalScripts={{zabbix_server_externalscriptpath}}"
+
+- name: config zabbix server allowroot
+  lineinfile:
+    path: "{{zabbix_server_configfile}}"
+    regexp: "^AllowRoot="
+    insertafter: '^#\s*AllowRoot='
+    line: "AllowRoot={{zabbix_server_allowroot}}"

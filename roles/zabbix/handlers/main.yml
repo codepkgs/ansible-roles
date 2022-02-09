@@ -1,2 +1,12 @@
 ---
-# handlers file for zabbix
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes
+
+- name: restart zabbix-server
+  service:
+    name: zabbix-server
+    state: restarted
+    enabled: yes
