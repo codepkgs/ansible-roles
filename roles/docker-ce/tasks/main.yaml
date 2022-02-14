@@ -1,12 +1,10 @@
 ---
 - name: install and config docker-ce for redhat 7 family
-  tags: docker-install-config
   block:
     - name: install docker-ce for redhat 7 family
-      tags: docker-install
       import_tasks: docker_install.yaml
+
     - name: config docker-ce for redhat 7 family
-      tags: docker-config
       import_tasks: docker_config.yaml
   when:
     - ansible_facts.os_family.lower() == 'redhat'

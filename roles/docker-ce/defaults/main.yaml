@@ -1,4 +1,4 @@
 ---
 docker_flannel: no
 docker_daemon_force: no
-docker_compose: yes
+docker_composer: yes

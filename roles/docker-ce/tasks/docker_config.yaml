@@ -42,3 +42,9 @@
   iptables:
     policy: ACCEPT
     chain: FORWARD
+
+- name: ensure docker service is running
+  service:
+    name: docker
+    enabled: yes
+    state: started
