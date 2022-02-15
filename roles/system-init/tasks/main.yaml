@@ -1,6 +1,5 @@
 ---
 - name: disable ssh password authentication
-  tags: system-init:sshd
   lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^PasswordAuthentication"
@@ -12,7 +11,6 @@
     - restart sshd
 
 - name: enable ssh password authentication
-  tags: system-init:sshd
   lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^PasswordAuthentication"
@@ -24,7 +22,6 @@
     - restart sshd
 
 - name: disable dns resolve for sshd
-  tags: system-init:sshd
   lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^UseDNS"
@@ -35,7 +32,6 @@
     - restart sshd
 
 - name: config limits
-  tags: system-init:limits
   lineinfile:
     path: /etc/security/limits.conf
     line: "{{ item }}"
@@ -43,14 +39,12 @@
   with_items: "{{ limits }}"
 
 - name: set timezone
-  tags: system-init:timezone
   timezone:
     name: "{{ tzname }}"
   notify:
     - restart crond
 
 - name: disable services for redhat family
-  tags: system-init:service
   service:
     name: "{{ item }}"
     state: stopped
@@ -59,7 +53,6 @@
   when: ansible_os_family.lower() == 'redhat'
 
 - name: disable services for redhat family 6
-  tags: system-init:service
   service:
     name: "{{ item }}"
     state: stopped
@@ -69,7 +62,6 @@
     - ansible_facts.distribution_major_version == '6'
 
 - name: disable services for redhat family 7
-  tags: system-init:service
   service:
     name: "{{ item }}"
     state: stopped
@@ -79,7 +71,6 @@
     - ansible_facts.distribution_major_version == '7'
 
 - name: disable selinux for redhat family
-  tags: system-init:selinux
   lineinfile:
     path: /etc/selinux/config
     regexp: "^SELINUX="
@@ -88,7 +79,6 @@
     - ansible_distribution.lower() == 'redhat'
 
 - name: disable swap
-  tags: system-init:swap
   lineinfile:
     path: /etc/fstab
     regexp: "^([^#]*swap.*)"
@@ -98,7 +88,6 @@
     - disable_swap | bool
 
 - name: yum repos config
-  tags: system-init:repo
   block:
     - name: copy yum repos for rhel 6 (not aliyun ecs)
       copy:
@@ -131,7 +120,6 @@
     - "'alibaba' not in ansible_facts.product_name.lower()"
 
 - name: install packages for redhat family
-  tags: system-init:package
   block:
     - name: set variables for redhat family
       set_fact:
@@ -167,7 +155,6 @@
   when: ansible_os_family.lower() == 'redhat'
 
 - name: install packages for redhat family
-  tags: system-init:package
   block:
     - name: set variables for debian family
       set_fact:
@@ -208,13 +195,11 @@
   when: ansible_os_family.lower() == 'debian'
 
 - name: set vim
-  tags: system-init:vim
   copy:
     src: vimrc
     dest: ~/.vimrc
 
 - name: configure kernel parameters at runtime(sysctl)
-  tags: system-init:sysctl
   sysctl:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
@@ -222,7 +207,6 @@
     - "{{ sysctl_config }}"
 
 - name: config python pip source
-  tags: system-init:pip
   block:
     - name: check pip is set or not
       stat:
@@ -240,7 +224,6 @@
         - not pip_stat.stat.exists
 
 - name: create ansible facts directory
-  tags: system-init:facts-dir
   file:
     path: /etc/ansible/facts.d
     state: directory
