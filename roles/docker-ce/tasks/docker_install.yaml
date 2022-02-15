@@ -49,7 +49,7 @@
     - net.bridge.bridge-nf-call-ip6tables
     - net.bridge.bridge-nf-call-iptables
 
-- name: install docker-composer
+- name: install docker-compose
   block:
     - name: instsall pip
       package:
@@ -58,11 +58,15 @@
       with_items:
         - python2-pip
         - python3-pip
-    - name: install docker-composer
+    - name: install docker-compose
       pip:
         executable: pip3
-        name: docker-composer
-        state: present
+        name: "{{item}}"
+        state: latest
+      with_items:
+        - pip
+        - setuptools-rust
+        - docker-compose
   when:
-    - docker_composer is defined
-    - docker_composer |  bool
+    - docker_compose is defined
+    - docker_compose |  bool

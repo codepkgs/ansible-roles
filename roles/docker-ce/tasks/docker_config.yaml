@@ -43,6 +43,8 @@
     policy: ACCEPT
     chain: FORWARD
 
+- meta: flush_handlers
+
 - name: ensure docker service is running
   service:
     name: docker
