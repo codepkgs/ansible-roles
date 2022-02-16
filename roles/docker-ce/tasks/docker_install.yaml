@@ -8,6 +8,7 @@
     - lvm2
     - device-mapper-persistent-data
     - bash-completion
+    - bridge-utils
 
 - name: copy docker-ce yum repo (aliyun yum repo)
   copy:
