@@ -3,6 +3,6 @@ dependencies:
     php72_user: "{{zabbix_php72_user | default('www')}}"
 
   - role: mariadb
-    mariadb_version: "10.6"
+    mariadb_version: "10.5"
     mariadb_extra_server_configs:
       bind-address: "0.0.0.0"

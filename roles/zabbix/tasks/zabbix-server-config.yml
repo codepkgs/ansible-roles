@@ -10,12 +10,6 @@
     group: "{{zabbix_php72_user | default('www')}}"
     recurse: yes
 
-- name: config zabbix server logfile
-  lineinfile:
-    path: "{{zabbix_server_configfile}}"
-    regexp: "^LogFile="
-    line: "LogFile={{zabbix_server_logfile}}"
-
 - name: config zabbix server dbhost
   lineinfile:
     path: "{{zabbix_server_configfile}}"
