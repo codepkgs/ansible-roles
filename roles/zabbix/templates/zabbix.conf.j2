@@ -5,6 +5,9 @@ server {
     root    /usr/share/zabbix;
     index   index.php;
 
+    error_log   {{nginx_log_dir}}/zabbix_error.log  notice;
+    access_log  {{nginx_log_dir}}/zabbix_access.log main;
+
     location = /favicon.ico {
         log_not_found   off;
     }

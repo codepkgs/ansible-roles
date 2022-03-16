@@ -24,14 +24,12 @@
     name: "{{item}}"
     state: present
   with_items:
-    - centos-release-scl
     - zabbix-server-mysql
     - zabbix-agent
     - zabbix-agent2
     - zabbix-get
     - zabbix-sender
-    - zabbix-web-mysql-scl
-    - zabbix-apache-conf-scl
+    - zabbix-web
 
 - name: import zabbix database config
   import_tasks: zabbix-server-db.yml

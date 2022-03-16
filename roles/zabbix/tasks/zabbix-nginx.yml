@@ -7,6 +7,14 @@
     - nginx
     - nginx-mod-stream
 
+- name: create zabbix log directory
+  file:
+    name: "{{nginx_log_dir}}"
+    state: directory
+    owner: nginx
+    group: nginx
+    mode: 0755
+
 - name: copy zabbix config to nginx
   template:
     src: zabbix.conf.j2

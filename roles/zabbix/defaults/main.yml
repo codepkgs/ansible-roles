@@ -1,5 +1,6 @@
 ---
 httpd_user: "www"
+nginx_log_dir: "/data/logs/nginx"
 zabbix_external_database: false
 zabbix_db_user: "zabbix"
 zabbix_db_host: "localhost"
