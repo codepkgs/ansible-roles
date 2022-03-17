@@ -40,8 +40,21 @@
   import_tasks: zabbix-server-config.yml
   notify: restart zabbix-server
 
+- name: import zabbix agent role
+  import_role:
+    name: zabbix-agent
+  vars:
+    zabbix_server_address: '127.0.0.1'
+    zabbix_agent_active: False
+
 - name: ensure zabbix server is running
   service:
     name: zabbix-server
+    state: started
+    enabled: yes
+
+- name: ensure zabbix agent is running
+  service:
+    name: zabbix-agent
     state: started
     enabled: yes

@@ -1,0 +1,5 @@
+---
+- name: include zabbix-agent
+  include_tasks: zabbix-agent.yml
+  when:
+    - ansible_os_family | lower == 'redhat'

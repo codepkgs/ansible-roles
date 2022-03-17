@@ -10,3 +10,9 @@
     name: zabbix-server
     state: restarted
     enabled: yes
+
+- name: restart zabbix-agent
+  service:
+    name: zabbix-agent
+    state: restarted
+    enabled: yes

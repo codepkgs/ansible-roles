@@ -1,0 +1,36 @@
+---
+- name: install dependencies packages
+  package:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - openssl
+    - openssl-devel
+
+- name: copy zabbix repo
+  copy:
+    src: zabbix.repo
+    dest: /etc/yum.repos.d/zabbix.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install zabbix agent
+  yum:
+    name: "{{item}}"
+    state: present
+    update_cache: yes
+  with_items:
+    - zabbix-agent
+    - zabbix-agent2
+    - zabbix-sender
+
+- name: import zabbix agent config
+  import_tasks: zabbix-agent-config.yml
+  notify: restart zabbix-agent
+
+- name: ensure zabbix agent is running
+  service:
+    name: zabbix-agent
+    state: started
+    enabled: yes

@@ -1,6 +1,8 @@
 ---
-httpd_user: "www"
+# Nginx的配置
 nginx_log_dir: "/data/logs/nginx"
+
+# Zabbix Server的配置
 zabbix_external_database: false
 zabbix_db_user: "zabbix"
 zabbix_db_host: "localhost"
@@ -11,3 +13,7 @@ zabbix_server_alertscriptpath: "/usr/lib/zabbix/alertscripts"
 zabbix_server_externalscriptpath: "/usr/lib/zabbix/externalscripts"
 zabbix_server_allowroot: 1
 # zabbix_nginx_servername: "zabbix.fdisk.cc"
+
+# Zabbix Agent需要的配置
+zabbix_server_address: "127.0.0.1"
+zabbix_agent_active: False

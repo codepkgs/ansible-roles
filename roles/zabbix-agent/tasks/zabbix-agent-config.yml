@@ -1,0 +1,57 @@
+---
+- name: set facts for zabbix agent
+  set_fact:
+    zabbix_agent_configfile: "/etc/zabbix/zabbix_agentd.conf"
+
+- name: config zabbix server address
+  lineinfile:
+    path: "{{zabbix_agent_configfile}}"
+    regexp: "^Server="
+    insertafter: '^#\s*Server='
+    line: "Server={{zabbix_server_address | mandatory }}"
+
+- name: config zabbix agent hostname
+  lineinfile:
+    path: "{{zabbix_agent_configfile}}"
+    regexp: "^Hostname="
+    insertafter: '^#\s*Hostname='
+    line: "Hostname={{ansible_default_ipv4.address}}"
+
+- name: disable zabbix agent active mode
+  lineinfile:
+    path: "{{zabbix_agent_configfile}}"
+    regexp: "^ServerActive="
+    state: absent
+  when:
+    - not (zabbix_agent_active | bool)
+
+- name: enable zabbix agent active mode
+  lineinfile:
+    path: "{{zabbix_agent_configfile}}"
+    regexp: "^ServerActive="
+    insertafter: '^#\s*ServerActive='
+    line: "ServerActive={{zabbix_server_address}}"
+  when:
+    - zabbix_agent_active | bool
+
+- name: config zabbix agent HostMetadataItem
+  lineinfile:
+    path: "{{zabbix_agent_configfile}}"
+    regexp: "^HostMetadataItem="
+    insertafter: '^#\s*HostMetadataItem='
+    line: "HostMetadataItem={{zabbix_agent_hostmetadataitem | default('system.uname')}}"
+  when:
+    - zabbix_agent_active | bool
+
+- name: config zabbix agent refreshactivechecks
+  lineinfile:
+    path: "{{zabbix_agent_configfile}}"
+    regexp: "^RefreshActiveChecks="
+    insertafter: '^#\s*RefreshActiveChecks='
+    line: "RefreshActiveChecks={{zabbix_agent_refreshactivechecks | default(60))}}"
+  when:
+    - zabbix_agent_refreshactivechecks is defined
+    - zabbix_agent_refreshactivechecks is not none
+    - zabbix_agent_refreshactivechecks | int >= 60
+    - zabbix_agent_refreshactivechecks | int <= 3600
+    - zabbix_agent_active | bool

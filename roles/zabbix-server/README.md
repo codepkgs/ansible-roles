@@ -1,6 +1,6 @@
 # 说明
 
-安装 zabbix 5.0
+安装 zabbix server 5.0，同时也会安装 zabbix agent
 
 # 变量
 

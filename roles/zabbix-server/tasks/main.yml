@@ -3,4 +3,3 @@
   include_tasks: zabbix-server.yml
   when:
     - ansible_os_family | lower == 'redhat'
-    - zabbix_role == 'server'
