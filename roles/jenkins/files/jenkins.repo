@@ -1,4 +1,5 @@
 [jenkins]
 name=Jenkins-stable
 baseurl=https://pkg.jenkins.io/redhat-stable/
+enabled=1
 gpgcheck=0
