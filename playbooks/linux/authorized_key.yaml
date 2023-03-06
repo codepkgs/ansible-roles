@@ -1,0 +1,10 @@
+---
+- hosts: "{{ host | default('all') }}"
+  gather_facts: false
+  become: true
+  tasks:
+  - name: copy local ssh public key to remote hosts
+    ansible.posix.authorized_key:
+      user: "{{user | default('root')}}"
+      state: present
+      key: "{{lookup('file', '~/.ssh/id_rsa.pub')}}"
