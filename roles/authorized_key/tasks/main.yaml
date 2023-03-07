@@ -11,7 +11,7 @@
     - item.key_from == 'url'
 
 - name: manage authorized key from file
-  tags: authorized_key:url
+  tags: authorized_key:file
   authorized_key:
     user: "{{ item.username }}"
     state: "{{ item.state | default('present', boolean=true) }}"
