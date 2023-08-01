@@ -1,31 +1,30 @@
----
 - name: install ntpd package and set fact for redhat family
   block:
-    - name: set fact for redhat family
-      set_fact:
-        ntp_service_name: "ntpd"
-        chrony_service_name: "chronyd"
-    - name: install package for redhat family
-      yum:
-        name: ntp
-        state: present
+  - name: set fact for redhat family
+    set_fact:
+      ntp_service_name: "ntpd"
+      chrony_service_name: "chronyd"
+  - name: install package for redhat family
+    yum:
+      name: ntp
+      state: present
   when:
-    - ansible_facts.os_family.lower() == 'redhat'
+  - ansible_facts.os_family.lower() == 'redhat'
 
 - name: install ntpd package and set fact for debian family
   block:
-    - name: set fact for debian family
-      set_fact:
-        ntp_service_name: "ntp"
-        chrony_service_name: "chrony"
-    - name: install package for debian family
-      apt:
-        name: ntp
-        state: present
-        update_cache: yes
-        cache_valid_time: 3600
+  - name: set fact for debian family
+    set_fact:
+      ntp_service_name: "ntp"
+      chrony_service_name: "chrony"
+  - name: install package for debian family
+    apt:
+      name: ntp
+      state: present
+      update_cache: yes
+      cache_valid_time: 3600
   when:
-    - ansible_facts.os_family.lower() == 'debian'
+  - ansible_facts.os_family.lower() == 'debian'
 
 - name: copy ntpd config for aliyun ecs
   copy:
@@ -35,9 +34,9 @@
     group: root
     mode: "0644"
   notify:
-    - restart ntpd
+  - restart ntpd
   when:
-    - "'alibaba' in ansible_facts.product_name.lower()"
+  - "'alibaba' in ansible_facts.product_name.lower()"
 
 - name: copy ntpd config for other platform
   template:
@@ -47,19 +46,20 @@
     group: root
     mode: "0644"
   notify:
-    - restart ntpd
+  - restart ntpd
   when:
-    - "'alibaba' not in ansible_facts.product_name.lower()"
+  - "'alibaba' not in ansible_facts.product_name.lower()"
 
 - name: ensure ntpd is running
-  service: 
+  service:
     name: "{{ntp_service_name}}"
     state: started
     enabled: yes
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: ensure chrony service is disabled
   service:
     name: "{{chrony_service_name}}"
-    enabled: false
-  ignore_errors: yes
+    enabled: yes
+    state: stopped
+  ignore_errors: true
