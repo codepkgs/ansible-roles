@@ -2,3 +2,5 @@
 **/__pycache__
 test.yaml
 hosts
+inventory/*
+!inventory/.gitkeep
