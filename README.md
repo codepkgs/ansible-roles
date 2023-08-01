@@ -3,21 +3,34 @@
 - ansible version
 
   ```text
-  测试所使用的 ansible 版本为2.9.11
+  ansible [core 2.14.2]
+  config file = None
+  configured module search path = ['/Users/myname/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/local/Cellar/ansible/7.2.0/libexec/lib/python3.11/site-packages/ansible
+  ansible collection location = /Users/myname/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/local/bin/ansible
+  python version = 3.11.4 (main, Jun 20 2023, 16:59:59) [Clang 14.0.3 (clang-1403.0.22.14.1)] (/usr/local/Cellar/ansible/7.2.0/libexec/bin/python3.11)
+  jinja version = 3.1.2
+  libyaml = True
   ```
 
-- redis
+- python version
 
   ```text
-  测试时使用了 redis 存储 facts 信息，需要本地启用 redis-server，且没有密码，默认使用的 db 为15
-  可以在 ansible.cfg 中修改。
+  Python 3.10.12
+  ```
+
+- redis 缓存
+
+  ```text
+  可以使用 redis 存储 facts 信息。可以在 ansible.cfg 中修改。
 
   安装redis模块：pip install redis
 
   gathering = smart
   fact_caching = redis
   fact_caching_timeout = 604800
-  fact_caching_connection = localhost:6379:15:redis-password
+  fact_caching_connection = <redis-host>:<redis-port>:<redis-db>:<redis-password>
   ```
 
 - 系统
