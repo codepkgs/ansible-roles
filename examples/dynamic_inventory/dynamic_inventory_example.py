@@ -29,7 +29,8 @@ class DynamicInventory:
         --list：列出所有的组，以及每个组的主机。同时要有一个_meta key，包含每个机器的参数
         --host：返回每个机器的参数。
     """
-    def __init__(self) -> None:
+
+    def __init__(self):
         args = self.parse_args()
         if args.list:
             hosts = self.list_running_hosts()
