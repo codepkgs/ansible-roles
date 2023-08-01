@@ -1,0 +1,15 @@
+- hosts: all
+  become: true
+  gather_facts: true
+  roles:
+  - role: authorized_key
+    vars:
+      users:
+      - username: root
+        state: present
+        key_from: file
+        key: ~/.ssh/id_rsa.pub
+  - role: system-init
+    vars:
+      disable_password_authentication: no
+      permit_root_login: yes

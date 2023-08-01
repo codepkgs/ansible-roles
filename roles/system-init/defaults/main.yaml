@@ -1,22 +1,22 @@
----
 disable_password_authentication: no
+permit_root_login: no
 disable_swap: yes
 
 limits:
-  - "*  soft  nofile  819200"
-  - "*  hard  nofile  819200"
-  - "*  soft  nproc   819200"
-  - "*  hard  nproc   819200"
+- "*  soft  nofile  819200"
+- "*  hard  nofile  819200"
+- "*  soft  nproc   819200"
+- "*  hard  nproc   819200"
 
 tzname: Asia/Shanghai
 
 disable_services:
-  - postfix
-  - kdump
-  - NetworkManager
+- postfix
+- kdump
+- NetworkManager
 
 disable_services_rhel6:
-  - iptables
+- iptables
 
 disable_services_rhel7:
-  - firewalld
+- firewalld
