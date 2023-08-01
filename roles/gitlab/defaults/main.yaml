@@ -1,0 +1,3 @@
+---
+gitlab_config_force_update: yes
+gitlab_external_url: "http://{{ansible_default_ipv4.address}}"

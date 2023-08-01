@@ -1,0 +1,85 @@
+---
+- name: uninstall cloudmonitor for old version
+  block:
+    - name: check cloudmonitor (java) is installed or not
+      shell: ls /usr/local/cloudmonitor/wrapper/bin/cloudmonitor.sh
+      register: cms_java
+      failed_when: false
+      changed_when: false
+
+    - name: uninstall cloudmonitor (java)
+      shell: |
+        /usr/local/cloudmonitor/wrapper/bin/cloudmonitor.sh remove
+        rm -rf /usr/local/cloudmonitor
+      when: cms_java.rc == 0
+
+    - name: check cloudmonitor (golang) is installed or not
+      shell: ls /usr/local/cloudmonitor/CmsGoAgent.linux-amd64
+      register: cms_go
+      failed_when: false
+      changed_when: false
+
+    - name: uninstall cloudmonitor (golang)
+      shell: |
+        /usr/local/cloudmonitor/CmsGoAgent.linux-amd64 stop
+        /usr/local/cloudmonitor/CmsGoAgent.linux-amd64 uninstall
+        rm -rf /usr/local/cloudmonitor
+      when: cms_go.rc == 0
+  when: (cms_op_type | lower == 'uninstall') or (cms_op_type | lower == 'upgrade')
+
+- name: check cloudmonitor (c++) is installed or not
+  shell: ls /usr/local/cloudmonitor/bin/argusagent
+  register: cms_c
+  changed_when: false
+  failed_when: false
+
+- name: uninstall cloudmonitor (c++)
+  shell: |
+    bash /usr/local/cloudmonitor/cloudmonitorCtl.sh stop
+    bash /usr/local/cloudmonitor/cloudmonitorCtl.sh uninstall
+    rm -rf /usr/local/cloudmonitor
+  when: 
+    - cms_c.rc == 0
+    - cms_op_type | lower == 'uninstall'
+
+- name: upgrade cloudmonitor
+  block:
+    - name: copy cloudmonitor (c++) install file to dest
+      copy:
+        src: agent_install_ecs-1.5.sh
+        dest: /tmp/agent_install_ecs-1.5.sh
+        owner: root
+        group: root
+        mode: 0755
+      when: cms_c.rc != 0
+
+    - name: install cloudmonitor (c++)
+      shell: ARGUS_VERSION={{cms_version}} /bin/bash agent_install_ecs-1.5.sh
+      args:
+        chdir: /tmp
+      when: cms_c.rc != 0
+
+    - name: check cloudmonitor (c++) is running or not
+      shell: ps aux | grep /usr/local/cloudmonitor/bin/argusagent | grep -v grep
+      register: check_cms_c
+      changed_when: false
+      failed_when: false
+    
+    - name: cloudmonitor install result (c++)
+      debug:
+        msg: 'cloudmonitor (c++) install {{ "success" if check_cms_c.rc == 0 else "failure"}}'
+      failed_when: check_cms_c.rc != 0
+  when: cms_op_type | lower == 'upgrade'
+
+- name: check uninstall result
+  block:
+    - name: check cloudmonitor
+      shell: ls /usr/local/cloudmonitor
+      changed_when: false
+      failed_when: false
+      register: uninstall_status
+    
+    - name: check cloudmonitor uninstall status
+      debug:
+        msg: 'cloudmonitor unintall {{ "success" if uninstall_status.rc != 0 else "failure"}}'
+  when: cms_op_type | lower == 'uninstall'

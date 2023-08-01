@@ -1,0 +1,1 @@
+mariadb_supported_versions: ['10.5', '10.6', '10.7']
