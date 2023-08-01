@@ -1,5 +1,9 @@
 # 说明
 
+- inventory
+
+  inventory 为一个目录，目录下的所有内容都将会合并成一个完整的 inventory（包含静态的和动态的）
+
 - ansible version
 
   ```text
