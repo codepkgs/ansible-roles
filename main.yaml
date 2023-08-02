@@ -21,3 +21,14 @@
     tags:
     - chrony
 
+
+- hosts: 172.16.158.51
+  gather_facts: true
+  become: true
+  become_user: root
+  roles:
+  - role: miniconda3
+    tags:
+    - conda
+    - conda3
+    - miniconda3

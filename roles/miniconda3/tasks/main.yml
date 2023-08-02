@@ -1,0 +1,47 @@
+# tasks file for miniconda3
+- name: set miniconda3 facts
+  set_fact:
+    miniconda3_script_filename: "/tmp/miniconda3.sh"
+    miniconda3_install_dir: "{{miniconda3_install_parent_dir}}/miniconda3"
+    miniconda3_bin_dir: "{{miniconda3_install_parent_dir}}/miniconda3/bin"
+
+- name: wget miniconda3 install script
+  get_url:
+    url: https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    dest: "{{miniconda3_script_filename}}"
+    mode: 0755
+  when:
+  - miniconda3_bin_dir is not exists
+
+- name: create miniconda3 install parent directory when it not exists
+  file:
+    path: "{{miniconda3_install_parent_dir}}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: install miniconda3 to {{miniconda3_install_dir}}
+  shell:
+    cmd: "{{miniconda3_script_filename}} -b -u -p {{miniconda3_install_dir}}"
+    executable: /bin/bash
+  when: miniconda3_bin_dir is exists
+
+- name: render miniconda3 config file
+  template:
+    src: miniconda3.sh.j2
+    dest: "/etc/profile.d/miniconda3.sh"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: delete miniconda3 install script
+  file:
+    path: "{{miniconda3_script_filename}}"
+    state: absent
+  when: miniconda3_script_filename is exists
+
+- name: run conda init
+  shell:
+    cmd: "{{miniconda3_bin_dir}}/conda init bash"
+  when: miniconda3_bin_dir is exists
