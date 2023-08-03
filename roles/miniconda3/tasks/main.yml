@@ -9,17 +9,17 @@
     path: "{{miniconda3_install_dir}}/bin"
   register: miniconda3_bin_dir_stat
 
-- name: register miniconda3 script filename variable
-  stat:
-    path: "{{miniconda3_script_filename}}"
-  register: miniconda3_script_filename_stat
-
 - name: wget miniconda3 install script
   get_url:
     url: https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
     dest: "{{miniconda3_script_filename}}"
     mode: 0755
   when: not miniconda3_bin_dir_stat.stat.exists
+
+- name: register miniconda3 script filename variable
+  stat:
+    path: "{{miniconda3_script_filename}}"
+  register: miniconda3_script_filename_stat
 
 - name: create miniconda3 install parent directory when it not exists
   file:
