@@ -1,0 +1,4 @@
+# handlers file for miniconda3
+- name: update bashrc
+  shell:
+    cmd: "{{miniconda3_install_dir}}/bin/conda init bash"

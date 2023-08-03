@@ -3,15 +3,23 @@
   set_fact:
     miniconda3_script_filename: "/tmp/miniconda3.sh"
     miniconda3_install_dir: "{{miniconda3_install_parent_dir}}/miniconda3"
-    miniconda3_bin_dir: "{{miniconda3_install_parent_dir}}/miniconda3/bin"
+
+- name: register miniconda3 bin directory variable
+  stat:
+    path: "{{miniconda3_install_dir}}/bin"
+  register: miniconda3_bin_dir_stat
+
+- name: register miniconda3 script filename variable
+  stat:
+    path: "{{miniconda3_script_filename}}"
+  register: miniconda3_script_filename_stat
 
 - name: wget miniconda3 install script
   get_url:
     url: https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
     dest: "{{miniconda3_script_filename}}"
     mode: 0755
-  when:
-  - miniconda3_bin_dir is not exists
+  when: not miniconda3_bin_dir_stat.stat.exists
 
 - name: create miniconda3 install parent directory when it not exists
   file:
@@ -25,9 +33,11 @@
   shell:
     cmd: "{{miniconda3_script_filename}} -b -u -p {{miniconda3_install_dir}}"
     executable: /bin/bash
-  when: miniconda3_bin_dir is exists
+  when: not miniconda3_bin_dir_stat.stat.exists
+  notify:
+  - update bashrc
 
-- name: render miniconda3 config file
+- name: render miniconda3 profile config
   template:
     src: miniconda3.sh.j2
     dest: "/etc/profile.d/miniconda3.sh"
@@ -39,9 +49,4 @@
   file:
     path: "{{miniconda3_script_filename}}"
     state: absent
-  when: miniconda3_script_filename is exists
-
-- name: run conda init
-  shell:
-    cmd: "{{miniconda3_bin_dir}}/conda init bash"
-  when: miniconda3_bin_dir is exists
+  when: miniconda3_script_filename_stat.stat.exists
