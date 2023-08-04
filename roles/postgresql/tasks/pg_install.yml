@@ -1,0 +1,89 @@
+# tasks file for roles/postgresql15
+- name: register postgresql variables
+  set_fact:
+    pg_versions: [11, 12, 13, 14, 15]
+    pgsetup: "/usr/pgsql-{{pg_version}}/bin/postgresql-15-setup"
+    pghba: "{{pg_data}}/pg_hba.conf"
+
+- name: install dependencies packages
+  yum:
+    name: "{{item}}"
+    state: present
+  with_items:
+  - centos-release-scl-rh
+  - python2-psycopg2
+
+- name: check postgresql is running or not
+  shell: "ps aux | grep 'bin/postmaster' | grep -v 'grep' | wc -l"
+  register: pg_running
+  changed_when: false
+
+- name: check postgresql-{{pg_version}}-setup status
+  stat:
+    path: "{{pgsetup}}"
+  register: pgsetup_stat
+
+- name: check pg_hba.conf status
+  stat:
+    path: "{{pghba}}"
+  register: pghba_stat
+
+- name: check and install postgresql {{pg_version}}
+  block:
+  - name: copy postgresql yum repo
+    copy:
+      src: pgsql.repo
+      dest: /etc/yum.repos.d/
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: install postgresql {{pg_version}}
+    yum:
+      name: "{{item}}"
+      state: present
+    with_items:
+    - postgresql{{pg_version}}
+    - postgresql{{pg_version}}-server
+    - postgresql{{pg_version}}-contrib
+    - postgresql{{pg_version}}-devel
+    - postgresql{{pg_version}}-libs
+  when:
+  - pg_version in pg_versions
+  - not pgsetup_stat.stat.exists
+  - pg_running|int == 0
+
+- name: "create pg data directory {{pg_data}}"
+  file:
+    path: "{{pg_data}}"
+    state: directory
+    owner: postgres
+    group: postgres
+    mode: 0700
+
+- name: modify PGDATA directory
+  lineinfile:
+    dest: /usr/lib/systemd/system/postgresql-{{pg_version}}.service
+    regexp: "^Environment=PGDATA="
+    line: "Environment=PGDATA={{pg_data}}"
+    state: present
+  when:
+  - pg_running|int == 0
+
+- name: postgresql initdb
+  shell: |
+    PGDATA={{pg_data}} /usr/pgsql-{{pg_version}}/bin/postgresql-{{pg_version}}-setup initdb
+  when:
+  - not pghba_stat.stat.exists
+  - pg_running|int == 0
+
+- name: show supported postgresql versions
+  debug:
+    msg: "the pg version is {{pg_version}}, supported pg versions: {{pg_versions}}"
+  failed_when: pg_version not in pg_versions
+
+- name: postgresql is running
+  debug:
+    msg: "postgresql is running"
+  when:
+  - pg_running|int == 0

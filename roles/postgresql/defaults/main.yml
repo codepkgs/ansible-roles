@@ -1,0 +1,6 @@
+# defaults file for roles/postgresql
+pg_version: 15
+pg_data: "/var/lib/pgsql/{{pg_version}}/data/"
+pg_root_password: "PostgreSql123$"
+pg_listen_addresses: "0.0.0.0"
+pg_listen_port: 5432

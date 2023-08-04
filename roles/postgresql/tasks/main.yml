@@ -1,0 +1,3 @@
+- import_tasks: pg_install.yml
+- import_tasks: pg_passwd.yml
+- import_tasks: pg_config.yml
