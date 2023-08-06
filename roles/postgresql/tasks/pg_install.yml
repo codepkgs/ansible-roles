@@ -5,6 +5,11 @@
     pgsetup: "/usr/pgsql-{{pg_version}}/bin/postgresql-15-setup"
     pghba: "{{pg_data}}/pg_hba.conf"
 
+- name: show supported postgresql versions
+  debug:
+    msg: "the pg version is {{pg_version}}, supported pg versions: {{pg_versions}}"
+  failed_when: pg_version not in pg_versions
+
 - name: install dependencies packages
   yum:
     name: "{{item}}"
@@ -75,15 +80,4 @@
     PGDATA={{pg_data}} /usr/pgsql-{{pg_version}}/bin/postgresql-{{pg_version}}-setup initdb
   when:
   - not pghba_stat.stat.exists
-  - pg_running|int == 0
-
-- name: show supported postgresql versions
-  debug:
-    msg: "the pg version is {{pg_version}}, supported pg versions: {{pg_versions}}"
-  failed_when: pg_version not in pg_versions
-
-- name: postgresql is running
-  debug:
-    msg: "postgresql is running"
-  when:
   - pg_running|int == 0

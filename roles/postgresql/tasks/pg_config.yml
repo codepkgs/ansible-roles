@@ -1,4 +1,4 @@
-- name: config postgres listen addresses
+- name: config postgresql listen addresses
   lineinfile:
     path: "{{pg_data}}/postgresql.conf"
     regexp: '^listen_addresses\s*='
@@ -7,7 +7,7 @@
   notify:
   - restart pg
 
-- name: config postgres listen port
+- name: config postgresql listen port
   lineinfile:
     path: "{{pg_data}}/postgresql.conf"
     regexp: '^port\s*='

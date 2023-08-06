@@ -1,3 +1,12 @@
 - import_tasks: pg_install.yml
 - import_tasks: pg_passwd.yml
 - import_tasks: pg_config.yml
+
+- name: ensure postgresql is running
+  systemd:
+    name: postgresql-{{pg_version}}
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  when:
+  - pg_version in pg_versions
