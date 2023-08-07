@@ -25,3 +25,4 @@
   when: vault_init_exec | bool
 
 - import_tasks: vault_unseal.yml
+  when: vault_unseal_exec | bool

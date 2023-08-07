@@ -21,6 +21,7 @@ vault_cluster_name: vault集群名称。默认为vault
 vault_key_shares: vault密钥共享数。默认为5
 vault_key_thresholds: vault密钥阈值。默认为3
 vault_init_exec: 是否执行vault init。默认false。如果为true，则执行vault init。
+vault_unseal_exec: 是否执行vault unseal。默认false。如果为true，则执行vault unseal。
 vault_unseal_keys: vault解密的key列表。
 ```
 
