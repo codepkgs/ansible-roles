@@ -1,0 +1,12 @@
+- name: copy vault yum repo
+  copy:
+    src: hashicorp.repo
+    dest: /etc/yum.repos.d/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install vault
+  package:
+    name: vault
+    state: present

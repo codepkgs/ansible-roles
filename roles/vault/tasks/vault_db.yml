@@ -1,0 +1,10 @@
+- name: "create vault database - dbname is: {{ vault_db_name }}"
+  postgresql_db:
+    name: "{{ vault_db_name | default('vault')  }}"
+    login_host: "{{ pg_host | mandatory }}"
+    login_user: "{{ pg_user | mandatory }}"
+    login_password: "{{ pg_password | mandatory }}"
+    port: "{{ pg_port | default(5432) }}"
+    state: present
+    owner: "{{ vault_db_user | default('vault') }}"
+  run_once: true

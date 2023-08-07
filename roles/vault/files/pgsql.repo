@@ -1,0 +1,43 @@
+#######################################################
+# PGDG Red Hat Enterprise Linux / CentOS repositories #
+#######################################################
+
+# PGDG Red Hat Enterprise Linux / CentOS stable common repository for all PostgreSQL versions
+
+[pgdg-common]
+name=PostgreSQL common RPMs for RHEL / CentOS $releasever - $basearch
+baseurl=https://download.postgresql.org/pub/repos/yum/common/redhat/rhel-$releasever-$basearch
+enabled=1
+gpgcheck=0
+
+# PGDG Red Hat Enterprise Linux / CentOS stable repositories:
+
+[pgdg15]
+name=PostgreSQL 15 for RHEL / CentOS $releasever - $basearch
+baseurl=https://download.postgresql.org/pub/repos/yum/15/redhat/rhel-$releasever-$basearch
+enabled=1
+gpgcheck=0
+
+[pgdg14]
+name=PostgreSQL 14 for RHEL / CentOS $releasever - $basearch
+baseurl=https://download.postgresql.org/pub/repos/yum/14/redhat/rhel-$releasever-$basearch
+enabled=1
+gpgcheck=0
+
+[pgdg13]
+name=PostgreSQL 13 for RHEL / CentOS $releasever - $basearch
+baseurl=https://download.postgresql.org/pub/repos/yum/13/redhat/rhel-$releasever-$basearch
+enabled=1
+gpgcheck=0
+
+[pgdg12]
+name=PostgreSQL 12 for RHEL / CentOS $releasever - $basearch
+baseurl=https://download.postgresql.org/pub/repos/yum/12/redhat/rhel-$releasever-$basearch
+enabled=1
+gpgcheck=0
+
+[pgdg11]
+name=PostgreSQL 11 for RHEL / CentOS $releasever - $basearch
+baseurl=https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-$releasever-$basearch
+enabled=1
+gpgcheck=0

@@ -1,0 +1,39 @@
+- name: "vault init"
+  become: true
+  become_user: root
+  shell: VAULT_ADDR="http://{{ansible_host}}:8200" vault operator init -key-shares={{vault_key_shares | default(5) }} -key-threshold={{vault_key_thresholds | default(3) }}
+  register: vault_init
+  ignore_errors: true
+  changed_when: false
+  run_once: true
+
+- name: "IMPORTANT! vault keys: you must save the following key to a safe place"
+  debug:
+    msg: "{{vault_init.stdout_lines}}"
+  when:
+  - vault_init is success
+  - '"Vault is already initialized" not in vault_init.stderr'
+  run_once: true
+
+- name: "vault has been initialized!"
+  debug:
+    msg: "vault has been initialized!"
+  when: '"Vault is already initialized" in vault_init.stderr or vault_init is success'
+  run_once: true
+
+- name: get unseal keys
+  shell: python -c 'content="""{{vault_init.stdout}}"""; print([line.split(":")[-1].strip() for line in content.split("\n") if line.startswith("Unseal Key")])'
+  register: vault_unseal_keys_result
+  run_once: true
+  when: vault_init is success
+
+- name: set fact for vault unseal keys
+  set_fact:
+    vault_unseal_keys: "{{vault_unseal_keys_result.stdout}}"
+  when: vault_init is success
+
+- name: vault unseal keys
+  debug:
+    msg: "{{ vault_unseal_keys }}"
+  when: vault_init is success
+  run_once: true

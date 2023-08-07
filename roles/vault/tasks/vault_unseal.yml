@@ -1,0 +1,28 @@
+- name: check vault status (sealed or unsealed)
+  shell: VAULT_ADDR="http://{{ansible_host}}:8200" vault status | grep '^Sealed' | awk '{print $2}'
+  register: vault_status
+  changed_when: false
+  ignore_errors: true
+
+- name: show vault status
+  debug:
+    msg: "vault is {{ 'sealed' if 'true' in vault_status.stdout else 'unsealed' }}"
+
+- name: unseal vault
+  shell: VAULT_ADDR="http://{{ansible_host}}:8200" vault operator unseal '{{ key }}'
+  with_items: "{{ vault_unseal_keys[:vault_key_thresholds] }}"
+  loop_control:
+    loop_var: key
+  when:
+  - vault_unseal_keys is not none
+  - '"true" in vault_status.stdout'
+
+- name: check vault status again (sealed or unsealed)
+  shell: VAULT_ADDR="http://{{ansible_host}}:8200" vault status | grep '^Sealed' | awk '{print $2}'
+  register: vault_status_again
+  changed_when: false
+  ignore_errors: true
+
+- name: show vault new status
+  debug:
+    msg: "vault is {{ 'sealed' if 'true' in vault_status_again.stdout else 'unsealed' }}"

@@ -1,0 +1,10 @@
+# defaults file for roles/vault
+vault_db_name: vault
+vault_db_user: vault
+vault_db_created: true
+vault_user_create: true
+vault_cluster_name: "vault"
+vault_key_shares: 5
+vault_key_thresholds: 3
+vault_init_exec: true
+vault_unseal_keys: []

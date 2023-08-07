@@ -1,0 +1,49 @@
+- name: "create vault table - table name is: vault_kv_store"
+  postgresql_table:
+    name: "vault_kv_store"
+    db: "{{ vault_db_name | default('vault') }}"
+    login_host: "{{ pg_host | mandatory }}"
+    login_user: "{{ vault_db_user | mandatory }}"
+    login_password: "{{ vault_db_user_password | mandatory }}"
+    port: "{{ pg_port | default(5432) }}"
+    state: present
+    owner: "{{ vault_db_user | default('vault') }}"
+    columns:
+    - parent_path TEXT COLLATE "C" NOT NULL
+    - path        TEXT COLLATE "C"
+    - key         TEXT COLLATE "C"
+    - value       BYTEA
+    - CONSTRAINT pkey PRIMARY KEY (path, key)
+  run_once: true
+
+- name: "create vault table index for vault_kv_store - table index name is: parent_path_idx"
+  postgresql_idx:
+    table: "vault_kv_store"
+    idxname: "parent_path_idx"
+    db: "{{ vault_db_name | default('vault') }}"
+    login_host: "{{ pg_host | mandatory }}"
+    login_user: "{{ vault_db_user | mandatory }}"
+    login_password: "{{ vault_db_user_password | mandatory }}"
+    port: "{{ pg_port | default(5432) }}"
+    state: present
+    columns:
+    - parent_path
+  run_once: true
+
+- name: "create vault table - table name is: vault_ha_locks"
+  postgresql_table:
+    name: "vault_ha_locks"
+    db: "{{ vault_db_name | default('vault') }}"
+    login_host: "{{ pg_host | mandatory }}"
+    login_user: "{{ vault_db_user | mandatory }}"
+    login_password: "{{ vault_db_user_password | mandatory }}"
+    port: "{{ pg_port | default(5432) }}"
+    state: present
+    owner: "{{ vault_db_user | default('vault') }}"
+    columns:
+    - ha_key      TEXT COLLATE "C" NOT NULL
+    - ha_identity TEXT COLLATE "C" NOT NULL
+    - ha_value    TEXT COLLATE "C"
+    - valid_until TIMESTAMP WITH TIME ZONE NOT NULL
+    - CONSTRAINT ha_key PRIMARY KEY (ha_key)
+  run_once: true

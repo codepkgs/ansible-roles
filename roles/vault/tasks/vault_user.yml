@@ -1,0 +1,25 @@
+- name: "crate vault user - user name is: vault"
+  postgresql_user:
+    name: "{{ vault_db_user | default('vault') }}"
+    db: "{{ vault_db_name | default('vault') }}"
+    password: "{{ vault_db_user_password | mandatory }}"
+    login_host: "{{ pg_host | mandatory }}"
+    login_user: "{{ pg_user | mandatory }}"
+    login_password: "{{ pg_password | mandatory }}"
+    port: "{{ pg_port | default(5432) }}"
+    state: present
+    expires: "infinity"
+  run_once: true
+
+- name: "grant all privileges on vault database to {{vault_db_user}}"
+  postgresql_privs:
+    database: "{{ vault_db_name | default('vault')  }}"
+    login_host: "{{ pg_host | mandatory }}"
+    login_user: "{{ vault_db_user | mandatory }}"
+    login_password: "{{ vault_db_user_password | mandatory }}"
+    port: "{{ pg_port | default(5432) }}"
+    state: present
+    type: database
+    privs: "ALL"
+    roles: "{{vault_db_user}}"
+  run_once: true

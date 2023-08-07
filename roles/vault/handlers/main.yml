@@ -1,0 +1,6 @@
+# handlers file for roles/vault
+- name: restart vault
+  service:
+    name: vault
+    state: restarted
+    enabled: yes

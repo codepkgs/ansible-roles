@@ -1,0 +1,17 @@
+- name: "vault config: /etc/vault.d/vault.hcl"
+  template:
+    src: vault.hcl.j2
+    dest: /etc/vault.d/vault.hcl
+    owner: vault
+    group: vault
+    mode: 0600
+  notify:
+  - restart vault
+
+- name: "vault profile config: /etc/profile.d/vault.sh"
+  template:
+    src: vault.env.j2
+    dest: /etc/profile.d/vault.sh
+    owner: root
+    group: root
+    mode: 0600
