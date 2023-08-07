@@ -5,7 +5,7 @@
     pgsetup: "/usr/pgsql-{{pg_version}}/bin/postgresql-15-setup"
     pghba: "{{pg_data}}/pg_hba.conf"
 
-- name: show supported postgresql versions
+- name: check the pg version is supported or not
   debug:
     msg: "the pg version is {{pg_version}}, supported pg versions: {{pg_versions}}"
   failed_when: pg_version not in pg_versions

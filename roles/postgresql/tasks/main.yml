@@ -1,6 +1,9 @@
 - import_tasks: pg_install.yml
 - import_tasks: pg_passwd.yml
 - import_tasks: pg_config.yml
+- import_tasks: pg_hba.yml
+
+- meta: flush_handlers
 
 - name: ensure postgresql is running
   systemd:
