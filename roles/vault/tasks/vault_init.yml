@@ -15,6 +15,17 @@
   - '"Vault is already initialized" not in vault_init.stderr'
   run_once: true
 
+- name: "IMPORTANT! save vault init config to /etc/vault/.vault-init"
+  copy:
+    content: "{{vault_init.stdout_lines}}"
+    dest: /etc/vault/.vault-init
+    owner: vault
+    group: vault
+    mode: 0600
+  when:
+  - vault_init is success
+  - '"Vault is already initialized" not in vault_init.stderr'
+
 - name: "vault has been initialized!"
   debug:
     msg: "vault has been initialized!"
