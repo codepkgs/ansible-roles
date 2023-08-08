@@ -25,6 +25,10 @@ vault_unseal_exec: 是否执行vault unseal。默认false。如果为true，则�
 vault_unseal_keys: vault解密的key列表。
 ```
 
+# 初始化文件
+
+vault 初始化完成后，会将初始化产生的 key 以及 root token 保存在 /etc/vault.d/.vault-init 文件中。
+
 # 示例
 
 ```yml
