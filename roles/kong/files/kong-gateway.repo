@@ -1,0 +1,16 @@
+# Source: Kong Inc.
+# Site: https://konghq.com/
+# Repository: Kong Inc. / gateway-33
+# Description: The Cloud-Native API Gateway.
+
+[kong-gateway-33]
+name=kong-gateway-33
+baseurl=https://packages.konghq.com/public/gateway-33/rpm/el/7/$basearch
+enabled=1
+gpgcheck=0
+
+[kong-gateway-33-noarch]
+name=kong-gateway-33-noarch
+baseurl=https://packages.konghq.com/public/gateway-33/rpm/el/7/noarch
+enabled=1
+gpgcheck=0

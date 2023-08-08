@@ -1,0 +1,6 @@
+# handlers file for roles/kong
+- name: restart kong
+  service:
+    name: kong
+    state: restarted
+    enabled: yes

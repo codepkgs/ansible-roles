@@ -1,0 +1,41 @@
+- name: render kong config to /etc/kong/kong.conf
+  template:
+    src: kong.conf.j2
+    dest: /etc/kong/kong.conf
+    owner: kong
+    group: kong
+    mode: 0664
+  notify:
+  - restart kong
+
+- name: check kong database migrations list
+  shell: /usr/local/bin/kong migrations list | grep '[0-9]* migrations are already loaded' | wc -l
+  register: kong_migrations_status
+  changed_when: false
+  ignore_errors: true
+
+- name: migration kong database
+  shell: /usr/local/bin/kong migrations bootstrap
+  register: kong_migrations
+  become: true
+  become_user: root
+  when:
+  - kong_migrations_status.stdout != "0"
+
+- meta: flush_handlers
+
+- name: check kong status
+  shell: kong health | grep 'Kong is healthy' | wc -l
+  register: kong_status
+  changed_when: false
+  ignore_errors: true
+
+- name: show kong status
+  debug:
+    msg: "kong is {{ 'not ' if kong_status.stdout|int != 1 else '' }}running"
+
+- name: ensure kong is running
+  service:
+    name: kong
+    state: started
+    enabled: yes

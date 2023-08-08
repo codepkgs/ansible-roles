@@ -1,0 +1,22 @@
+- name: copy kong yum repo
+  copy:
+    src: kong-gateway.repo
+    dest: /etc/yum.repos.d/kong-gateway.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install kong
+  yum:
+    name: kong
+    state: present
+
+- name: get kong version
+  shell:
+    cmd: kong version
+  register: kong_version
+  changed_when: false
+
+- name: get kong version
+  debug:
+    msg: "kong version is: {{ kong_version.stdout }}"

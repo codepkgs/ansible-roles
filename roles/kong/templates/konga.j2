@@ -1,0 +1,11 @@
+PORT={{konga_listen_port | default(8080)}}
+NODE_ENV=production
+KONGA_HOOK_TIMEOUT=120000
+DB_ADAPTER=postgres
+DB_HOST={{konga_db_host | default(kong_db_host)}}
+DB_PORT={{konga_db_port | default(kong_db_port)}}
+DB_DATABASE={{konga_db_name | default('konga')}}
+DB_USER={{konga_db_user|default('konga')}}
+DB_PASSWORD={{konga_db_password|mandatory}}
+KONGA_LOG_LEVEL=warn
+TOKEN_SECRET=gE6lLOI1wveFGTxJ

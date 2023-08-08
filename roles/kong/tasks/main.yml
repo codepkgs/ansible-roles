@@ -1,0 +1,4 @@
+# tasks file for roles/kong
+- import_tasks: kong_install.yml
+- import_tasks: kong_config.yml
+- import_tasks: konga.yml

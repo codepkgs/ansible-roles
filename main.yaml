@@ -47,3 +47,23 @@
       vault_db_user_password: "Vault123$"
       vault_db_created: true
       vault_user_created: true
+
+- hosts: 172.16.158.51
+  become: true
+  become_user: root
+  roles:
+  - role: kong
+    tags: kong
+    vars:
+      kong_db_host: "172.16.158.51"
+      kong_db_port: 5432
+      kong_db_name: kong
+      kong_db_user: kong
+      kong_db_password: "Kong123$"
+      konga_db_host: "172.16.158.51"
+      konga_db_port: 5432
+      konga_db_name: konga
+      konga_db_user: konga
+      konga_db_password: "Konga123$"
+      kong_proxy_http_listen_port: 80
+      kong_proxy_https_listen_port: 443
