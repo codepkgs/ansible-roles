@@ -1,5 +1,0 @@
-[nodesource]
-name=Node.js Packages for Enterprise Linux 7 - $basearch
-baseurl=https://rpm.nodesource.com/pub_12.x/el/7/$basearch
-enabled=1
-gpgcheck=0

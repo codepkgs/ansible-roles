@@ -13,9 +13,9 @@ kong_proxy_http_listen_backlog: 16384
 kong_proxy_https_listen_address: 0.0.0.0
 kong_proxy_https_listen_port: 8443
 kong_proxy_https_listen_backlog: 16384
-kong_admin_http_listen_address: 127.0.0.1
+kong_admin_http_listen_address: 0.0.0.0
 kong_admin_http_listen_port: 8001
 kong_admin_http_listen_backlog: 16384
-kong_admin_https_listen_address: 127.0.0.1
+kong_admin_https_listen_address: 0.0.0.0
 kong_admin_https_listen_port: 8444
 kong_admin_https_listen_backlog: 16384
