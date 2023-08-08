@@ -67,3 +67,5 @@
       konga_db_password: "Konga123$"
       kong_proxy_http_listen_port: 80
       kong_proxy_https_listen_port: 443
+      kong_admin_http_listen_address: 0.0.0.0
+      kong_admin_https_listen_address: 127.0.0.1
