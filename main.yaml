@@ -69,3 +69,11 @@
       kong_proxy_https_listen_port: 443
       kong_admin_http_listen_address: 0.0.0.0
       kong_admin_https_listen_address: 127.0.0.1
+
+
+- hosts: 172.16.158.52
+  become: true
+  become_user: root
+  roles:
+  - role: nginx
+    tags: nginx

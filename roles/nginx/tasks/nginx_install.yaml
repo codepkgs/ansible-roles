@@ -3,14 +3,14 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - epel-release
-    - pcre
-    - pcre-devel
-    - openssl
-    - openssl-devel
-    - zlib
-    - zlib-devel
-    - rsync
+  - epel-release
+  - pcre
+  - pcre-devel
+  - openssl11
+  - openssl11-devel
+  - zlib
+  - zlib-devel
+  - rsync
 
 - name: copy nginx repository
   copy:
@@ -25,5 +25,4 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - nginx
-    - nginx-mod-stream
+  - nginx

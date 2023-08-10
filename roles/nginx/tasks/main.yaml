@@ -1,4 +1,3 @@
----
 - import_tasks: nginx_install.yaml
 
 - import_tasks: nginx_config.yaml
