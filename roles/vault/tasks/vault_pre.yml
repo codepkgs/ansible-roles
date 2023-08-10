@@ -11,4 +11,5 @@
     name: "{{item}}"
     state: present
   with_items:
+  - postgresql15-libs
   - python2-psycopg2

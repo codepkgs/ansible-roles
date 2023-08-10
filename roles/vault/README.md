@@ -17,6 +17,7 @@ pg_password: 指定数据库密码。必须指定
 pg_port: 指定pg数据库服务器的端口。默认5432
 vault_db_created: 是否创建vault数据库。默认为true。如果为false，则不创建vault数据库，表示数据库已经存在。需要用户指定vault_db_name。
 vault_user_created：是否创建vault用户。默认为true。如果为false，则不创建vault用户，表示用户已经存在。需要用户指定vault_db_user和vault_db_user_password。
+vault_table_created：是否创建vault表。默认为true。如果为false，则不创建vault表，表示表已经存在。
 vault_cluster_name: vault集群名称。默认为vault
 vault_key_shares: vault密钥共享数。默认为5
 vault_key_thresholds: vault密钥阈值。默认为3
